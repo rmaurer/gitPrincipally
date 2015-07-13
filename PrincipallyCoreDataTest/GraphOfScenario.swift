@@ -56,7 +56,7 @@ class GraphOfScenario: UIView {
             0)
         
         //calculate the starting x and y pointx
-        
+        /*
         let margin:CGFloat = 20.0
         var columnXPoint = { (column:Int) -> CGFloat in
             //Calculate gap between points
@@ -144,7 +144,7 @@ class GraphOfScenario: UIView {
         CAWhiteLine.addAnimation(animation, forKey: "animate transform animation")
         
         CAWhiteLine.speed = 0
-        
+        */
         
     }
 

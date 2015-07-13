@@ -15,6 +15,7 @@ class PayExtraEachMonthViewController: UIViewController {
     var sliderExtraNum : Int = 0
     var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
     var unsavedScenario: Scenario!
+    var defaultScenario: Scenario!
     var newInterest : Double = 0
     
     func convertSliderNumberToMonthsWithExtraPayment(senderValue:Int) -> Int {
@@ -41,7 +42,17 @@ class PayExtraEachMonthViewController: UIViewController {
     }
     
     @IBAction func testButton(sender: UIButton) {
+        //graphOfExtraPaymentScenario.CAWhiteLine.backgroundColor = UIColor.purpleColor().CGColor
+        let maxInterest = maxElement(defaultScenario.makeArrayOfAllInterestPayments())
+        let newLayer = defaultScenario.makeCALayerWithInterestLine(graphOfExtraPaymentScenario.frame, color: UIColor.blackColor().CGColor, maxValue: maxInterest)
+        graphOfExtraPaymentScenario.layer.addSublayer(newLayer)
+
+        
+        let newLayer2 = unsavedScenario.makeCALayerWithInterestLine(graphOfExtraPaymentScenario.frame, color: UIColor.purpleColor().CGColor, maxValue: maxInterest)
+        graphOfExtraPaymentScenario.layer.addSublayer(newLayer2)
         graphOfExtraPaymentScenario.setNeedsDisplay()
+        
+        
     }
     @IBOutlet weak var graphOfExtraPaymentScenario: GraphOfScenario!
     
@@ -57,9 +68,8 @@ class PayExtraEachMonthViewController: UIViewController {
                 //4) It should perhaps produce some type of string that describes the scenario? This might be a task for later, though
             //It's going to have to do this based on two particular variables: the extra amount paid, AND the nubmer of months during which payment is made.
             let monthNumber = convertSliderNumberToMonthsWithExtraPayment(Int(frequencySliderOutlet.value))
-            newInterest = unsavedScenario.makeNewExtraPaymentScenario(managedObjectContext, oArray: oArray,extra:extra,monthNumber:monthNumber)
+            newInterest = unsavedScenario.makeNewExtraPaymentScenario(managedObjectContext, oArray: oArray,extra:extra,monthsThatNeedExtraPayment:monthNumber)
             //println(unsavedScenario.concatenatedPayment)
-            
             
         }else{
             println("it's a string")
@@ -114,7 +124,14 @@ class PayExtraEachMonthViewController: UIViewController {
                 unsavedScenario = Scenario(entity: scenarioEntity!, insertIntoManagedObjectContext: managedObjectContext)
                 unsavedScenario.name = unsavedScenarioName
             }
-            else {unsavedScenario = allScenarios[0]}
+            else {
+                unsavedScenario = allScenarios[0]
+                
+                /*managedObjectContext.deleteObject(allScenarios[0] as NSManagedObject)
+                unsavedScenario = Scenario(entity: scenarioEntity!, insertIntoManagedObjectContext: managedObjectContext)
+                unsavedScenario.name = unsavedScenarioName*/
+                //Right now I clear out hte payment aray within makeNewExtraPaymentScenario
+            }
         }
         else {
             println("Coult not fetch \(error)")
@@ -136,8 +153,12 @@ class PayExtraEachMonthViewController: UIViewController {
             alert.addButtonWithTitle("Understood")
             alert.show()
         }
+        if !managedObjectContext.save(&error) {
+            println("Could not save \(error), \(error?.userInfo)")
+        }
         graphOfExtraPaymentScenario.currentScenario = unsavedScenario
         graphOfExtraPaymentScenario.defaultScenario = unsavedScenario.getDefault(managedObjectContext)
+        defaultScenario = unsavedScenario.getDefault(managedObjectContext)
         // Do any additional setup after loading the view.
     }
 

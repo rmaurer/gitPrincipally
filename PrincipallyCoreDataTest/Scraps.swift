@@ -176,4 +176,50 @@ pod 'TextFieldEffects', '~> 0.4'
 pod 'FlatUIKit', '~> 1.6'
 
 
+
+
+func makeCALayerWithBorderDeleteAfterTesting(view:UIView, rect:CGRect, color:CGColor) -> CALayer {
+    let testLayer = CALayer()
+    testLayer.frame = CGRectMake(0,0,rect.width,rect.height)
+    testLayer.borderWidth = 20
+    testLayer.borderColor = color
+    view.layer.addSublayer(testLayer)
+    println(view.frame)
+    return testLayer
+}
+
+for mpPayment in mpForAllLoans{
+let mpPayment = mpPayment as! MonthlyPayment
+
+//first, if this is a month where the extra payment was applied elsewhere, just add the loans usual payment into the concat payment
+if monthsCounter < monthsWithExtraPaymentAlready{
+var toBeAddedMonth = mpForThisLoan[monthsCounter] as! MonthlyPayment
+mpPayment.addAnotherMP(toBeAddedMonth)
+totalInterest = totalInterest + toBeAddedMonth.interest.doubleValue
+monthsCounter = monthsCounter + 1
+}
+
+//I feel like this can all be be deleted -- if there's already other concat payments in here, they would be from loans at high interest rates, so
+else if balance > (monthlyPayment + extra) {
+mpPayment.principal = mpPayment.principal.doubleValue + monthlyPayment - (balance * rate) + extra
+mpPayment.interest = mpPayment.interest.doubleValue + (balance * rate)
+//println(" \(index): interest \(mpPayment.interest)")
+mpPayment.totalPayment = mpPayment.totalPayment.doubleValue + monthlyPayment + extra
+totalInterest += balance * rate
+balance = balance + (balance * rate) - (monthlyPayment + extra)
+months = months + 1
+} else if balance > 0 {
+mpPayment.principal = mpPayment.principal.doubleValue + balance + extra
+mpPayment.interest = mpPayment.interest.doubleValue + (balance * rate)
+mpPayment.totalPayment = mpPayment.totalPayment.doubleValue + balance + extra + (balance * rate)
+totalInterest += balance * rate
+months = months + 1
+balance = 0
+}
+}
+
+
+
+
+
 */

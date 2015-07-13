@@ -74,12 +74,24 @@ class Scenario: NSManagedObject {
     }
 
     //want it to add in interestOverLife, timeToRepay, and ConcadenatedPayment
-    func makeNewExtraPaymentScenario (managedObjectContext:NSManagedObjectContext, oArray : [NSManagedObject], extra:Int, monthNumber:Int) -> Double{
-   
+    func makeNewExtraPaymentScenario (managedObjectContext:NSManagedObjectContext, oArray : [NSManagedObject], extra:Int, monthsThatNeedExtraPayment:Int) -> Double{
+        
+        //In adding an extra paymenet we'd only ever expect the number of payment months to decrease -- so all we have to worry about is making sure that there are 0/0/0 MPs for all the extra days.  Intially we we pull up the max number of months
+        let maxMonthsInDefaultRepayment :Int = self.getDefault(managedObjectContext).concatenatedPayment.count
+        
+        //reset interestoverlife and concat payment of the scenario we are working in.
+        self.interestOverLife = 0
+        if self.concatenatedPayment.count > 0 {
+            for MP in self.concatenatedPayment {
+                managedObjectContext.deleteObject(MP as! NSManagedObject)
+            }
+        }
+        
+        //setup default variable to count how far we are into adding the payments.
         var monthsWithExtraPayment : Int = 0
-        var lArray = [Loan]()
         
         //change oArray to lArray
+        var lArray = [Loan]()
         for object in oArray {
             var object = object as! Loan
             lArray.append(object)
@@ -87,21 +99,37 @@ class Scenario: NSManagedObject {
         //now the highest rated loan is first and the lowest rated is last
         lArray.sort {$0.interest.doubleValue > $1.interest.doubleValue}
         
-        //iterate over the loans in order. Determine the total number of months in that loan.  If the months in that loan is less than the months to which the extra payment has been applied already, enter that loan with the extra payment, returning the number of months that have now passed with the extra payment being applied. 
-        self.interestOverLife = 0 //reset interestOverLife 
+        //iterate over the loans in order. Determine the total number of months in that loan.  If the months in that loan is less than the months to which the extra payment has been applied already, enter that loan with the extra payment, returning the number of months that have now passed with the extra payment being applied.
         
         for loan in lArray {
             var loansTotalMonths = loan.monthsUntilRepayment.integerValue + loan.monthsInRepaymentTerm.integerValue
             if monthsWithExtraPayment < loansTotalMonths {
-                let monthsToPayOffThisLoanWithExtraPayment = loan.enteredLoanWithExtraPayment(managedObjectContext,extra:Double(extra),currentScenario:self,monthToStartAt:monthsWithExtraPayment)
+                let monthsToPayOffThisLoanWithExtraPayment = loan.enteredLoanWithExtraPayment(managedObjectContext,extra:Double(extra),currentScenario:self,monthsWithExtraPaymentAlready:monthsWithExtraPayment, monthsThatNeedExtraPayment:monthsThatNeedExtraPayment)
+                
                 monthsWithExtraPayment = monthsToPayOffThisLoanWithExtraPayment
             } else {
                 loan.addLoanToCurrentScenario(managedObjectContext,currentScenario:self)
             }
         }
         
+        let mpForAllLoans = self.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
+        
+        while mpForAllLoans.count < maxMonthsInDefaultRepayment{
+            let entity = NSEntityDescription.entityForName("MonthlyPayment", inManagedObjectContext: managedObjectContext)
+            var zeroPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+            zeroPaymentToBeAdded.interest = 0
+            zeroPaymentToBeAdded.principal = 0
+            zeroPaymentToBeAdded.totalPayment = 0
+            mpForAllLoans.addObject(zeroPaymentToBeAdded)
+        }
+        self.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
+        //println("here's the number of points in the concatpayment")
+        //println(self.concatenatedPayment.count)
+        var error: NSError?
+        if !managedObjectContext.save(&error) {
+            println("Could not save: \(error)") }
         return self.interestOverLife.doubleValue
-    }
+            }
     
     func makeInterestArray() -> [Double]{
         var interestArray = [Double]()
@@ -112,6 +140,65 @@ class Scenario: NSManagedObject {
         }
         return interestArray
     }
+    
+    func makeCALayerWithInterestLine(rect:CGRect, color:CGColor, maxValue:Double) -> CALayer {
+        //initial variables
+        let clearColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
+        let linePoints = self.makeArrayOfAllInterestPayments()
+        println("this is scenario:")
+        println(self.name)
+        println("Here's the number of line points in the array")
+        println(linePoints.count)
+        println("and here is hte array itself")
+        println(linePoints)
+        let width = rect.width
+        let height = rect.height
+        let newCALayer = CALayer()
+        newCALayer.frame = CGRectMake(0, 0, rect.width, rect.height)
+        let graphPath = UIBezierPath()
+        let interestLineLayer = CAShapeLayer()
+        let margin:CGFloat = 20.0
+        var columnXPoint = { (column:Int) -> CGFloat in
+            //Calculate gap between points
+            let spacer = (width - margin*2 - 4) /
+                CGFloat((linePoints.count - 1))
+            var x:CGFloat = CGFloat(column) * spacer //want to have it be default so that the x spacing is always correct
+            x += margin + 2
+            return x
+        }
+        let topBorder:CGFloat = 60
+        let bottomBorder:CGFloat = 50
+        let graphHeight = height - topBorder - bottomBorder
+        var columnYPoint = { (graphPoint:Double) -> CGFloat in
+            var y:CGFloat = CGFloat(graphPoint) /
+                CGFloat(maxValue) * graphHeight
+            y = graphHeight + topBorder - y // Flip the graph
+            return y
+        }
+        
+        //
+        graphPath.moveToPoint(CGPoint(x:columnXPoint(0),
+            y:columnYPoint(linePoints[0])))
+        
+        //add points for each item in the graphPoints array
+        //at the correct (x, y) for the point
+        for i in 1..<linePoints.count {
+            let nextPoint = CGPoint(x:columnXPoint(i),
+                y:columnYPoint(linePoints[i]))
+            graphPath.addLineToPoint(nextPoint)
+        }
+        interestLineLayer.path = graphPath.CGPath
+        interestLineLayer.fillColor = clearColor.CGColor
+        interestLineLayer.fillRule = kCAFillRuleNonZero
+        interestLineLayer.strokeColor = color
+        interestLineLayer.lineWidth = 3.0
+
+        newCALayer.addSublayer(interestLineLayer)
+        return newCALayer
+        
+    }
+    
+
     
 
 }
