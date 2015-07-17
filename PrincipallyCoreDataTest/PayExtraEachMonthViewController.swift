@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 import CoreData
 
 class PayExtraEachMonthViewController: UIViewController {
@@ -17,6 +18,7 @@ class PayExtraEachMonthViewController: UIViewController {
     var unsavedScenario: Scenario!
     var defaultScenario: Scenario!
     var newInterest : Double = 0
+    var newInterestLayer = CALayer()
     
     func convertSliderNumberToMonthsWithExtraPayment(senderValue:Int) -> Int {
         switch senderValue{
@@ -44,16 +46,14 @@ class PayExtraEachMonthViewController: UIViewController {
     @IBAction func testButton(sender: UIButton) {
         //graphOfExtraPaymentScenario.CAWhiteLine.backgroundColor = UIColor.purpleColor().CGColor
         let maxInterest = maxElement(defaultScenario.makeArrayOfAllInterestPayments())
-        let newLayer = defaultScenario.makeCALayerWithInterestLine(graphOfExtraPaymentScenario.frame, color: UIColor.blackColor().CGColor, maxValue: maxInterest)
-        graphOfExtraPaymentScenario.layer.addSublayer(newLayer)
-
-        
-        let newLayer2 = unsavedScenario.makeCALayerWithInterestLine(graphOfExtraPaymentScenario.frame, color: UIColor.purpleColor().CGColor, maxValue: maxInterest)
-        graphOfExtraPaymentScenario.layer.addSublayer(newLayer2)
+        newInterestLayer.sublayers = nil
+        newInterestLayer = unsavedScenario.makeCALayerWithInterestLine(graphOfExtraPaymentScenario.frame, color: UIColor.purpleColor().CGColor, maxValue: maxInterest)
+        graphOfExtraPaymentScenario.layer.addSublayer(newInterestLayer)
         graphOfExtraPaymentScenario.setNeedsDisplay()
         
         
     }
+    
     @IBOutlet weak var graphOfExtraPaymentScenario: GraphOfScenario!
     
     @IBOutlet weak var extraAmount: UITextField!
@@ -126,11 +126,6 @@ class PayExtraEachMonthViewController: UIViewController {
             }
             else {
                 unsavedScenario = allScenarios[0]
-                
-                /*managedObjectContext.deleteObject(allScenarios[0] as NSManagedObject)
-                unsavedScenario = Scenario(entity: scenarioEntity!, insertIntoManagedObjectContext: managedObjectContext)
-                unsavedScenario.name = unsavedScenarioName*/
-                //Right now I clear out hte payment aray within makeNewExtraPaymentScenario
             }
         }
         else {
@@ -156,9 +151,10 @@ class PayExtraEachMonthViewController: UIViewController {
         if !managedObjectContext.save(&error) {
             println("Could not save \(error), \(error?.userInfo)")
         }
-        graphOfExtraPaymentScenario.currentScenario = unsavedScenario
-        graphOfExtraPaymentScenario.defaultScenario = unsavedScenario.getDefault(managedObjectContext)
         defaultScenario = unsavedScenario.getDefault(managedObjectContext)
+        let maxInterest = maxElement(defaultScenario.makeArrayOfAllInterestPayments())
+        let newLayer = defaultScenario.makeCALayerWithInterestLine(graphOfExtraPaymentScenario.frame, color: UIColor.blackColor().CGColor, maxValue: maxInterest)
+        graphOfExtraPaymentScenario.layer.addSublayer(newLayer)
         // Do any additional setup after loading the view.
     }
 

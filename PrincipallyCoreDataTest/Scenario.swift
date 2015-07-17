@@ -68,7 +68,9 @@ class Scenario: NSManagedObject {
         var mpForAllLoans = self.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
         for payment in mpForAllLoans{
             let payment = payment as! MonthlyPayment
-            arrayOfAllPrincipalPayments.append(payment.interest.doubleValue)
+            let roundedpayment = round(payment.interest.doubleValue * 100) / 100
+            arrayOfAllPrincipalPayments.append(roundedpayment)
+            
         }
         return arrayOfAllPrincipalPayments
     }
@@ -79,6 +81,7 @@ class Scenario: NSManagedObject {
         //In adding an extra paymenet we'd only ever expect the number of payment months to decrease -- so all we have to worry about is making sure that there are 0/0/0 MPs for all the extra days.  Intially we we pull up the max number of months
         let maxMonthsInDefaultRepayment :Int = self.getDefault(managedObjectContext).concatenatedPayment.count
         
+        
         //reset interestoverlife and concat payment of the scenario we are working in.
         self.interestOverLife = 0
         if self.concatenatedPayment.count > 0 {
@@ -86,6 +89,10 @@ class Scenario: NSManagedObject {
                 managedObjectContext.deleteObject(MP as! NSManagedObject)
             }
         }
+        //have to save, otherwise you will still have the MPs in the concatenated payment when it's passed 
+        var error: NSError?
+        if !managedObjectContext.save(&error) {
+            println("Could not save: \(error)") }
         
         //setup default variable to count how far we are into adding the payments.
         var monthsWithExtraPayment : Int = 0
@@ -102,11 +109,11 @@ class Scenario: NSManagedObject {
         //iterate over the loans in order. Determine the total number of months in that loan.  If the months in that loan is less than the months to which the extra payment has been applied already, enter that loan with the extra payment, returning the number of months that have now passed with the extra payment being applied.
         
         for loan in lArray {
-            var loansTotalMonths = loan.monthsUntilRepayment.integerValue + loan.monthsInRepaymentTerm.integerValue
+            var loansTotalMonths = loan.monthsInRepaymentTerm.integerValue + loan.monthsUntilRepayment.integerValue
             if monthsWithExtraPayment < loansTotalMonths {
                 let monthsToPayOffThisLoanWithExtraPayment = loan.enteredLoanWithExtraPayment(managedObjectContext,extra:Double(extra),currentScenario:self,monthsWithExtraPaymentAlready:monthsWithExtraPayment, monthsThatNeedExtraPayment:monthsThatNeedExtraPayment)
-                
                 monthsWithExtraPayment = monthsToPayOffThisLoanWithExtraPayment
+                // Yes -- this is happening right. println("enteredLoanWithExtraPayment correctly")
             } else {
                 loan.addLoanToCurrentScenario(managedObjectContext,currentScenario:self)
             }
@@ -125,7 +132,7 @@ class Scenario: NSManagedObject {
         self.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
         //println("here's the number of points in the concatpayment")
         //println(self.concatenatedPayment.count)
-        var error: NSError?
+        //var error: NSError?
         if !managedObjectContext.save(&error) {
             println("Could not save: \(error)") }
         return self.interestOverLife.doubleValue
@@ -135,8 +142,9 @@ class Scenario: NSManagedObject {
         var interestArray = [Double]()
         let mpForAllLoans = self.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
         for payment in mpForAllLoans{
-            var payment = payment as! MonthlyPayment
-            interestArray.append(payment.interest.doubleValue)
+            let payment = payment as! MonthlyPayment
+            let roundpayment = round(payment.interest.doubleValue * 100) / 100
+            interestArray.append(roundpayment)
         }
         return interestArray
     }

@@ -22,8 +22,8 @@ class GraphOfScenario: UIView {
     
     override func drawRect(rect: CGRect) {
         println("DrawRect was called")
-        var defaultScenarioInterestGraphPoints : [Double] = defaultScenario!.makeArrayOfAllInterestPayments()
-        var currentScenarioInterestGraphPoints : [Double] = currentScenario!.makeArrayOfAllInterestPayments()
+        //var defaultScenarioInterestGraphPoints : [Double] = defaultScenario!.makeArrayOfAllInterestPayments()
+        //var currentScenarioInterestGraphPoints : [Double] = currentScenario!.makeArrayOfAllInterestPayments()
         let width = rect.width
         let height = rect.height
         

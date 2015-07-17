@@ -30,10 +30,9 @@ class Loan: NSManagedObject {
         let r = (self.interest.doubleValue / 100) / 12 //monthly repayment -- divide by 100 to convert from percent to decimal.  divide by 12 to get monthly from annual rate.
         let PV = self.balance.doubleValue
         
-        //Check if payment has already started.  In which case, subtract the number of months already in repayment (done by adding because the months is a negative number), and then use the months remaining to get the repayment amount
+        //Check if payment has already started.  In which case, calculate the repayment amount based on the total number of months on the loan 
         if monthsUntilRepayment <= 0 {
-            let repayment = self.monthsInRepaymentTerm.integerValue + monthsUntilRepayment
-            let n = Double(repayment * -1) //Make it negative for purposes of the formula
+            let n = Double(self.monthsInRepaymentTerm.integerValue * -1) //Make it negative for purposes of the formula
             let defaultMonthlyPayment = (r * PV) / (1 - pow((1+r),n))
             return defaultMonthlyPayment
         }
@@ -397,10 +396,11 @@ class Loan: NSManagedObject {
             monthlyPaymentToBeAdded.totalPayment = 0
             mpForAllLoans.addObject(monthlyPaymentToBeAdded)
         }
-        for month in 0...totalMonths{
+        for month in 0...mpForThisLoan.count - 1{
             var currentMonth = mpForAllLoans[month] as! MonthlyPayment
             var toBeAddedMonth = mpForThisLoan[month] as! MonthlyPayment
             currentMonth.addAnotherMP(toBeAddedMonth)
+            println("there was\(toBeAddedMonth.interest) in interest addded to payment number \(month) from loan number \(self.name) in the 'add all payments withoutextra' function")
             totalInterest = totalInterest + toBeAddedMonth.interest.doubleValue
         }
         var error: NSError?
@@ -414,7 +414,7 @@ class Loan: NSManagedObject {
 
     func enteredLoanWithExtraPayment(managedObjectContext:NSManagedObjectContext,extra:Double,currentScenario:Scenario,monthsWithExtraPaymentAlready:Int, monthsThatNeedExtraPayment:Int) -> Int {
         
-        //println("enteredLoanWithExtraPayent is being called with loan \(self.name) with interest rate \(self.interest) and time frame \(monthsWithExtraPaymentAlready)")
+        println("enteredLoanWithExtraPayent is being called with loan \(self.name) with interest rate \(self.interest) and time frame \(monthsWithExtraPaymentAlready)")
         var monthlyPayment = self.defaultMonthlyPayment.doubleValue
         var balance = self.balance.doubleValue + self.capitalizedInterest()
         var rate = (self.interest.doubleValue / 12) / 100
@@ -423,6 +423,7 @@ class Loan: NSManagedObject {
         
         let mpForAllLoans = currentScenario.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
         var mpForThisLoan = self.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
+        println("here is the monthscounter -- is it rising here? \(mpForAllLoans.count)")
         //if payments going to start in 9 months, then the months until repayment is positive 9
         //first go through all of the mps already in the scenario. The very first thing we need to do is handle the situation where this is the second loan to get the extra payment.  In which case we can only start adding the extra loan after a certain number of other loans have passed.  Then it's the usual check: First check to make sure there's still balance on the loan left, and if we are at the last payment, enter that instead.  All the while add on to months variable.  only enter "else" once so that months doesn't keep going up.  If we get through all the MPs already in teh scenario, we then turn to adding more MPs as we go along, and again go through them normally then add a last and final one.
         for mpPayment in mpForAllLoans{
@@ -434,37 +435,48 @@ class Loan: NSManagedObject {
                 monthsCounter = monthsCounter + 1
             }else{
                 //if you can add in the whole mpForThisLoan into pre-existing MPs in the concatpayment, then there's nothing else to be done, and no change in the months withExtraPaymentAlready
-                return monthsWithExtraPaymentAlready
+                var error: NSError?
+                currentScenario.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
+                currentScenario.interestOverLife =  currentScenario.interestOverLife.doubleValue + totalInterest
+                if !managedObjectContext.save(&error) {
+                    println("Could not save: \(error)") }
+                return monthsCounter
             }
         }
-        //no we need to both add new MonthlyPayments and check whether we should be making extra payments
+        //now we need to both add new MonthlyPayments and check whether we should be making extra payments
         let entity = NSEntityDescription.entityForName("MonthlyPayment", inManagedObjectContext: managedObjectContext)
-        
+        //println("got into the rest of the function")
+        println("the months counter is \(monthsCounter) and the mpcount is \(mpForThisLoan.count)")
         while monthsCounter < mpForThisLoan.count{
+            println("Got into the while loop")
             //if it's not the last payment, and there are still months that need extra payment
             var extraPayment = extra
             if monthsCounter >= monthsThatNeedExtraPayment  {
                 extraPayment = 0}
-            if balance > (monthlyPayment + extraPayment){
-                
+            
+            if balance >= (monthlyPayment + extraPayment){
                 var monthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
                 monthlyPaymentToBeAdded.interest = balance * rate
+                println("added another thing")
+                println(monthsCounter)
+                println(monthlyPaymentToBeAdded.interest)
                 monthlyPaymentToBeAdded.principal = monthlyPayment - (balance * rate) + extraPayment
                 monthlyPaymentToBeAdded.totalPayment = monthlyPayment + extraPayment
                 mpForAllLoans.addObject(monthlyPaymentToBeAdded)
                 totalInterest += balance * rate
                 balance = balance - monthlyPaymentToBeAdded.principal.doubleValue
-        }
-        if balance > 0 {
-            var lastMonthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
-            lastMonthlyPaymentToBeAdded.interest = balance * rate
-            lastMonthlyPaymentToBeAdded.principal = balance + extraPayment
-            lastMonthlyPaymentToBeAdded.totalPayment = balance + (balance * rate) + extra
-            mpForAllLoans.addObject(lastMonthlyPaymentToBeAdded)
-            totalInterest += balance * rate
-            monthsCounter = monthsCounter + 1
+                monthsCounter = monthsCounter + 1
             }
-        }
+            else {
+                var lastMonthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+                lastMonthlyPaymentToBeAdded.interest = balance * rate
+                lastMonthlyPaymentToBeAdded.principal = balance + extraPayment
+                lastMonthlyPaymentToBeAdded.totalPayment = balance + (balance * rate) + extraPayment
+                mpForAllLoans.addObject(lastMonthlyPaymentToBeAdded)
+                totalInterest += balance * rate
+                monthsCounter = monthsCounter + 1
+                }
+            }
 
         var error: NSError?
         currentScenario.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
@@ -519,10 +531,12 @@ class Loan: NSManagedObject {
         var mpForThisLoan = self.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
         for payment in mpForThisLoan{
             let payment = payment as! MonthlyPayment
-            arrayOfAllPrincipalPayments.append(payment.interest.doubleValue)
+            let roundpayment = round(payment.interest.doubleValue * 100) / 100
+            arrayOfAllPrincipalPayments.append(roundpayment)
         }
         return arrayOfAllPrincipalPayments
     }
+
     
     
 }//end of the class
