@@ -40,6 +40,13 @@ class Scenario: NSManagedObject {
     @NSManaged var name: String
     @NSManaged var allLoans: NSOrderedSet
     @NSManaged var concatenatedPayment: NSOrderedSet
+    @NSManaged var defaultTotalScenarioInterest: NSNumber
+    @NSManaged var defaultTotalScenarioMonths: NSNumber
+    @NSManaged var newTotalScenarioInterest: NSNumber
+    @NSManaged var newTotalScenarioMonths: NSNumber
+    @NSManaged var defaultScenarioMaxPayment: NSNumber
+    @NSManaged var newScenarioMaxPayment: NSNumber
+    
     
     func getDefault(managedObjectContext:NSManagedObjectContext) -> Scenario {
         let scenarioEntity = NSEntityDescription.entityForName("Scenario", inManagedObjectContext: managedObjectContext)
@@ -74,9 +81,20 @@ class Scenario: NSManagedObject {
         }
         return arrayOfAllPrincipalPayments
     }
+    
+    func makeArrayOfTotalPayments() -> [Double]{
+        var arrayOfAllPrincipalPayments = [Double]()
+        var mpForAllLoans = self.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
+        for payment in mpForAllLoans{
+            let payment = payment as! MonthlyPayment
+            let roundedpayment = round(payment.totalPayment.doubleValue * 100) / 100
+            arrayOfAllPrincipalPayments.append(roundedpayment)
+        }
+        return arrayOfAllPrincipalPayments
+    }
 
     //want it to add in interestOverLife, timeToRepay, and ConcadenatedPayment
-    func makeNewExtraPaymentScenario (managedObjectContext:NSManagedObjectContext, oArray : [NSManagedObject], extra:Int, monthsThatNeedExtraPayment:Int) -> Double{
+    func makeNewExtraPaymentScenario (managedObjectContext:NSManagedObjectContext, oArray : NSMutableArray, extra:Int, monthsThatNeedExtraPayment:Int) -> Double{
         
         //In adding an extra paymenet we'd only ever expect the number of payment months to decrease -- so all we have to worry about is making sure that there are 0/0/0 MPs for all the extra days.  Intially we we pull up the max number of months
         let maxMonthsInDefaultRepayment :Int = self.getDefault(managedObjectContext).concatenatedPayment.count
@@ -204,6 +222,12 @@ class Scenario: NSManagedObject {
         newCALayer.addSublayer(interestLineLayer)
         return newCALayer
         
+    }
+    
+    func getScenarioMaxPayment() -> Double {
+        let totalPaymentArray = self.makeArrayOfTotalPayments()
+        let maxPayment = maxElement(totalPaymentArray)
+        return maxPayment
     }
     
 

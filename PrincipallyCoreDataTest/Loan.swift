@@ -25,6 +25,10 @@ class Loan: NSManagedObject {
     @NSManaged var thisLoansScenario: Scenario
     @NSManaged var monthsInRepaymentTerm: NSNumber
     @NSManaged var monthsUntilRepayment: NSNumber
+    @NSManaged var defaultTotalLoanInterest: NSNumber
+    @NSManaged var defaultTotalLoanMonths: NSNumber
+    @NSManaged var newTotalLoanInterest: NSNumber
+    @NSManaged var newTotalLoanMonths: NSNumber
 
     func getDefaultMonthlyPayment (monthsUntilRepayment: Int) -> Double {
         let r = (self.interest.doubleValue / 100) / 12 //monthly repayment -- divide by 100 to convert from percent to decimal.  divide by 12 to get monthly from annual rate.
@@ -219,6 +223,7 @@ class Loan: NSManagedObject {
         let entity = NSEntityDescription.entityForName("MonthlyPayment", inManagedObjectContext: managedObjectContext)
         //Pull up scenario Entity, check whether there's already a default entity
         var defaultScenario: Scenario! = getDefault(managedObjectContext)
+        self.thisLoansScenario = defaultScenario
         //not saving the total Interest var so that the interest adds up.  am I not inserting this into managedObjectContext
         var totalInterest = defaultScenario.interestOverLife as! Double
 
@@ -276,12 +281,38 @@ class Loan: NSManagedObject {
               
             }
         //save
+
         var error: NSError?
         self.mpForOneLoan = mpForThisLoan.copy() as! NSOrderedSet
         defaultScenario.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
         defaultScenario.interestOverLife = totalInterest
         if !managedObjectContext.save(&error) {
             println("Could not save: \(error)") }
+        
+        //add in a few more features
+        let totalLoanInterest = self.getTotalInterestForLoansMP()
+        self.defaultTotalLoanInterest = totalLoanInterest
+        self.defaultTotalLoanMonths = self.mpForOneLoan.count
+        defaultScenario.defaultTotalScenarioInterest = totalInterest
+        if self.mpForOneLoan.count > defaultScenario.defaultTotalScenarioMonths.integerValue {
+            //set max
+            defaultScenario.defaultTotalScenarioMonths = self.mpForOneLoan.count
+        }
+        defaultScenario.defaultScenarioMaxPayment = defaultScenario.getScenarioMaxPayment()
+        
+        //save
+        if !managedObjectContext.save(&error) {
+            println("Could not save: \(error)") }
+
+    }
+    
+    func getTotalInterestForLoansMP()-> Double {
+        var totalInterest : Double = 0
+        for payment in self.mpForOneLoan {
+            var payment = payment as! MonthlyPayment
+            totalInterest += payment.interest.doubleValue
+        }
+        return totalInterest
     }
     
     func enteredLoanByPayment(managedObjectContext:NSManagedObjectContext){
@@ -289,6 +320,7 @@ class Loan: NSManagedObject {
         var balance = self.balance.doubleValue + self.capitalizedInterest()
         var rate = (self.interest.doubleValue / 12) / 100
         var defaultScenario: Scenario! = getDefault(managedObjectContext)
+        self.thisLoansScenario = defaultScenario
         var totalInterest = defaultScenario.interestOverLife as! Double
         var months: Int = 0
         let mpForAllLoans = defaultScenario.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
@@ -349,14 +381,31 @@ class Loan: NSManagedObject {
             months = months + 1
             totalInterest += balance * rate
         }
-        //save
         var error: NSError?
         self.mpForOneLoan = mpForThisLoan.copy() as! NSOrderedSet
         defaultScenario.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
         defaultScenario.interestOverLife = totalInterest
-        self.monthsInRepaymentTerm = months
+        
+        //save
         if !managedObjectContext.save(&error) {
             println("Could not save: \(error)") }
+        
+        //add in a few more features
+        let totalLoanInterest = self.getTotalInterestForLoansMP()
+        self.defaultTotalLoanInterest = totalLoanInterest
+        self.defaultTotalLoanMonths = self.mpForOneLoan.count
+        self.monthsInRepaymentTerm = self.mpForOneLoan.count
+        defaultScenario.defaultTotalScenarioInterest = totalInterest
+        if self.mpForOneLoan.count > defaultScenario.defaultTotalScenarioMonths.integerValue {
+            //set max
+            defaultScenario.defaultTotalScenarioMonths = self.mpForOneLoan.count
+        }
+        defaultScenario.defaultScenarioMaxPayment = defaultScenario.getScenarioMaxPayment()
+        
+        //save
+        if !managedObjectContext.save(&error) {
+            println("Could not save: \(error)") }
+        
     }
     
     func deleteLoanFromDefaultScenario(managedObjectContext:NSManagedObjectContext) {
@@ -376,9 +425,12 @@ class Loan: NSManagedObject {
         }
         var error: NSError?
         defaultScenario.interestOverLife = totalInterest
+        defaultScenario.defaultTotalScenarioInterest = totalInterest
+        defaultScenario.defaultScenarioMaxPayment = defaultScenario.getScenarioMaxPayment()
         defaultScenario.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
+        defaultScenario.defaultTotalScenarioMonths = mpForAllLoans.count
         if !managedObjectContext.save(&error) {
-            println("Could not save: \(error)") }        
+            println("Could not save: \(error)") }
     }
     
     func addLoanToCurrentScenario(managedObjectContext:NSManagedObjectContext, currentScenario:Scenario) {
@@ -429,6 +481,7 @@ class Loan: NSManagedObject {
         for mpPayment in mpForAllLoans{
             if monthsCounter < mpForThisLoan.count{
                 var toBeAddedMonth = mpForThisLoan[monthsCounter] as! MonthlyPayment
+                var mpPayment = mpPayment as! MonthlyPayment
                 mpPayment.addAnotherMP(toBeAddedMonth)
                 balance = balance - toBeAddedMonth.principal.doubleValue
                 totalInterest = totalInterest + toBeAddedMonth.interest.doubleValue

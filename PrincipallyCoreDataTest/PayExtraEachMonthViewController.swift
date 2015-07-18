@@ -12,7 +12,7 @@ import CoreData
 
 class PayExtraEachMonthViewController: UIViewController {
 
-    var oArray = [NSManagedObject]()
+    var oArray = NSMutableArray()
     var sliderExtraNum : Int = 0
     var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
     var unsavedScenario: Scenario!
@@ -60,16 +60,11 @@ class PayExtraEachMonthViewController: UIViewController {
     
     @IBAction func extraAmountEditingChanged(sender: UITextField) {
         if let extra = sender.text.toInt() {
-            //it's a number, and we need to do our extra payment calculaions using the "number of extra payments slider.
-            //What should this program do? 
-                //1) It should wind up our unsavedScenario (USS) with the MP array for all loans
-                //2) It should delete the previous USS line in the graph, and replace it with the new line
-                //3) It should change the amount of interest saved
-                //4) It should perhaps produce some type of string that describes the scenario? This might be a task for later, though
-            //It's going to have to do this based on two particular variables: the extra amount paid, AND the nubmer of months during which payment is made.
+            //get the monthNumber
             let monthNumber = convertSliderNumberToMonthsWithExtraPayment(Int(frequencySliderOutlet.value))
-            newInterest = unsavedScenario.makeNewExtraPaymentScenario(managedObjectContext, oArray: oArray,extra:extra,monthsThatNeedExtraPayment:monthNumber)
-            //println(unsavedScenario.concatenatedPayment)
+            
+            //
+            unsavedScenario.makeNewExtraPaymentScenario(managedObjectContext, oArray: oArray,extra:extra,monthsThatNeedExtraPayment:monthNumber)
             
         }else{
             println("it's a string")
@@ -112,35 +107,12 @@ class PayExtraEachMonthViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let scenarioEntity = NSEntityDescription.entityForName("Scenario", inManagedObjectContext: managedObjectContext)
-        let unsavedScenarioName = "unsaved"
-        let scenarioFetch = NSFetchRequest(entityName: "Scenario")
-        scenarioFetch.predicate = NSPredicate(format: "name == %@", unsavedScenarioName)
+        var unsavedScenario = CoreDataStack.getUnsaved(CoreDataStack.sharedInstance)()
+        var defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         var error: NSError?
-        let result = managedObjectContext.executeFetchRequest(scenarioFetch, error: &error) as! [Scenario]?
+        oArray = defaultScenario.allLoans.copy() as! NSMutableArray
         
-        if let allScenarios = result {
-            if allScenarios.count == 0 {
-                unsavedScenario = Scenario(entity: scenarioEntity!, insertIntoManagedObjectContext: managedObjectContext)
-                unsavedScenario.name = unsavedScenarioName
-            }
-            else {
-                unsavedScenario = allScenarios[0]
-            }
-        }
-        else {
-            println("Coult not fetch \(error)")
-        }
-        //now pull up all the loans and save them as oArray
-        let loanFetchRequest = NSFetchRequest(entityName:"Loan")
-        let loanFetchedResults =
-        managedObjectContext.executeFetchRequest(loanFetchRequest,
-            error: &error) as? [NSManagedObject]
-        
-        if let results = loanFetchedResults {
-            oArray = results
-        } else {
-            println("Coult not fetch \(error)")}
+        //check to make sure some loans have been entered
         if oArray.count == 0 {
             let alert = UIAlertView()
             alert.title = "Alert"
@@ -148,14 +120,18 @@ class PayExtraEachMonthViewController: UIViewController {
             alert.addButtonWithTitle("Understood")
             alert.show()
         }
+        
+        //saved managedObjectContext in case there was an addition of UnsavedScenario
         if !managedObjectContext.save(&error) {
             println("Could not save \(error), \(error?.userInfo)")
         }
-        defaultScenario = unsavedScenario.getDefault(managedObjectContext)
+        
+        //this should become deprecated -- we need to add a "total payment and max total payment" feature to the scenario
         let maxInterest = maxElement(defaultScenario.makeArrayOfAllInterestPayments())
+        
+        //add the loan with the default scenario
         let newLayer = defaultScenario.makeCALayerWithInterestLine(graphOfExtraPaymentScenario.frame, color: UIColor.blackColor().CGColor, maxValue: maxInterest)
         graphOfExtraPaymentScenario.layer.addSublayer(newLayer)
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {

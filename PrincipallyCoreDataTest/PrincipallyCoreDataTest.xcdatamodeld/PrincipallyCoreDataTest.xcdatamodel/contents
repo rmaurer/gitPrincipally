@@ -3,11 +3,15 @@
     <entity name="Loan" representedClassName="PrincipallyCoreDataTest.Loan" syncable="YES">
         <attribute name="balance" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="defaultMonthlyPayment" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="defaultTotalLoanInterest" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="defaultTotalLoanMonths" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="interest" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="loanType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="monthsInRepaymentTerm" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="monthsUntilRepayment" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="newTotalLoanInterest" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="newTotalLoanMonths" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="repaymentStart" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="mpForOneLoan" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="MonthlyPayment" inverseName="loans" inverseEntity="MonthlyPayment" syncable="YES"/>
         <relationship name="thisLoansScenario" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Scenario" inverseName="allLoans" inverseEntity="Scenario" syncable="YES"/>
@@ -21,16 +25,22 @@
         <relationship name="paymentConcatScenario" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Scenario" inverseName="concatenatedPayment" inverseEntity="Scenario" syncable="YES"/>
     </entity>
     <entity name="Scenario" representedClassName="PrincipallyCoreDataTest.Scenario" syncable="YES">
+        <attribute name="defaultScenarioMaxPayment" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="defaultTotalScenarioInterest" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="defaultTotalScenarioMonths" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="interestOverLife" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="newScenarioMaxPayment" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="newTotalScenarioInterest" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="newTotalScenarioMonths" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="scenarioDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timeToRepay" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="allLoans" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Loan" inverseName="thisLoansScenario" inverseEntity="Loan" syncable="YES"/>
         <relationship name="concatenatedPayment" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="MonthlyPayment" inverseName="paymentConcatScenario" inverseEntity="MonthlyPayment" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Loan" positionX="-306" positionY="-243" width="128" height="193"/>
+        <element name="Loan" positionX="-306" positionY="-243" width="128" height="255"/>
         <element name="MonthlyPayment" positionX="-461" positionY="-7" width="128" height="133"/>
-        <element name="Scenario" positionX="-551" positionY="-288" width="128" height="133"/>
+        <element name="Scenario" positionX="-551" positionY="-288" width="128" height="225"/>
     </elements>
 </model>

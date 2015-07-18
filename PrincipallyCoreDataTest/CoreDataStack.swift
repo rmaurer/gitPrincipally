@@ -76,6 +76,51 @@ class CoreDataStack {
     println("Could not save: \(error), \(error?.userInfo)")
     }
   }
+    
+    func getDefault() -> Scenario {
+        let scenarioEntity = NSEntityDescription.entityForName("Scenario", inManagedObjectContext: self.context)
+        let defaultScenarioName = "default"
+        var defaultScenario: Scenario!
+        let scenarioFetch = NSFetchRequest(entityName: "Scenario")
+        scenarioFetch.predicate = NSPredicate(format: "name == %@", defaultScenarioName)
+        var error: NSError?
+        let result = self.context.executeFetchRequest(scenarioFetch, error: &error) as! [Scenario]?
+        
+        if let allScenarios = result {
+            if allScenarios.count == 0 {
+                defaultScenario = Scenario(entity: scenarioEntity!, insertIntoManagedObjectContext: self.context)
+                defaultScenario.name = defaultScenarioName
+            }
+            else {defaultScenario = allScenarios[0]}
+        }
+        else {
+            println("Coult not fetch \(error)")
+        }
+        return defaultScenario
+    }
+    
+    func getUnsaved() -> Scenario {
+        let scenarioEntity = NSEntityDescription.entityForName("Scenario", inManagedObjectContext: self.context)
+        let unsavedScenarioName = "unsaved"
+        var unsavedScenario: Scenario!
+        let scenarioFetch = NSFetchRequest(entityName: "Scenario")
+        scenarioFetch.predicate = NSPredicate(format: "name == %@", unsavedScenarioName)
+        var error: NSError?
+        let result = self.context.executeFetchRequest(scenarioFetch, error: &error) as! [Scenario]?
+        
+        if let allScenarios = result {
+            if allScenarios.count == 0 {
+                unsavedScenario = Scenario(entity: scenarioEntity!, insertIntoManagedObjectContext: self.context)
+                unsavedScenario.name = unsavedScenarioName
+            }
+            else {unsavedScenario = allScenarios[0]}
+        }
+        else {
+            println("Coult not fetch \(error)")
+        }
+        return unsavedScenario
+    }
+    
 
   class func applicationDocumentsDirectory() -> NSURL {
     let fileManager = NSFileManager.defaultManager()

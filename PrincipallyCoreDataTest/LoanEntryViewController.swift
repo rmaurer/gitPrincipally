@@ -135,7 +135,7 @@ class LoanEntryViewController: UIViewController, UIPickerViewDataSource, UIPicke
             let year = pickerData[1][paymentStartPicker.selectedRowInComponent(1)]
             firstLoan.monthsInRepaymentTerm = Int(termSliderOutlet.value) * 12
             firstLoan.monthsUntilRepayment = firstLoan.getMonthsUntilRepayment(month, year:year)
-                if firstLoan.monthsUntilRepayment.integerValue + firstLoan.monthsInRepaymentTerm.integerValue < 1 {
+            if firstLoan.monthsUntilRepayment.integerValue + firstLoan.monthsInRepaymentTerm.integerValue < 1 {
                 let alert = UIAlertView()
                 alert.title = "Alert"
                 alert.message = "Your loan should be paid off already based on the dates you entered"
@@ -154,6 +154,7 @@ class LoanEntryViewController: UIViewController, UIPickerViewDataSource, UIPicke
              var payment = NSNumberFormatter().numberFromString(monthlyPaymentAmount.text)!
             firstLoan.defaultMonthlyPayment = payment
             firstLoan.enteredLoanByPayment(managedObjectContext)
+            firstLoan.monthsUntilRepayment = 0
             var error: NSError?
             if !managedObjectContext.save(&error) {
             println("Could not save \(error), \(error?.userInfo)")
