@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import JBChartView
+//import JBChartView
 
 class CompareViewController: UIViewController {
     

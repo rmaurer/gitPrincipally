@@ -12,7 +12,7 @@ import CoreData
 
 class PayExtraEachMonthViewController: UIViewController {
 
-    var oArray = NSMutableArray()
+    var oArray = NSOrderedSet()
     var sliderExtraNum : Int = 0
     var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
     var unsavedScenario: Scenario!
@@ -62,13 +62,17 @@ class PayExtraEachMonthViewController: UIViewController {
         if let extra = sender.text.toInt() {
             //get the monthNumber
             let monthNumber = convertSliderNumberToMonthsWithExtraPayment(Int(frequencySliderOutlet.value))
-            
-            //
-            unsavedScenario.makeNewExtraPaymentScenario(managedObjectContext, oArray: oArray,extra:extra,monthsThatNeedExtraPayment:monthNumber)
-            
+            println("before function call")
+            //make the new extra payment scenario 
+            unsavedScenario.makeNewExtraPaymentScenario(managedObjectContext,extra:extra,MWEPTotal:monthNumber)
+            println("after function call")
+            var error: NSError?
+            if !managedObjectContext.save(&error) {
+                println("Could not save: \(error)") }
+            println("after function call")
         }else{
             println("it's a string")
-            graphOfExtraPaymentScenario.CAWhiteLine.timeOffset = 0.5
+            //graphOfExtraPaymentScenario.CAWhiteLine.timeOffset = 0.5
             //it's a string, and we don't do any calculations
         }
     }
@@ -107,13 +111,33 @@ class PayExtraEachMonthViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        var unsavedScenario = CoreDataStack.getUnsaved(CoreDataStack.sharedInstance)()
-        var defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
+        unsavedScenario = CoreDataStack.getUnsaved(CoreDataStack.sharedInstance)()
+        defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         var error: NSError?
-        oArray = defaultScenario.allLoans.copy() as! NSMutableArray
+        oArray = defaultScenario.allLoans
+        
+        unsavedScenario.defaultScenarioMaxPayment = defaultScenario.defaultScenarioMaxPayment
+        unsavedScenario.defaultTotalScenarioInterest = defaultScenario.defaultTotalScenarioInterest
+        unsavedScenario.defaultTotalScenarioMonths = defaultScenario.defaultTotalScenarioMonths
         
         //check to make sure some loans have been entered
         if oArray.count == 0 {
+            var myLoans = [NSManagedObject]()
+            var error: NSError?
+            let fetchRequest = NSFetchRequest(entityName:"Loan")
+            let fetchedResults = managedObjectContext.executeFetchRequest(fetchRequest, error: &error) as? [NSManagedObject]
+            if let results = fetchedResults {
+                myLoans = results}
+            for loan in myLoans {
+                var loan = loan as! Loan
+                println(loan.name)
+                println(loan.thisLoansScenario.name)
+            }
+            if myLoans.count == 0 {
+                println("there are actually no loans.")
+            }
+            
+            
             let alert = UIAlertView()
             alert.title = "Alert"
             alert.message = "You need to enter loans to explore repayment possibilities."
@@ -128,10 +152,10 @@ class PayExtraEachMonthViewController: UIViewController {
         
         //this should become deprecated -- we need to add a "total payment and max total payment" feature to the scenario
         let maxInterest = maxElement(defaultScenario.makeArrayOfAllInterestPayments())
-        
+        /*
         //add the loan with the default scenario
         let newLayer = defaultScenario.makeCALayerWithInterestLine(graphOfExtraPaymentScenario.frame, color: UIColor.blackColor().CGColor, maxValue: maxInterest)
-        graphOfExtraPaymentScenario.layer.addSublayer(newLayer)
+        graphOfExtraPaymentScenario.layer.addSublayer(newLayer) */
     }
 
     override func didReceiveMemoryWarning() {

@@ -218,8 +218,145 @@ balance = 0
 }
 }
 
+println("enteredLoanWithExtraPayent is being called with loan \(self.name) with interest rate \(self.interest) and time frame \(extraStart) to \(extraEnd)")
+var monthlyPayment = self.defaultMonthlyPayment.doubleValue
+var balance = self.balance.doubleValue + self.capitalizedInterest()
+var rate = (self.interest.doubleValue / 12) / 100
+var totalInterest = currentScenario.interestOverLife as! Double
+var monthsCounter: Int = 0
 
+let mpForAllLoans = currentScenario.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
+var mpForThisLoan = self.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
+println("here is the monthscounter -- is it rising here? \(mpForAllLoans.count)")
+//if payments going to start in 9 months, then the months until repayment is positive 9
+//first go through all of the mps already in the scenario. The very first thing we need to do is handle the situation where this is the second loan to get the extra payment.  In which case we can only start adding the extra loan after a certain number of other loans have passed.  Then it's the usual check: First check to make sure there's still balance on the loan left, and if we are at the last payment, enter that instead.  All the while add on to months variable.  only enter "else" once so that months doesn't keep going up.  If we get through all the MPs already in teh scenario, we then turn to adding more MPs as we go along, and again go through them normally then add a last and final one.
+for mpPayment in mpForAllLoans{
+if monthsCounter < mpForThisLoan.count{
+var toBeAddedMonth = mpForThisLoan[monthsCounter] as! MonthlyPayment
+var mpPayment = mpPayment as! MonthlyPayment
+mpPayment.addAnotherMP(toBeAddedMonth)
+balance = balance - toBeAddedMonth.principal.doubleValue
+totalInterest = totalInterest + toBeAddedMonth.interest.doubleValue
+monthsCounter = monthsCounter + 1
+}else{
+//if you can add in the whole mpForThisLoan into pre-existing MPs in the concatpayment, then there's nothing else to be done, and no change in the months withExtraPaymentAlready
+var error: NSError?
+currentScenario.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
+currentScenario.interestOverLife =  currentScenario.interestOverLife.doubleValue + totalInterest
+if !managedObjectContext.save(&error) {
+println("Could not save: \(error)") }
+return monthsCounter
+}
+}
+//now we need to both add new MonthlyPayments and check whether we should be making extra payments
+let entity = NSEntityDescription.entityForName("MonthlyPayment", inManagedObjectContext: managedObjectContext)
+//println("got into the rest of the function")
+println("the months counter is \(monthsCounter) and the mpcount is \(mpForThisLoan.count)")
+while monthsCounter < mpForThisLoan.count{
+println("Got into the while loop")
+//if it's not the last payment, and there are still months that need extra payment
+var extraPayment = extra
+if monthsCounter >= monthsThatNeedExtraPayment  {
+extraPayment = 0}
 
+if balance >= (monthlyPayment + extraPayment){
+var monthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+monthlyPaymentToBeAdded.interest = balance * rate
+println("added another thing")
+println(monthsCounter)
+println(monthlyPaymentToBeAdded.interest)
+monthlyPaymentToBeAdded.principal = monthlyPayment - (balance * rate) + extraPayment
+monthlyPaymentToBeAdded.totalPayment = monthlyPayment + extraPayment
+mpForAllLoans.addObject(monthlyPaymentToBeAdded)
+totalInterest += balance * rate
+balance = balance - monthlyPaymentToBeAdded.principal.doubleValue
+monthsCounter = monthsCounter + 1
+}
+else {
+var lastMonthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+lastMonthlyPaymentToBeAdded.interest = balance * rate
+lastMonthlyPaymentToBeAdded.principal = balance + extraPayment
+lastMonthlyPaymentToBeAdded.totalPayment = balance + (balance * rate) + extraPayment
+mpForAllLoans.addObject(lastMonthlyPaymentToBeAdded)
+totalInterest += balance * rate
+monthsCounter = monthsCounter + 1
+}
+}
+
+var error: NSError?
+currentScenario.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
+currentScenario.interestOverLife =  currentScenario.interestOverLife.doubleValue + totalInterest
+//println("we are testing to see if this increases over time")
+//println(currentScenario.interestOverLife)
+if !managedObjectContext.save(&error) {
+println("Could not save: \(error)") }
+
+return monthsCounter //return months in case the loan is paid off faster now.
+}
+
+func addLoanToCurrentScenario(managedObjectContext:NSManagedObjectContext, currentScenario:Scenario) {
+var mpForAllLoans = currentScenario.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
+var mpForThisLoan = self.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
+var totalMonths = self.monthsUntilRepayment.integerValue + self.monthsInRepaymentTerm.integerValue - 1
+var totalInterest = currentScenario.interestOverLife.doubleValue
+println("addLoan is being called with loan \(self.name) with interest rate \(self.interest) and time frame \(totalMonths)")
+let entity = NSEntityDescription.entityForName("MonthlyPayment", inManagedObjectContext: managedObjectContext)
+//make sure there's enough MPs in the MpForAllLoans
+while mpForThisLoan.count > mpForAllLoans.count{
+var monthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+monthlyPaymentToBeAdded.interest = 0
+monthlyPaymentToBeAdded.principal = 0
+monthlyPaymentToBeAdded.totalPayment = 0
+mpForAllLoans.addObject(monthlyPaymentToBeAdded)
+}
+for month in 0...mpForThisLoan.count - 1{
+var currentMonth = mpForAllLoans[month] as! MonthlyPayment
+var toBeAddedMonth = mpForThisLoan[month] as! MonthlyPayment
+currentMonth.addAnotherMP(toBeAddedMonth)
+println("there was\(toBeAddedMonth.interest) in interest addded to payment number \(month) from loan number \(self.name) in the 'add all payments withoutextra' function")
+totalInterest = totalInterest + toBeAddedMonth.interest.doubleValue
+}
+var error: NSError?
+currentScenario.interestOverLife = currentScenario.interestOverLife.doubleValue + totalInterest
+currentScenario.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
+//println("we are testing to see if this increases over time")
+//println(currentScenario.interestOverLife)
+if !managedObjectContext.save(&error) {
+println("Could not save: \(error)") }
+}
+
+let mpForAllLoans = self.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
+
+while mpForAllLoans.count < maxMonthsInDefaultRepayment{
+let entity = NSEntityDescription.entityForName("MonthlyPayment", inManagedObjectContext: managedObjectContext)
+var zeroPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+zeroPaymentToBeAdded.interest = 0
+zeroPaymentToBeAdded.principal = 0
+zeroPaymentToBeAdded.totalPayment = 0
+mpForAllLoans.addObject(zeroPaymentToBeAdded)
+}
+self.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
+//println("here's the number of points in the concatpayment")
+//println(self.concatenatedPayment.count)
+//var error: NSError?
+
+//2 - Create the Fetch Request
+let fetchRequest = NSFetchRequest(entityName:"Loan")
+//3 - Execute hte Fetch Request
+var error: NSError?
+let fetchedResults = managedObjectContext.executeFetchRequest(fetchRequest, error: &error) as? [NSManagedObject]
+
+if let results = fetchedResults {
+myLoans = results
+} else {
+println("Could not fetch \(error), \(error!.userInfo)")
+}
+
+if self.concatenatedPayment.count > 0 {
+for MP in self.concatenatedPayment {
+managedObjectContext.deleteObject(MP as! NSManagedObject)
+}
+}
 
 
 */

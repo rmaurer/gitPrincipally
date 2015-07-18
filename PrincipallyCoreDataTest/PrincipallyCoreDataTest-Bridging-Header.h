@@ -3,7 +3,4 @@
 //
 
 
-#import <JBChartView/JBBarChartView.h>
-#import <JBChartView/JBChartView.h>
-#import <JBChartView/JBLineChartView.h>
 #import <ChameleonFramework/Chameleon.h>

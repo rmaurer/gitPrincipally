@@ -42,10 +42,10 @@ class Scenario: NSManagedObject {
     @NSManaged var concatenatedPayment: NSOrderedSet
     @NSManaged var defaultTotalScenarioInterest: NSNumber
     @NSManaged var defaultTotalScenarioMonths: NSNumber
-    @NSManaged var newTotalScenarioInterest: NSNumber
-    @NSManaged var newTotalScenarioMonths: NSNumber
+    @NSManaged var nnewTotalScenarioInterest: NSNumber
+    @NSManaged var nnewTotalScenarioMonths: NSNumber
     @NSManaged var defaultScenarioMaxPayment: NSNumber
-    @NSManaged var newScenarioMaxPayment: NSNumber
+    @NSManaged var nnewScenarioMaxPayment: NSNumber
     
     
     func getDefault(managedObjectContext:NSManagedObjectContext) -> Scenario {
@@ -94,66 +94,92 @@ class Scenario: NSManagedObject {
     }
 
     //want it to add in interestOverLife, timeToRepay, and ConcadenatedPayment
-    func makeNewExtraPaymentScenario (managedObjectContext:NSManagedObjectContext, oArray : NSMutableArray, extra:Int, monthsThatNeedExtraPayment:Int) -> Double{
+    func makeNewExtraPaymentScenario (managedObjectContext:NSManagedObjectContext, extra:Int, MWEPTotal:Int){
+        println("got into MakeNewExtraPayment")
         
-        //In adding an extra paymenet we'd only ever expect the number of payment months to decrease -- so all we have to worry about is making sure that there are 0/0/0 MPs for all the extra days.  Intially we we pull up the max number of months
-        let maxMonthsInDefaultRepayment :Int = self.getDefault(managedObjectContext).concatenatedPayment.count
+        let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
+        let oSet = defaultScenario.allLoans
+        
+        let maxMonthsInDefaultRepayment :Int = self.defaultTotalScenarioMonths.integerValue
         
         
         //reset interestoverlife and concat payment of the scenario we are working in.
         self.interestOverLife = 0
-        if self.concatenatedPayment.count > 0 {
-            for MP in self.concatenatedPayment {
-                managedObjectContext.deleteObject(MP as! NSManagedObject)
+        self.nnewScenarioMaxPayment = 0
+        self.nnewTotalScenarioInterest = 0
+        self.nnewTotalScenarioMonths = 0
+        
+
+     /*
+        if self.allLoans.count > 0 {
+            for loan in self.allLoans {
+                var lloan = loan as! Loan
+                for payment in lloan.mpForOneLoan {
+                    managedObjectContext.deleteObject(payment as! NSManagedObject)
+                }
+                managedObjectContext.deleteObject(loan as! NSManagedObject)
             }
-        }
+        } */ 
         //have to save, otherwise you will still have the MPs in the concatenated payment when it's passed 
         var error: NSError?
         if !managedObjectContext.save(&error) {
             println("Could not save: \(error)") }
-        
+
         //setup default variable to count how far we are into adding the payments.
-        var monthsWithExtraPayment : Int = 0
+        //
+        var MWEPSoFar : Int = 0
+        let entity = NSEntityDescription.entityForName("Loan", inManagedObjectContext: managedObjectContext)
         
         //change oArray to lArray
         var lArray = [Loan]()
-        for object in oArray {
-            var object = object as! Loan
-            lArray.append(object)
+        for object in oSet {
+            var oldLoan = object as! Loan
+            var newLoan = Loan(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+            newLoan.thisLoansScenario = self
+            oldLoan.copySelfToNewLoan(newLoan, managedObjectContext: managedObjectContext)
+            lArray.append(newLoan)
         }
-        //now the highest rated loan is first and the lowest rated is last
+                        println("Got past making lArray")
+        //now the highest interest-rate loan is first and the lowest rated is last
         lArray.sort {$0.interest.doubleValue > $1.interest.doubleValue}
         
         //iterate over the loans in order. Determine the total number of months in that loan.  If the months in that loan is less than the months to which the extra payment has been applied already, enter that loan with the extra payment, returning the number of months that have now passed with the extra payment being applied.
         
+        var newScenarioMonths : Int = 0
+        
         for loan in lArray {
-            var loansTotalMonths = loan.monthsInRepaymentTerm.integerValue + loan.monthsUntilRepayment.integerValue
-            if monthsWithExtraPayment < loansTotalMonths {
-                let monthsToPayOffThisLoanWithExtraPayment = loan.enteredLoanWithExtraPayment(managedObjectContext,extra:Double(extra),currentScenario:self,monthsWithExtraPaymentAlready:monthsWithExtraPayment, monthsThatNeedExtraPayment:monthsThatNeedExtraPayment)
-                monthsWithExtraPayment = monthsToPayOffThisLoanWithExtraPayment
-                // Yes -- this is happening right. println("enteredLoanWithExtraPayment correctly")
+
+            var loansTotalMonths = loan.defaultTotalLoanMonths.integerValue - 1
+            //if we've already enough exta payments that we are past the months in the loan overall, we would never be adding extra payments to this loan, so we just add it straight away
+            if MWEPSoFar >= loansTotalMonths {
+                //doNothing
+                loan.nnewTotalLoanInterest = loan.defaultTotalLoanInterest
+                loan.nnewTotalLoanMonths = loan.defaultTotalLoanMonths
+                newScenarioMonths = maxElement([newScenarioMonths, loan.defaultTotalLoanMonths.integerValue])
+                if !managedObjectContext.save(&error) {
+                    println("Could not save: \(error)") }
+            }
+            else if MWEPSoFar < MWEPTotal {
+                let endMonthForExtraPayment = minElement([MWEPTotal, loansTotalMonths])
+                MWEPSoFar = loan.enteredLoanWithExtraPayment(managedObjectContext,extraAmount:Double(extra),currentScenario:self,extraStart:MWEPSoFar, extraEnd:endMonthForExtraPayment)
+                newScenarioMonths = maxElement([newScenarioMonths, loan.nnewTotalLoanMonths.integerValue])
+                if !managedObjectContext.save(&error) {
+                    println("Could not save: \(error)") }
             } else {
-                loan.addLoanToCurrentScenario(managedObjectContext,currentScenario:self)
+                loan.nnewTotalLoanInterest = loan.defaultTotalLoanInterest
+                loan.nnewTotalLoanMonths = loan.defaultTotalLoanMonths
+                newScenarioMonths = maxElement([newScenarioMonths, loan.defaultTotalLoanMonths.integerValue])
+                if !managedObjectContext.save(&error) {
+                    println("Could not save: \(error)") }
             }
         }
         
-        let mpForAllLoans = self.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
-        
-        while mpForAllLoans.count < maxMonthsInDefaultRepayment{
-            let entity = NSEntityDescription.entityForName("MonthlyPayment", inManagedObjectContext: managedObjectContext)
-            var zeroPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
-            zeroPaymentToBeAdded.interest = 0
-            zeroPaymentToBeAdded.principal = 0
-            zeroPaymentToBeAdded.totalPayment = 0
-            mpForAllLoans.addObject(zeroPaymentToBeAdded)
-        }
-        self.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
-        //println("here's the number of points in the concatpayment")
-        //println(self.concatenatedPayment.count)
-        //var error: NSError?
+        self.nnewTotalScenarioMonths = newScenarioMonths
+        self.windUpConcatenatedPaymentWithAllLoans(managedObjectContext)
         if !managedObjectContext.save(&error) {
             println("Could not save: \(error)") }
-        return self.interestOverLife.doubleValue
+        println("got past saving")
+        //return self.interestOverLife.doubleValue
             }
     
     func makeInterestArray() -> [Double]{
@@ -230,6 +256,43 @@ class Scenario: NSManagedObject {
         return maxPayment
     }
     
+    func windUpConcatenatedPaymentWithAllLoans(managedObjectContext:NSManagedObjectContext) {
+        //set newInterest and newMax, but you need to already have the newTotalMonths
+        
+        var mpForAllLoans  = self.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
+        var allLoans = self.allLoans.mutableCopy() as! NSMutableOrderedSet
+        let newTotalMonths = self.nnewTotalScenarioMonths.integerValue
+        //firstcreate blanks
+        let entity = NSEntityDescription.entityForName("MonthlyPayment", inManagedObjectContext: managedObjectContext)
+        
+        var newInterest : Double = 0
+        var newMax : Double = 0
+        
+        for index in 0...newTotalMonths{
+            var monthlyPaymentToBeAddedToScenario = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+            monthlyPaymentToBeAddedToScenario.interest = 0
+            monthlyPaymentToBeAddedToScenario.principal = 0
+            monthlyPaymentToBeAddedToScenario.totalPayment = 0
+            
+            for loan in allLoans {
+                var loan = loan as! Loan
+                if index < loan.mpForOneLoan.count {
+                    var mpToBeAddedToMonth = loan.mpForOneLoan[index] as! MonthlyPayment
+                    monthlyPaymentToBeAddedToScenario.addAnotherMP(mpToBeAddedToMonth)
+                }
+            }
+            newInterest = newInterest + monthlyPaymentToBeAddedToScenario.interest.doubleValue
+            newMax = maxElement([newMax,monthlyPaymentToBeAddedToScenario.totalPayment.doubleValue])
+            mpForAllLoans.addObject(monthlyPaymentToBeAddedToScenario)
+        }
+        self.nnewTotalScenarioInterest = newInterest
+        self.nnewScenarioMaxPayment = newMax
+        self.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
+
+        var error: NSError?
+        if !managedObjectContext.save(&error) {
+            println("Could not save: \(error)") }
+    }
 
     
 

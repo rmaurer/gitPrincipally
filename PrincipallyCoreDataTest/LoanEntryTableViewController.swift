@@ -11,9 +11,9 @@ import CoreData
 
 class LoanEntryTableViewController: UITableViewController {
     
-    var myLoans = [NSManagedObject]()
+    var myLoans = NSOrderedSet()
     var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
-    
+    var defaultScenario: Scenario!
 
     //let dwarves = ["Sleep", "sneezy", "bashful", "Happy","Doc"]
     
@@ -28,17 +28,8 @@ class LoanEntryTableViewController: UITableViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        //2 - Create the Fetch Request
-        let fetchRequest = NSFetchRequest(entityName:"Loan")
-        //3 - Execute hte Fetch Request
-        var error: NSError?
-        let fetchedResults = managedObjectContext.executeFetchRequest(fetchRequest, error: &error) as? [NSManagedObject]
-    
-        if let results = fetchedResults {
-            myLoans = results
-        } else {
-            println("Could not fetch \(error), \(error!.userInfo)")
-        }
+         defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
+        myLoans = defaultScenario.allLoans
     
         self.tableView.reloadData()
         println("got into viewdidappear")
@@ -62,7 +53,7 @@ class LoanEntryTableViewController: UITableViewController {
         var cell = tableView.dequeueReusableCellWithIdentifier("loanCellRedux") as? UITableViewCell
         if cell == nil {
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "loanCellRedux")}
-        let newLoan = myLoans[indexPath.row]
+        let newLoan = myLoans[indexPath.row] as! Loan
         println(indexPath.row)
         cell!.textLabel!.text = newLoan.valueForKey("name") as? String
         return cell!
@@ -97,10 +88,6 @@ class LoanEntryTableViewController: UITableViewController {
         editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
         var error: NSError?
-        let fetchRequest = NSFetchRequest(entityName:"Loan")
-        let fetchedResults = managedObjectContext.executeFetchRequest(fetchRequest, error: &error) as? [NSManagedObject]
-        if let results = fetchedResults {
-            myLoans = results}
 
         if editingStyle == UITableViewCellEditingStyle.Delete {
             //1
