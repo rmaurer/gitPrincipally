@@ -14,7 +14,7 @@ class TypeModalVC: UIViewController {
     var type = ""
 
     @IBAction func Perkins(sender: UIButton) {
-        type = sender.currentTitle!
+        type = getAbbreviation(sender.currentTitle!)
         self.dismissViewControllerAnimated(true, completion: nil)
         delegate!.chooseTypeDidFinish(type)
     }
@@ -27,6 +27,30 @@ class TypeModalVC: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func getAbbreviation (sender:String) -> String {
+        switch sender{
+        case "Perkins":
+            return "Perkins"
+        case "Direct Stafford - Subsidized":
+            return "Direct, Subs."
+        case "Direct Stafford - Unsubsidized":
+            return "Direct, Unsubs."
+        case "Graduate PLUS Loans":
+            return "Grad PLUS"
+        case "Parent PLUS Loans":
+            return "Parent PLUS"
+        case "Direct Consolidated Loan":
+            return "Consolidated"
+        case "FFEL Program":
+            return "FFELP"
+        case "Private Loan":
+            return "Private"
+        default:
+            return "Loan"
+        }
+        
     }
     
 

@@ -10,24 +10,18 @@ import UIKit
 
 class NavController: UINavigationController {
 
-    var color = UIColor(red: 26/255, green: 165/255, blue: 146/255, alpha: 1)
-        var clippedcolor = UIColor(red: 0/255, green: 148/255, blue: 127/255, alpha: 1)
+    var color = UIColor(red: 26/255.0, green: 165/255.0, blue: 146/255.0, alpha: 1)
+    var clippedcolor = UIColor(red: 0/255, green: 148/255, blue: 127/255, alpha: 1)
+    var stupidcolor = UIColor(red: 30/255, green: 149/255, blue: 127/255, alpha: 1)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationBar.barTintColor = color
-        //self.navigationBar.translucent = false
+        self.navigationBar.barTintColor = stupidcolor
         self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
         self.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
         self.navigationBar.shadowImage = UIImage()
-        //self.navigationBar.tintColor = color
-        //self.navigationController!.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name:"Menlo", size:20)]
-        //, .color(UIColor.whiteColor())
-        //NSFontAttributeName[UIFont .fontWithName(CaviarDreams.ttf, size: 20)]
-        //    [NSDictionary dictionaryWithObjectsAndKeys:
-         //   [UIFont fontWithName:@"mplus-1c-regular" size:21],
-          //  NSFontAttributeName, nil]];
-        // Do any additional setup after loading the view.
+        self.navigationBar.tintColor = UIColor.whiteColor()
+
     }
 
     override func didReceiveMemoryWarning() {
