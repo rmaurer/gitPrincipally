@@ -357,6 +357,252 @@ for MP in self.concatenatedPayment {
 managedObjectContext.deleteObject(MP as! NSManagedObject)
 }
 }
+func enteredLoanByPayment(managedObjectContext:NSManagedObjectContext){
+var monthlyPayment = self.defaultMonthlyPayment.doubleValue
+var balance = self.balance.doubleValue + self.capitalizedInterest()
+var rate = (self.interest.doubleValue / 12) / 100
+var defaultScenario: Scenario! = getDefault(managedObjectContext)
+self.thisLoansScenario = defaultScenario
+var totalInterest = defaultScenario.interestOverLife as! Double
+var months: Int = 0
+let mpForAllLoans = defaultScenario.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
+let mpForThisLoan = self.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
+let entity = NSEntityDescription.entityForName("MonthlyPayment", inManagedObjectContext: managedObjectContext)
+//if payments going to start in 9 months, then the months until repayment is positive 9
+//first go through all of the mps already in the scenario. First check to make sure there's still balance on the loan left, and if we are at the last payment, enter that instead.  All the while add on to months variable.  only enter "else" once so that months doesn't keep going up.  If we get through all the MPs already in teh scenario, we then turn to adding more MPs as we go along, and again go through them normally then add a last and final one.
+for mpPayment in mpForAllLoans{
+let mpPayment = mpPayment as! MonthlyPayment
+if balance > monthlyPayment {
+//add to all loans
+mpPayment.addPayment(monthlyPayment,balance:balance, rate:rate)
+//add to this loan's MP
+var monthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+monthlyPaymentToBeAdded.addPayment(monthlyPayment,balance:balance, rate:rate)
+mpForThisLoan.addObject(monthlyPaymentToBeAdded)
+//wind up interest, and chance balance
+totalInterest += balance * rate
+balance = balance + (balance * rate) - monthlyPayment
+months = months + 1
+} else if balance > 0 {
+//add to all loans
+mpPayment.addFinalPayment(balance, rate:rate)
+//add to this loan's MP
+var monthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+monthlyPaymentToBeAdded.addFinalPayment(balance, rate:rate)
+mpForThisLoan.addObject(monthlyPaymentToBeAdded)
+//change balance
+totalInterest += balance * rate
+months = months + 1
+balance = 0
+}
+}
+//now if there's not any more MP's in the concatenated MPs, we keep going through this loan, adding MPs to the total MP and this loan's MP as we go along
+while balance > monthlyPayment {
+//all loans
+var monthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+monthlyPaymentToBeAdded.addPayment(monthlyPayment,balance:balance, rate:rate)
+mpForAllLoans.addObject(monthlyPaymentToBeAdded)
+//this loan
+var monthlyPaymentToBeAddedToThisLoan = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+monthlyPaymentToBeAddedToThisLoan.addPayment(monthlyPayment,balance:balance, rate:rate)
+mpForThisLoan.addObject(monthlyPaymentToBeAddedToThisLoan)
+//change balance
+totalInterest += balance * rate
+balance = balance + (balance * rate) - monthlyPayment
+months = months + 1
+}
+if balance > 0 { //just double check to make sure there's still a final payment to be added and that it wasn't finished in the for loop above
+//add last payment for all loans
+var lastMonthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+lastMonthlyPaymentToBeAdded.addFinalPayment(balance, rate:rate)
+mpForAllLoans.addObject(lastMonthlyPaymentToBeAdded)
+//add last payment for this loan
+var monthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+monthlyPaymentToBeAdded.addFinalPayment(balance, rate:rate)
+mpForThisLoan.addObject(monthlyPaymentToBeAdded)
+months = months + 1
+totalInterest += balance * rate
+}
+var error: NSError?
+self.mpForOneLoan = mpForThisLoan.copy() as! NSOrderedSet
+defaultScenario.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
+defaultScenario.interestOverLife = totalInterest
+
+//save
+if !managedObjectContext.save(&error) {
+println("Could not save: \(error)") }
+
+//add in a few more features
+let totalLoanInterest = self.getTotalInterestForLoansMP()
+self.defaultTotalLoanInterest = totalLoanInterest
+self.defaultTotalLoanMonths = self.mpForOneLoan.count
+self.monthsInRepaymentTerm = self.mpForOneLoan.count
+defaultScenario.defaultTotalScenarioInterest = totalInterest
+if self.mpForOneLoan.count > defaultScenario.defaultTotalScenarioMonths.integerValue {
+//set max
+defaultScenario.defaultTotalScenarioMonths = self.mpForOneLoan.count
+}
+defaultScenario.defaultScenarioMaxPayment = defaultScenario.getScenarioMaxPayment()
+
+//save
+if !managedObjectContext.save(&error) {
+println("Could not save: \(error)") }
+
+}
+
+func deleteLoanFromDefaultScenario(managedObjectContext:NSManagedObjectContext) {
+var defaultScenario: Scenario! = getDefault(managedObjectContext)
+var mpForAllLoans = defaultScenario.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
+var mpForThisLoan = self.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
+var totalMonths = mpForThisLoan.count - 1
+var totalInterest = defaultScenario.interestOverLife.doubleValue
+for month in 0...totalMonths{
+var currentMonth = mpForAllLoans[month] as! MonthlyPayment
+var toBeSubtractedMonth = mpForThisLoan[month] as! MonthlyPayment
+currentMonth.subtractAnotherMP(toBeSubtractedMonth)
+if currentMonth.totalPayment.doubleValue == 0 {
+managedObjectContext.deleteObject(currentMonth as NSManagedObject)
+}
+totalInterest = totalInterest - toBeSubtractedMonth.interest.doubleValue
+}
+var error: NSError?
+defaultScenario.interestOverLife = totalInterest
+defaultScenario.defaultTotalScenarioInterest = totalInterest
+defaultScenario.defaultScenarioMaxPayment = defaultScenario.getScenarioMaxPayment()
+defaultScenario.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
+defaultScenario.defaultTotalScenarioMonths = mpForAllLoans.count
+if !managedObjectContext.save(&error) {
+println("Could not save: \(error)") }
+//ToDo: is this deleting correctly?  What about making a a funcion that updates all the other scenarios with the new defaults? No -- should probably just warn that the
+}
+
+func enterLoanByDate (managedObjectContext : NSManagedObjectContext) {
+//set default monthly payment, which accounts for whether payment has already started or not
+self.defaultMonthlyPayment = NSNumber(double:self.getDefaultMonthlyPayment(self.monthsUntilRepayment.integerValue))
+var monthlyPayment = self.defaultMonthlyPayment.doubleValue
+var balance = self.balance.doubleValue + self.capitalizedInterest()
+var rate = (self.interest.doubleValue / 12) / 100
+var totalMonths = self.monthsUntilRepayment.integerValue + self.monthsInRepaymentTerm.integerValue
+//Pull up Monthly Payment Entity
+let entity = NSEntityDescription.entityForName("MonthlyPayment", inManagedObjectContext: managedObjectContext)
+//Pull up scenario Entity, check whether there's already a default entity
+var defaultScenario: Scenario! = getDefault(managedObjectContext)
+self.thisLoansScenario = defaultScenario
+//not saving the total Interest var so that the interest adds up.  am I not inserting this into managedObjectContext
+var totalInterest = defaultScenario.interestOverLife as! Double
+
+//build the set of monthly payments for this loan
+let mpForThisLoan = self.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
+
+//get the concatenatedpayment for the default monthly payment scenario
+let mpForAllLoans = defaultScenario.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
+//add blank Monthly Payments for the total length.
+while mpForAllLoans.count < totalMonths {
+var monthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+monthlyPaymentToBeAdded.interest = 0//balance * rate
+monthlyPaymentToBeAdded.principal = 0//monthlyPayment - (balance * rate)
+monthlyPaymentToBeAdded.totalPayment = 0//monthlyPayment
+mpForAllLoans.addObject(monthlyPaymentToBeAdded)
+}
+//if payments going to start in 9 months, then the months until repayment is positive 9. Let's say it's a 10 year term after that.  That's 129 total months.  Index will start at 9, and then go 8, 7, 6, 5, 4, 3, 2, 1, 0[start payment], -1 [in payment], -2 [in payment], etc. etc. Meanwhile in the mpForThisLoan, the index values will go 0, 1, 2, 3, 4, 5, 6, 7, 8, 9[start payment], 10 [ in payment], 11 [ in payment, etc. etc.]
+
+var index = self.monthsUntilRepayment.integerValue
+for mpPayment in mpForAllLoans {
+let mpPayment = mpPayment as! MonthlyPayment
+if index <= 0 { //if loan is already in repayment or just starting
+if balance > monthlyPayment {
+//and if it's not the last payment, add relevant values to the concatenated MP
+mpPayment.principal = mpPayment.principal.doubleValue + monthlyPayment - (balance * rate)
+mpPayment.interest = mpPayment.interest.doubleValue + (balance * rate)
+//println(" \(index): interest \(mpPayment.interest)")
+mpPayment.totalPayment = mpPayment.totalPayment.doubleValue + monthlyPayment
+//now add a MP to the mpForThisLoan.
+var monthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+monthlyPaymentToBeAdded.addPayment(monthlyPayment,balance:balance, rate:rate)
+mpForThisLoan.addObject(monthlyPaymentToBeAdded)
+//to finish out the loop, add to total interest, and subtract from balance
+totalInterest += balance * rate
+balance = balance + (balance * rate) - monthlyPayment
+
+}else if balance > 0 {//last payment
+mpPayment.addFinalPayment(balance, rate:rate)
+//add to the MP for this loan
+var monthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+monthlyPaymentToBeAdded.addFinalPayment(balance, rate:rate)
+mpForThisLoan.addObject(monthlyPaymentToBeAdded)
+//finish out the loop.
+totalInterest += balance * rate
+balance = 0
+}
+}else{ // if it's not in repayment yet, do nothing, and decrease the index, but add a monthly payment to to the MPForThisLoan
+index = index - 1
+var monthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+monthlyPaymentToBeAdded.interest = 0
+monthlyPaymentToBeAdded.principal = 0
+monthlyPaymentToBeAdded.totalPayment = 0
+mpForThisLoan.addObject(monthlyPaymentToBeAdded)
+}
+
+}
+//save
+
+var error: NSError?
+self.mpForOneLoan = mpForThisLoan.copy() as! NSOrderedSet
+defaultScenario.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
+defaultScenario.interestOverLife = totalInterest
+if !managedObjectContext.save(&error) {
+println("Could not save: \(error)") }
+
+//add in a few more features
+let totalLoanInterest = self.getTotalInterestForLoansMP()
+self.defaultTotalLoanInterest = totalLoanInterest
+self.defaultTotalLoanMonths = self.mpForOneLoan.count
+defaultScenario.defaultTotalScenarioInterest = totalInterest
+if self.mpForOneLoan.count > defaultScenario.defaultTotalScenarioMonths.integerValue {
+//set max
+defaultScenario.defaultTotalScenarioMonths = self.mpForOneLoan.count
+}
+defaultScenario.defaultScenarioMaxPayment = defaultScenario.getScenarioMaxPayment()
+
+//save
+if !managedObjectContext.save(&error) {
+println("Could not save: \(error)") }
+
+}
+
+let totalPaymentArray = self.makeArrayOfTotalPayments()
+let maxPayment = maxElement(totalPaymentArray)
+return maxPayment
+}
+
+
+for mpPayment in mpForAllLoans{
+let mpPayment = mpPayment as! MonthlyPayment
+if balance > monthlyPayment {
+//add to all loans
+mpPayment.addPayment(monthlyPayment,balance:balance, rate:rate)
+//add to this loan's MP
+var monthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+monthlyPaymentToBeAdded.addPayment(monthlyPayment,balance:balance, rate:rate)
+mpForThisLoan.addObject(monthlyPaymentToBeAdded)
+//wind up interest, and chance balance
+totalInterest += balance * rate
+balance = balance + (balance * rate) - monthlyPayment
+months = months + 1
+} else if balance > 0 {
+//add to all loans
+mpPayment.addFinalPayment(balance, rate:rate)
+//add to this loan's MP
+var monthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+monthlyPaymentToBeAdded.addFinalPayment(balance, rate:rate)
+mpForThisLoan.addObject(monthlyPaymentToBeAdded)
+//change balance
+totalInterest += balance * rate
+months = months + 1
+balance = 0
+}
+}
+//now if there's not any more MP's in the concatenated MPs, we keep going through this loan, adding MPs to the total MP and this loan's MP as we go along
 
 
 */

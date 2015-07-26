@@ -18,6 +18,42 @@ class GlobalLoanCount{
     var count : Int = 1
 }
 
+class principallyApp{
+    func printAllScenariosAndLoans() {
+        println("This is a print out of all Scenarios and all Loans attached to each scenario.  The numbers in parentheses are the number of MPs in the concatenated repayment and the individual loan repayments")
+        println("---")
+        println("---")
+        println("---")
+        
+        var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
+        //2 - Create the Fetch Request
+        let fetchRequest = NSFetchRequest(entityName:"Scenario")
+        //3 - Execute hte Fetch Request
+        var error: NSError?
+        let fetchedResults = managedObjectContext.executeFetchRequest(fetchRequest, error: &error) as? [NSManagedObject]
+        
+        if let myScenarios = fetchedResults {
+            for scenario in myScenarios {
+                var scenario = scenario as! Scenario
+                println("Senario name: \(scenario.name) (\(scenario.concatenatedPayment.count))")
+                if let scenarioLoans = scenario.allLoans.copy() as? NSMutableOrderedSet {
+                    for loan in scenarioLoans {
+                        var loan = loan as! Loan
+                        print("\(loan.name) (\(loan.mpForOneLoan.count)), ")
+                    }
+                }
+                else {print("no loans yet attached")}
+                println("")
+                println("")
+            }
+        } else {
+            println("Could not fetch \(error), \(error!.userInfo)")
+        }
+        println("---")
+
+    }
+}
+
 
 class CoreDataStack {
     

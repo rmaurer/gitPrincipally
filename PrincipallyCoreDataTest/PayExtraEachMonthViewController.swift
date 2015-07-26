@@ -13,12 +13,16 @@ import CoreData
 class PayExtraEachMonthViewController: UIViewController {
 
     var oArray = NSOrderedSet()
+    var test = NSNumber()
     var sliderExtraNum : Int = 0
     var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
     var unsavedScenario: Scenario!
     var defaultScenario: Scenario!
     var newInterest : Double = 0
     var newInterestLayer = CALayer()
+    var app = principallyApp()
+    var mpForDefaultScenario = NSMutableOrderedSet()
+    var mpForUnsavedScenario = NSMutableOrderedSet()
     
     func convertSliderNumberToMonthsWithExtraPayment(senderValue:Int) -> Int {
         switch senderValue{
@@ -45,12 +49,6 @@ class PayExtraEachMonthViewController: UIViewController {
     
     @IBAction func testButton(sender: UIButton) {
         //graphOfExtraPaymentScenario.CAWhiteLine.backgroundColor = UIColor.purpleColor().CGColor
-        let maxInterest = maxElement(defaultScenario.makeArrayOfAllInterestPayments())
-        newInterestLayer.sublayers = nil
-        newInterestLayer = unsavedScenario.makeCALayerWithInterestLine(graphOfExtraPaymentScenario.frame, color: UIColor.purpleColor().CGColor, maxValue: maxInterest)
-        graphOfExtraPaymentScenario.layer.addSublayer(newInterestLayer)
-        graphOfExtraPaymentScenario.setNeedsDisplay()
-        
         
     }
     
@@ -58,21 +56,65 @@ class PayExtraEachMonthViewController: UIViewController {
     
     @IBOutlet weak var extraAmount: UITextField!
     
+    @IBAction func graphSlider(sender: UISlider) {
+        sender.value = floor(sender.value)
+        let totalMonths = defaultScenario!.defaultTotalScenarioMonths.floatValue
+        //graphOfExtraPaymentScenario.CAWhiteLine.timeOffset = CFTimeInterval(sender.value / totalMonths)
+        
+        var defaultPayment = mpForDefaultScenario[Int(sender.value)] as! MonthlyPayment
+        
+        var unsavedScenarioPayment = mpForUnsavedScenario[Int(sender.value)] as! MonthlyPayment
+        
+        principalNewLabel.text = "$\(unsavedScenarioPayment.principal)"
+        principalDefaultLabel.text = "Compared to $\(defaultPayment.principal)"
+        
+        interestNewLabel.text = "$\(unsavedScenarioPayment.interest)"
+        interestDefaultLabel.text = "Compared to $\(defaultPayment.interest)"
+        
+        var difference = unsavedScenario.defaultTotalScenarioInterest.doubleValue - unsavedScenario.nnewTotalScenarioInterest.doubleValue
+        
+        totalAmountSavedLabel.text = "\(sender.value)"//"\(difference)"
+        println(defaultScenario.defaultTotalScenarioMonths.floatValue)
+        
+        //var monthAndYear = clickedLoan!.getStringOfYearAndMonthForPaymentNumber(Double(sender.value))
+        //paymentDescription.text = "This is payment number #\(sender.value) to be paid in \(monthAndYear), which consist of principal $\(thisLoan.principal) and $\(thisLoan.interest) in interest, for a total of $\(thisLoan.totalPayment)"
+        //println(sender.value)
+        
+    }
+    
+    @IBOutlet weak var graphSliderOutlet: UISlider!
+    
+    @IBOutlet weak var principalNewLabel: UILabel!
+    
+    @IBOutlet weak var principalDefaultLabel: UILabel!
+    
+    @IBOutlet weak var interestNewLabel: UILabel!
+    
+    @IBOutlet weak var totalAmountSavedLabel: UILabel!
+    
+    @IBOutlet weak var interestDefaultLabel: UILabel!
+    
     @IBAction func extraAmountEditingChanged(sender: UITextField) {
         if let extra = sender.text.toInt() {
             //get the monthNumber
             let monthNumber = convertSliderNumberToMonthsWithExtraPayment(Int(frequencySliderOutlet.value))
-            println("before function call")
-            //make the new extra payment scenario 
+            
             unsavedScenario.makeNewExtraPaymentScenario(managedObjectContext,extra:extra,MWEPTotal:monthNumber)
-            println("after function call")
+            
             var error: NSError?
             if !managedObjectContext.save(&error) {
                 println("Could not save: \(error)") }
             println("after function call")
+            app.printAllScenariosAndLoans()
+            mpForUnsavedScenario = unsavedScenario.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
+            let maxInterest = maxElement(defaultScenario.makeArrayOfAllInterestPayments())
+            newInterestLayer.sublayers = nil
+            newInterestLayer = unsavedScenario.makeCALayerWithInterestLine(graphOfExtraPaymentScenario.frame, color: UIColor.purpleColor().CGColor, maxValue: maxInterest)
+            graphOfExtraPaymentScenario.layer.addSublayer(newInterestLayer)
+            graphOfExtraPaymentScenario.setNeedsDisplay()
         }else{
             println("it's a string")
-            //graphOfExtraPaymentScenario.CAWhiteLine.timeOffset = 0.5
+            graphOfExtraPaymentScenario.CAWhiteLine.timeOffset = 0.5
             //it's a string, and we don't do any calculations
         }
     }
@@ -113,12 +155,19 @@ class PayExtraEachMonthViewController: UIViewController {
         super.viewDidLoad()
         unsavedScenario = CoreDataStack.getUnsaved(CoreDataStack.sharedInstance)()
         defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
+        graphOfExtraPaymentScenario.defaultScenario = defaultScenario
+        graphOfExtraPaymentScenario.unsavedScenario = unsavedScenario
         var error: NSError?
+        graphSliderOutlet.maximumValue = Float(defaultScenario.concatenatedPayment.count) - 1
+        graphSliderOutlet.setValue(0, animated: true)
         oArray = defaultScenario.allLoans
         
         unsavedScenario.defaultScenarioMaxPayment = defaultScenario.defaultScenarioMaxPayment
         unsavedScenario.defaultTotalScenarioInterest = defaultScenario.defaultTotalScenarioInterest
         unsavedScenario.defaultTotalScenarioMonths = defaultScenario.defaultTotalScenarioMonths
+        
+        mpForDefaultScenario = defaultScenario.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
+        mpForUnsavedScenario = unsavedScenario.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
         
         //check to make sure some loans have been entered
         if oArray.count == 0 {
@@ -149,13 +198,10 @@ class PayExtraEachMonthViewController: UIViewController {
         if !managedObjectContext.save(&error) {
             println("Could not save \(error), \(error?.userInfo)")
         }
+        app.printAllScenariosAndLoans()
         
-        //this should become deprecated -- we need to add a "total payment and max total payment" feature to the scenario
-        let maxInterest = maxElement(defaultScenario.makeArrayOfAllInterestPayments())
-        /*
-        //add the loan with the default scenario
-        let newLayer = defaultScenario.makeCALayerWithInterestLine(graphOfExtraPaymentScenario.frame, color: UIColor.blackColor().CGColor, maxValue: maxInterest)
-        graphOfExtraPaymentScenario.layer.addSublayer(newLayer) */
+
+
     }
 
     override func didReceiveMemoryWarning() {

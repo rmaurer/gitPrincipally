@@ -108,9 +108,13 @@ class Scenario: NSManagedObject {
         self.nnewScenarioMaxPayment = 0
         self.nnewTotalScenarioInterest = 0
         self.nnewTotalScenarioMonths = 0
+     
+        if self.concatenatedPayment.count > 0 {
+            for MP in self.concatenatedPayment {
+                managedObjectContext.deleteObject(MP as! NSManagedObject)
+            }
+        }
         
-
-     /*
         if self.allLoans.count > 0 {
             for loan in self.allLoans {
                 var lloan = loan as! Loan
@@ -119,7 +123,7 @@ class Scenario: NSManagedObject {
                 }
                 managedObjectContext.deleteObject(loan as! NSManagedObject)
             }
-        } */ 
+        }
         //have to save, otherwise you will still have the MPs in the concatenated payment when it's passed 
         var error: NSError?
         if !managedObjectContext.save(&error) {
@@ -162,7 +166,7 @@ class Scenario: NSManagedObject {
             else if MWEPSoFar < MWEPTotal {
                 let endMonthForExtraPayment = minElement([MWEPTotal, loansTotalMonths])
                 MWEPSoFar = loan.enteredLoanWithExtraPayment(managedObjectContext,extraAmount:Double(extra),currentScenario:self,extraStart:MWEPSoFar, extraEnd:endMonthForExtraPayment)
-                newScenarioMonths = maxElement([newScenarioMonths, loan.nnewTotalLoanMonths.integerValue])
+                newScenarioMonths = maxElement([newScenarioMonths, loan.defaultTotalLoanMonths.integerValue])
                 if !managedObjectContext.save(&error) {
                     println("Could not save: \(error)") }
             } else {
@@ -251,9 +255,39 @@ class Scenario: NSManagedObject {
     }
     
     func getScenarioMaxPayment() -> Double {
-        let totalPaymentArray = self.makeArrayOfTotalPayments()
-        let maxPayment = maxElement(totalPaymentArray)
-        return maxPayment
+        
+        return maxElement(self.makeArrayOfTotalPayments())
+        
+    }
+    
+    func addLoanToDefaultScenario(loan:Loan, managedObjectContext : NSManagedObjectContext) {
+        
+        let entity = NSEntityDescription.entityForName("MonthlyPayment", inManagedObjectContext: managedObjectContext)
+        var mpForAllLoans = self.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
+         var mpForThisLoan = loan.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
+        
+        while mpForAllLoans.count < self.defaultTotalScenarioMonths.integerValue {
+            var monthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+            monthlyPaymentToBeAdded.interest = 0//balance * rate
+            monthlyPaymentToBeAdded.principal = 0//monthlyPayment - (balance * rate)
+            monthlyPaymentToBeAdded.totalPayment = 0//monthlyPayment
+            mpForAllLoans.addObject(monthlyPaymentToBeAdded)
+        }
+        
+        var interestToBeAdded : Double = 0
+        
+        for index in 0...mpForThisLoan.count - 1 {
+            let scenarioMP = mpForAllLoans[index] as! MonthlyPayment
+            let loanMP = mpForThisLoan[index] as! MonthlyPayment
+            scenarioMP.addAnotherMP(loanMP)
+            interestToBeAdded = interestToBeAdded + loanMP.interest.doubleValue
+        }
+        
+        self.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
+        var error: NSError?
+        self.defaultTotalScenarioInterest = self.defaultTotalScenarioInterest.doubleValue + interestToBeAdded
+        if !managedObjectContext.save(&error) {
+            println("Could not save: \(error)") }
     }
     
     func windUpConcatenatedPaymentWithAllLoans(managedObjectContext:NSManagedObjectContext) {
@@ -261,7 +295,7 @@ class Scenario: NSManagedObject {
         
         var mpForAllLoans  = self.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
         var allLoans = self.allLoans.mutableCopy() as! NSMutableOrderedSet
-        let newTotalMonths = self.nnewTotalScenarioMonths.integerValue
+        let newTotalMonths = self.nnewTotalScenarioMonths.integerValue - 1
         //firstcreate blanks
         let entity = NSEntityDescription.entityForName("MonthlyPayment", inManagedObjectContext: managedObjectContext)
         

@@ -21,7 +21,7 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
     
         override func drawRect(rect: CGRect) {
             
-            var graphPoints : [Double] = enteredLoan!.makeArrayOfAllPrincipalPayments()
+            var principalGraphPoints : [Double] = enteredLoan!.makeArrayOfAllPrincipalPayments()
             var interestGraphPoints : [Double] = enteredLoan!.makeArrayOfAllInterestPayments()
             let width = rect.width
             let height = rect.height
@@ -71,7 +71,7 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             var columnXPoint = { (column:Int) -> CGFloat in
                 //Calculate gap between points
                 let spacer = (width - margin*2 - 4) /
-                    CGFloat((graphPoints.count - 1))
+                    CGFloat((principalGraphPoints.count - 1))
                 var x:CGFloat = CGFloat(column) * spacer
                 x += margin + 2
                 return x
@@ -82,7 +82,7 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             let topBorder:CGFloat = 60
             let bottomBorder:CGFloat = 50
             let graphHeight = height - topBorder - bottomBorder
-            let maxValue = maxElement(graphPoints)
+            let maxValue = maxElement(principalGraphPoints)
             var columnYPoint = { (graphPoint:Double) -> CGFloat in
                 var y:CGFloat = CGFloat(graphPoint) /
                     CGFloat(maxValue) * graphHeight
@@ -99,13 +99,13 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             var graphPath = UIBezierPath()
             //go to start of line
             graphPath.moveToPoint(CGPoint(x:columnXPoint(0),
-                y:columnYPoint(graphPoints[0])))
+                y:columnYPoint(principalGraphPoints[0])))
             
             //add points for each item in the graphPoints array
             //at the correct (x, y) for the point
-            for i in 1..<graphPoints.count {
+            for i in 1..<principalGraphPoints.count {
                 let nextPoint = CGPoint(x:columnXPoint(i),
-                    y:columnYPoint(graphPoints[i]))
+                    y:columnYPoint(principalGraphPoints[i]))
                 graphPath.addLineToPoint(nextPoint)
             }
             //draw the line on top of the clipped gradient
@@ -117,7 +117,7 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             var columnXPoint2 = { (column:Int) -> CGFloat in
                 //Calculate gap between points
                 let spacer = (width - margin*2 - 4) /
-                    CGFloat((graphPoints.count - 1))
+                    CGFloat((principalGraphPoints.count - 1))
                 var x:CGFloat = CGFloat(column) * spacer
                 x += margin + 2
                 return x
@@ -145,7 +145,7 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             
             //add points for each item in the graphPoints array
             //at the correct (x, y) for the point
-            for i in 1..<graphPoints.count {
+            for i in 1..<principalGraphPoints.count {
                 let nextPoint = CGPoint(x:columnXPoint2(i),
                     y:columnYPoint2(interestGraphPoints[i]))
                 interestGraphPath.addLineToPoint(nextPoint)

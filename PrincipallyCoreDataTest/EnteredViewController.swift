@@ -46,7 +46,7 @@ class EnteredViewController: UIViewController {
         loanInterest.text = "\(clickedLoan!.interest.stringValue)%"
         let tenthOfTheWay = (clickedLoan!.monthsInRepaymentTerm.floatValue - clickedLoan!.monthsUntilRepayment.floatValue)/10
         graphOfEnteredLoan.enteredLoan = clickedLoan
-        graphSliderOutlet.maximumValue = clickedLoan!.monthsInRepaymentTerm.floatValue + clickedLoan!.monthsUntilRepayment.floatValue - 1
+        graphSliderOutlet.maximumValue = clickedLoan!.defaultTotalLoanMonths.floatValue - 1
         graphSliderOutlet.setValue(0, animated: true)
         //graphOfEnteredLoan.CAWhiteLine.duration = NSTimeInterval(clickedLoan!.monthsInRepaymentTerm.floatValue - clickedLoan!.monthsUntilRepayment.floatValue)
     }
