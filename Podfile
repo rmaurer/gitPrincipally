@@ -3,5 +3,4 @@ use_frameworks!
 
 target 'PrincipallyCoreDataTest' do
   pod 'ChameleonFramework', '~> 1.2.0'
-  pod 'ParkedTextField'
 end

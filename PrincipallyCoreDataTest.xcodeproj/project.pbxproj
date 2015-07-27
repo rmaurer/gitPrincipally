@@ -16,6 +16,8 @@
 		B3713F201B48A0E600C1ABEF /* EntryFormController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3713F1F1B48A0E600C1ABEF /* EntryFormController.swift */; };
 		B378D1B71B65268E00AD66F5 /* TestLoanEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B378D1B61B65268E00AD66F5 /* TestLoanEntryViewController.swift */; };
 		B378D1B91B65619200AD66F5 /* SelectLoanTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B378D1B81B65619200AD66F5 /* SelectLoanTypeView.swift */; };
+		B378D1BB1B65AB5500AD66F5 /* ParkedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B378D1BA1B65AB5500AD66F5 /* ParkedTextField.swift */; };
+		B378D1BD1B65AC3200AD66F5 /* ReverseParkedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B378D1BC1B65AC3200AD66F5 /* ReverseParkedTextField.swift */; };
 		B3942D641B52BC29005BCD2C /* PayExtraEachMonthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3942D631B52BC29005BCD2C /* PayExtraEachMonthViewController.swift */; };
 		B3942D661B531DA0005BCD2C /* GraphOfScenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3942D651B531DA0005BCD2C /* GraphOfScenario.swift */; };
 		B39A494B1B1121C600707C56 /* CompareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A494A1B1121C600707C56 /* CompareViewController.swift */; };
@@ -64,6 +66,8 @@
 		B3713F1F1B48A0E600C1ABEF /* EntryFormController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryFormController.swift; sourceTree = "<group>"; };
 		B378D1B61B65268E00AD66F5 /* TestLoanEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestLoanEntryViewController.swift; sourceTree = "<group>"; };
 		B378D1B81B65619200AD66F5 /* SelectLoanTypeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectLoanTypeView.swift; sourceTree = "<group>"; };
+		B378D1BA1B65AB5500AD66F5 /* ParkedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkedTextField.swift; sourceTree = "<group>"; };
+		B378D1BC1B65AC3200AD66F5 /* ReverseParkedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReverseParkedTextField.swift; sourceTree = "<group>"; };
 		B3942D631B52BC29005BCD2C /* PayExtraEachMonthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayExtraEachMonthViewController.swift; sourceTree = "<group>"; };
 		B3942D651B531DA0005BCD2C /* GraphOfScenario.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphOfScenario.swift; sourceTree = "<group>"; };
 		B39A494A1B1121C600707C56 /* CompareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompareViewController.swift; sourceTree = "<group>"; };
@@ -222,6 +226,8 @@
 		B3D3A8471B51723D00B89D67 /* Design Subclasses */ = {
 			isa = PBXGroup;
 			children = (
+				B378D1BA1B65AB5500AD66F5 /* ParkedTextField.swift */,
+				B378D1BC1B65AC3200AD66F5 /* ReverseParkedTextField.swift */,
 				B3D3A8451B4DE8C800B89D67 /* GraphOfEnteredLoan.swift */,
 				B3942D651B531DA0005BCD2C /* GraphOfScenario.swift */,
 				B378D1B81B65619200AD66F5 /* SelectLoanTypeView.swift */,
@@ -407,6 +413,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B378D1BD1B65AC3200AD66F5 /* ReverseParkedTextField.swift in Sources */,
 				B39A495B1B1B40D800707C56 /* Scenario.swift in Sources */,
 				B378D1B91B65619200AD66F5 /* SelectLoanTypeView.swift in Sources */,
 				B39A49581B1A9AA300707C56 /* Loan.swift in Sources */,
@@ -421,6 +428,7 @@
 				B32344F91B3E041900B1709C /* LoanTableViewCell.swift in Sources */,
 				B3D3A8491B51728C00B89D67 /* FlatLabel.swift in Sources */,
 				B3942D661B531DA0005BCD2C /* GraphOfScenario.swift in Sources */,
+				B378D1BB1B65AB5500AD66F5 /* ParkedTextField.swift in Sources */,
 				B3D0D18D1B09311500BD0C0C /* PaymentViewController.swift in Sources */,
 				B3713F1E1B4864B500C1ABEF /* NavController.swift in Sources */,
 				B39A494B1B1121C600707C56 /* CompareViewController.swift in Sources */,
