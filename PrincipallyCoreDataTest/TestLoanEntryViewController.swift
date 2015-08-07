@@ -11,7 +11,42 @@ import CoreData
 
 
 class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeViewDelegate {
+    
+    
+    //Flipping view when loan is entered
+    
+    var loanIsEnteredGraphIsShowing : Bool = false
 
+    @IBOutlet weak var graphContainer: UIView!
+    @IBOutlet weak var entryContainer: UIView!
+    
+    @IBAction func doneButton(sender: UIBarButtonItem) {
+        //now the person is editing the loan again, so switch the button to Done
+        if loanIsEnteredGraphIsShowing {
+            UIView.transitionFromView(graphContainer,
+                toView: entryContainer,
+                duration: 1.0,
+                options: UIViewAnimationOptions.TransitionFlipFromRight
+                | UIViewAnimationOptions.ShowHideTransitionViews, completion: nil)
+            sender.title = "Done"
+
+        }
+        else {
+        //the person is entering the loan, so switch the button to editing
+            UIView.transitionFromView(entryContainer,
+                toView: graphContainer,
+                duration: 1.0,
+                options: UIViewAnimationOptions.TransitionFlipFromRight
+                | UIViewAnimationOptions.ShowHideTransitionViews, completion: nil)
+            sender.title = "Edit"}
+        
+        loanIsEnteredGraphIsShowing = !loanIsEnteredGraphIsShowing
+    }
+    
+    
+    
+    
+    
     //Name
     @IBOutlet weak var editingPen: UIImageView!
     
