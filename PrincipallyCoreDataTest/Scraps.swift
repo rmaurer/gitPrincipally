@@ -605,4 +605,39 @@ balance = 0
 //now if there's not any more MP's in the concatenated MPs, we keep going through this loan, adding MPs to the total MP and this loan's MP as we go along
 
 
+//Set up Entry of information & delegates
+
+/*    var balanceInterestTableView : BalanceInterestTableViewController?
+var paymentContainerTableView : PaymentContainerTableViewController?
+var graphView : GraphViewController?*/
+
+/*  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+if segue.identifier == "BIContainer" {
+self.balanceInterestTableView = segue.destinationViewController as? BalanceInterestTableViewController
+//self.balanceInterestTableView?.parentViewController = self
+}
+else if segue.identifier == "paymentContainer" {
+self.paymentContainerTableView = segue.destinationViewController as? PaymentContainerTableViewController
+self.segmentIndex = self.paymentContainerTableView?.segmentedOutlet?.selectedSegmentIndex
+println("here's a test")
+}
+else if segue.identifier == "graphContainerSegue"{
+self.graphView = segue.destinationViewController as? GraphViewController
+println("graphContainer Segue was run")
+}
+} */
+
+//let balanceInterestVC = BalanceInterestTableViewController()
+
+/*func didEnterLoan(balance:String,interest:String) {
+println("Hello world")
+
+if segmentIndex == 0 {
+println("we are using the date picker")}
+else if segmentIndex == 1 {
+println("we are just using the monthly amount")}
+else if segmentIndex == nil {
+println("STILL NILL")
+}*/
+
 */

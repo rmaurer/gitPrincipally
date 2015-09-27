@@ -15,7 +15,7 @@ class LoanEntryTableViewController: UITableViewController {
     var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
     var defaultScenario: Scenario!
 
-    //let dwarves = ["Sleep", "sneezy", "bashful", "Happy","Doc"]
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()

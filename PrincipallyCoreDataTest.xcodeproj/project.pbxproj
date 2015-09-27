@@ -11,6 +11,7 @@
 		B32299BB1B10F14B00AAD0F0 /* linkingfile.c in Sources */ = {isa = PBXBuildFile; fileRef = B32299B91B10F14B00AAD0F0 /* linkingfile.c */; };
 		B32344F91B3E041900B1709C /* LoanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32344F81B3E041900B1709C /* LoanTableViewCell.swift */; };
 		B32344FF1B3F6A4900B1709C /* PayExtraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32344FE1B3F6A4900B1709C /* PayExtraViewController.swift */; };
+		B336CF721BB224C5005B59AD /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B336CF711BB224C5005B59AD /* GraphViewController.swift */; };
 		B3713F1A1B48500C00C1ABEF /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3713F191B48500C00C1ABEF /* Media.xcassets */; };
 		B3713F1E1B4864B500C1ABEF /* NavController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3713F1D1B4864B500C1ABEF /* NavController.swift */; };
 		B3713F201B48A0E600C1ABEF /* EntryFormController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3713F1F1B48A0E600C1ABEF /* EntryFormController.swift */; };
@@ -35,6 +36,8 @@
 		B3D3A8461B4DE8C800B89D67 /* GraphOfEnteredLoan.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D3A8451B4DE8C800B89D67 /* GraphOfEnteredLoan.swift */; };
 		B3D3A8491B51728C00B89D67 /* FlatLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D3A8481B51728C00B89D67 /* FlatLabel.swift */; };
 		B3D3A84B1B51876C00B89D67 /* FlatTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D3A84A1B51876C00B89D67 /* FlatTextField.swift */; };
+		B3DEF8FE1B7C09100033837C /* BalanceInterestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DEF8FD1B7C090F0033837C /* BalanceInterestTableViewController.swift */; };
+		B3DEF9011B7D872F0033837C /* PaymentContainerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DEF9001B7D872F0033837C /* PaymentContainerTableViewController.swift */; };
 		B3F1C1E51B2FBB4B009283B0 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F1C1E41B2FBB4B009283B0 /* CoreDataStack.swift */; };
 		B3F1C1F11B3B89FD009283B0 /* TypeModalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F1C1EF1B3B89FD009283B0 /* TypeModalVC.swift */; };
 		B3F1C1F21B3B89FD009283B0 /* TypeModalVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3F1C1F01B3B89FD009283B0 /* TypeModalVC.xib */; };
@@ -61,6 +64,7 @@
 		B32299BA1B10F14B00AAD0F0 /* linkingfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linkingfile.h; sourceTree = "<group>"; };
 		B32344F81B3E041900B1709C /* LoanTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoanTableViewCell.swift; sourceTree = "<group>"; };
 		B32344FE1B3F6A4900B1709C /* PayExtraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayExtraViewController.swift; sourceTree = "<group>"; };
+		B336CF711BB224C5005B59AD /* GraphViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
 		B3713F191B48500C00C1ABEF /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		B3713F1D1B4864B500C1ABEF /* NavController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavController.swift; sourceTree = "<group>"; };
 		B3713F1F1B48A0E600C1ABEF /* EntryFormController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryFormController.swift; sourceTree = "<group>"; };
@@ -89,6 +93,8 @@
 		B3D3A8451B4DE8C800B89D67 /* GraphOfEnteredLoan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphOfEnteredLoan.swift; sourceTree = "<group>"; };
 		B3D3A8481B51728C00B89D67 /* FlatLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlatLabel.swift; sourceTree = "<group>"; };
 		B3D3A84A1B51876C00B89D67 /* FlatTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlatTextField.swift; sourceTree = "<group>"; };
+		B3DEF8FD1B7C090F0033837C /* BalanceInterestTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalanceInterestTableViewController.swift; sourceTree = "<group>"; };
+		B3DEF9001B7D872F0033837C /* PaymentContainerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentContainerTableViewController.swift; sourceTree = "<group>"; };
 		B3F1C1E41B2FBB4B009283B0 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		B3F1C1EF1B3B89FD009283B0 /* TypeModalVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeModalVC.swift; sourceTree = "<group>"; };
 		B3F1C1F01B3B89FD009283B0 /* TypeModalVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TypeModalVC.xib; sourceTree = "<group>"; };
@@ -238,16 +244,27 @@
 			name = "Design Subclasses";
 			sourceTree = "<group>";
 		};
+		B3DEF8FF1B7C091E0033837C /* ReDoneEntry */ = {
+			isa = PBXGroup;
+			children = (
+				B378D1B61B65268E00AD66F5 /* TestLoanEntryViewController.swift */,
+				B3DEF8FD1B7C090F0033837C /* BalanceInterestTableViewController.swift */,
+				B3DEF9001B7D872F0033837C /* PaymentContainerTableViewController.swift */,
+				B336CF711BB224C5005B59AD /* GraphViewController.swift */,
+			);
+			name = ReDoneEntry;
+			sourceTree = "<group>";
+		};
 		B3F1C1EA1B3853DE009283B0 /* Entry  */ = {
 			isa = PBXGroup;
 			children = (
 				B3F1C1F71B3CD73F009283B0 /* LoanEntryTableViewController.swift */,
 				B3D0D18A1B09044E00BD0C0C /* LoanEntryViewController.swift */,
 				B3F1C1EF1B3B89FD009283B0 /* TypeModalVC.swift */,
+				B3DEF8FF1B7C091E0033837C /* ReDoneEntry */,
 				B3F1C1F01B3B89FD009283B0 /* TypeModalVC.xib */,
 				B3F1C1F51B3CCFA3009283B0 /* EnteredViewController.swift */,
 				B32344F81B3E041900B1709C /* LoanTableViewCell.swift */,
-				B378D1B61B65268E00AD66F5 /* TestLoanEntryViewController.swift */,
 			);
 			name = "Entry ";
 			sourceTree = "<group>";
@@ -414,11 +431,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				B378D1BD1B65AC3200AD66F5 /* ReverseParkedTextField.swift in Sources */,
+				B3DEF9011B7D872F0033837C /* PaymentContainerTableViewController.swift in Sources */,
 				B39A495B1B1B40D800707C56 /* Scenario.swift in Sources */,
 				B378D1B91B65619200AD66F5 /* SelectLoanTypeView.swift in Sources */,
 				B39A49581B1A9AA300707C56 /* Loan.swift in Sources */,
 				B39A495C1B1B40D800707C56 /* MonthlyPayment.swift in Sources */,
 				B3D3A84B1B51876C00B89D67 /* FlatTextField.swift in Sources */,
+				B3DEF8FE1B7C09100033837C /* BalanceInterestTableViewController.swift in Sources */,
 				B32344FF1B3F6A4900B1709C /* PayExtraViewController.swift in Sources */,
 				B378D1B71B65268E00AD66F5 /* TestLoanEntryViewController.swift in Sources */,
 				B3F1C1F61B3CCFA3009283B0 /* EnteredViewController.swift in Sources */,
@@ -432,6 +451,7 @@
 				B3D0D18D1B09311500BD0C0C /* PaymentViewController.swift in Sources */,
 				B3713F1E1B4864B500C1ABEF /* NavController.swift in Sources */,
 				B39A494B1B1121C600707C56 /* CompareViewController.swift in Sources */,
+				B336CF721BB224C5005B59AD /* GraphViewController.swift in Sources */,
 				B32299BB1B10F14B00AAD0F0 /* linkingfile.c in Sources */,
 				B3D0D1681B08F6DC00BD0C0C /* AppDelegate.swift in Sources */,
 				B3D0D18B1B09044E00BD0C0C /* LoanEntryViewController.swift in Sources */,
