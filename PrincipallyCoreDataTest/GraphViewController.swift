@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 class GraphViewController: UIViewController {
-
+    //loan data
     var mystring : String = "did not work"
     var interest : NSNumber = 0
     var balance : NSNumber = 0
@@ -22,10 +22,42 @@ class GraphViewController: UIViewController {
     var sliderTerm : NSNumber = 0
     var monthlyAmount : NSNumber = 0
     var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
-    @IBOutlet weak var testLabel1: UILabel!
+    
+    //global Loan variable 
+    var firstLoan: Loan!
+    
+    
+    //graph view
+    
+    @IBOutlet weak var loanDateSliderOutlet: UISlider!
+    
+    @IBAction func loanDateSliderAction(sender: UISlider) {
+        sender.value = floor(sender.value)
+        let mpForWorkingLoan = firstLoan.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
+        
+        var currentPayment = mpForWorkingLoan[Int(sender.value)] as! MonthlyPayment
+        
+        let mpInterest = round(currentPayment.interest.floatValue * 100) / 100
+        let mpPrincipal = round(currentPayment.principal.floatValue * 100) / 100
+        let mpTotal = round(currentPayment.totalPayment.floatValue * 100) / 100
+        
+        principleLabel.text = "$\(mpPrincipal)"
+        interestLabel.text = "$\(mpInterest)"
+        totalLabel.text = "$\(mpTotal)"
+        
+    }
+    
+    @IBOutlet weak var paymentDateLabel: UILabel!
+    
+    @IBOutlet weak var principleLabel: UILabel!
+
+    @IBOutlet weak var totalLabel: UILabel!
+    @IBOutlet weak var interestLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         // Do any additional setup after loading the view.
     }
     
@@ -37,12 +69,12 @@ class GraphViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func graphFlippedAroundVisible(){
+    func windUpLoanForGraph(){
         //Step 1: Wind up the loan, save it
         //pull entity within the managedObjectContext of "loan"
         let entity = NSEntityDescription.entityForName("Loan", inManagedObjectContext: managedObjectContext)
         //set variable of what will be inserted into the entity "Loan"
-        let firstLoan = Loan(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+        firstLoan = Loan(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
         
         //Set the characteristics of what will be added
         firstLoan.name = name as String
@@ -75,18 +107,41 @@ class GraphViewController: UIViewController {
             if !managedObjectContext.save(&error) {
                 println("Could not save \(error), \(error?.userInfo)")
             }
-
         default:
             break;
         }
+    }
+    
+    func makeGraphVisibleWithWoundUpLoan() {
+        //set global loan so that it can be deleted
+        
+        //tee up the slider
+        loanDateSliderOutlet.maximumValue = Float(firstLoan.defaultTotalLoanMonths) - 1
+        loanDateSliderOutlet.setValue(0, animated: true)
+        let mpForWorkingLoan = firstLoan.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
+        
+        var currentPayment = mpForWorkingLoan[0] as! MonthlyPayment
+        
+        let mpInterest = round(currentPayment.interest.floatValue * 100) / 100
+        let mpPrincipal = round(currentPayment.principal.floatValue * 100) / 100
+        let mpTotal = round(currentPayment.totalPayment.floatValue * 100) / 100
+        
+        principleLabel.text = "$\(mpPrincipal)"
+        interestLabel.text = "$\(mpInterest)"
+        totalLabel.text = "$\(mpTotal)"
+        
         
         //Step 2: Make a graph of the loan
         //START HERE -- SET UP STORYBOARD OF THE GRAPH CONTAINER
     }
     
     func graphFlippedAroundNotVisible(){
-        //NEXT TODO: DELETE THE LOAN THAT HAS JUST BEEN ENTERED. 
-       //Delete the loan that you've just entered?
+        var error: NSError?
+        firstLoan.deleteLoanFromDefaultScenario(managedObjectContext)
+        managedObjectContext.deleteObject(firstLoan as NSManagedObject)
+        if !managedObjectContext.save(&error) {
+            println("could not save: \(error)")
+        }
     }
     
 

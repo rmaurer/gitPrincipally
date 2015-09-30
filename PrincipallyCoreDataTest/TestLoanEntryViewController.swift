@@ -17,19 +17,23 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
     
     var loanIsEnteredGraphIsShowing : Bool = false
 
+    var BIView = BalanceInterestTableViewController()
+    var paymentView = PaymentContainerTableViewController()
+    var graphView = GraphViewController()
+    var selectedLoan: Loan?
+    
     @IBOutlet weak var graphContainer: UIView!
     @IBOutlet weak var entryContainer: UIView!
     
     @IBAction func doneButton(sender: UIBarButtonItem) {
 
         
-        //grab each of the views that we're going to need
+       /* //grab each of the views that we're going to need
         let BIView = self.childViewControllers[0] as! BalanceInterestTableViewController
         let paymentView = self.childViewControllers[2] as! PaymentContainerTableViewController
         let graphView = self.childViewControllers[1] as! GraphViewController
-        println(graphView.testLabel1.text)
         
-        
+       */
         //resign first responders
         
         self.loanNameOutlet.resignFirstResponder()
@@ -39,6 +43,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
         
         
         if loanIsEnteredGraphIsShowing {
+            graphView.graphFlippedAroundNotVisible()    
             UIView.transitionFromView(graphContainer,
                 toView: entryContainer,
                 duration: 1.0,
@@ -49,6 +54,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
             BIView.interest.userInteractionEnabled = true
             BIView.balance.userInteractionEnabled = true
             loanNameOutlet.userInteractionEnabled = true
+            selectedLoan = nil 
             loanIsEnteredGraphIsShowing = !loanIsEnteredGraphIsShowing
         }
         else {
@@ -70,7 +76,8 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
                 
                 
             //load up the new information in the graph View
-                graphView.graphFlippedAroundVisible()
+                graphView.windUpLoanForGraph()
+                graphView.makeGraphVisibleWithWoundUpLoan()
             
                 UIView.transitionFromView(entryContainer,
                     toView: graphContainer,
@@ -89,7 +96,29 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
     
     }
     
+    @IBOutlet weak var doneButtonOutlet: UIBarButtonItem!
     
+    func flipAroundWithoutLoadingLoan(){
+        loadChildViews()
+        loanNameOutlet?.text = selectedLoan!.name
+        BIView.balance.text = "$\(selectedLoan!.balance)"
+        BIView.interest.text = "\(selectedLoan!.interest)%"
+        BIView.interest.userInteractionEnabled = false
+        BIView.balance.userInteractionEnabled = false
+        doneButtonOutlet.title = "Edit"
+        selectLoantype.setTitle(selectedLoan!.loanType, forState: .Normal)
+        selectLoantype.enabled = false
+        loanNameOutlet.userInteractionEnabled = false
+        graphView.firstLoan = selectedLoan
+        graphView.makeGraphVisibleWithWoundUpLoan()
+        
+        UIView.transitionFromView(entryContainer,
+            toView: graphContainer,
+            duration: 1.0,
+            options: UIViewAnimationOptions.TransitionFlipFromRight
+                | UIViewAnimationOptions.ShowHideTransitionViews, completion: nil)
+        loanIsEnteredGraphIsShowing = !loanIsEnteredGraphIsShowing
+    }
     
     
     
@@ -139,6 +168,19 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
         super.viewDidLoad()
         loanNameOutlet.delegate = self
         editingPen.hidden = false
+        loadChildViews()
+        if selectedLoan != nil {
+            flipAroundWithoutLoadingLoan()
+        }
+    }
+    
+    func loadChildViews() {
+        //grab each of the views that we're going to need
+        BIView = self.childViewControllers[0] as! BalanceInterestTableViewController
+        paymentView = self.childViewControllers[2] as! PaymentContainerTableViewController
+        graphView = self.childViewControllers[1] as! GraphViewController
+        
+
         //balanceInterestVC.delegate = self
     }
 

@@ -60,23 +60,19 @@ class LoanEntryTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.performSegueWithIdentifier("segueToEnteredLoan", sender: indexPath);
+        self.performSegueWithIdentifier("cellPressSegue", sender: indexPath);
     }
     
     override func prepareForSegue
         (segue: UIStoryboardSegue, sender: AnyObject?) {
             
-            if segue.identifier == "segueToEnteredLoan" {
+            if segue.identifier == "cellPressSegue" {
                 let indexPath = tableView.indexPathForSelectedRow()!
                 
                 let selectedLoan = myLoans[indexPath.row] as! Loan
-                println(selectedLoan.monthsInRepaymentTerm)
-                println(selectedLoan.monthsUntilRepayment)
-                var vc:EnteredViewController = segue.destinationViewController as! EnteredViewController
-                vc.clickedLoan = selectedLoan
-                println(selectedLoan.name)
-               
-            }
+                var vc:TestLoanEntryViewController = segue.destinationViewController as! TestLoanEntryViewController
+                vc.selectedLoan = selectedLoan 
+             }
     }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
