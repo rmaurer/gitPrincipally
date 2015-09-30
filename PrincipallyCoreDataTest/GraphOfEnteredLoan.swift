@@ -31,6 +31,10 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
 
         override func drawRect(rect: CGRect) {
             
+            println("got into drawRect")
+            
+            if enteredLoan != nil {
+            
             //var principalGraphPoints : [Double] = enteredLoan!.makeArrayOfAllPrincipalPayments()
             var totalGraphPoints : [Double] = enteredLoan!.makeArrayOfAllTotalPayments()
             var interestGraphPoints : [Double] = enteredLoan!.makeArrayOfAllInterestPayments()
@@ -96,8 +100,8 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             
             // calculate the y point
             
-            let topBorder:CGFloat = 60
-            let bottomBorder:CGFloat = 50
+            let topBorder:CGFloat = 0
+            let bottomBorder:CGFloat = 27
             let graphHeight = height - topBorder - bottomBorder
             let maxValue = maxElement(interestGraphPoints)
             let totalMaxValue = maxElement(totalGraphPoints)
@@ -204,28 +208,34 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             
             //Draw horizontal graph lines on the top of everything
             var linePath = UIBezierPath()
+                
+            //
+            var third = graphHeight / 4
             
             //top line
-            linePath.moveToPoint(CGPoint(x:margin, y: topBorder))
+            linePath.moveToPoint(CGPoint(x:margin, y: third))
             linePath.addLineToPoint(CGPoint(x: width - margin,
-                y:topBorder))
+                y:third))
             
             //center line
             linePath.moveToPoint(CGPoint(x:margin,
-                y: graphHeight/2 + topBorder))
+                y: third * 2))//graphHeight/2 + topBorder))
             linePath.addLineToPoint(CGPoint(x:width - margin,
-                y:graphHeight/2 + topBorder))
+                y: third * 2))//graphHeight/2 + topBorder))
             
             //bottom line
             linePath.moveToPoint(CGPoint(x:margin,
-                y:height - bottomBorder))
+                y: third * 3))//height - bottomBorder))
             linePath.addLineToPoint(CGPoint(x:width - margin,
-                y:height - bottomBorder))
+                y: third * 3))//height - bottomBorder))
             let color = UIColor(white: 1.0, alpha: 0.3)
             color.setStroke()
             
             linePath.lineWidth = 1.0
             linePath.stroke()
+                
+            }
+            
             
             /*UIColor.blueColor().setFill()
             UIColor.blueColor().setStroke()
@@ -292,20 +302,20 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             ///Draw line to mark one particular payment
             
             //self.whiteLine.speed = 0.0
-        /*
-            CAWhiteLine.frame = CGRectMake(22,0,4,CGFloat(rect.height))
+        
+            CAWhiteLine.frame = CGRectMake(22,0,2,CGFloat(rect.height))
             CAWhiteLine.backgroundColor = UIColor.whiteColor().CGColor
             
             self.layer.addSublayer(CAWhiteLine)
             
             let animation = CABasicAnimation(keyPath: "transform.translation.x")
             animation.fromValue = 0 //NSValue(CGRect: CAWhiteLine.frame)
-            animation.toValue = rect.width - 48 //NSValue(CGRect: CGRectMake(140,0,4,CGFloat(rect.height)))
+            animation.toValue = rect.width - 6 //NSValue(CGRect: CGRectMake(140,0,4,CGFloat(rect.height)))
             animation.duration = 1.0
             
             CAWhiteLine.addAnimation(animation, forKey: "animate transform animation")
             
-            CAWhiteLine.speed = 0*/
+            CAWhiteLine.speed = 0
             
             
     }

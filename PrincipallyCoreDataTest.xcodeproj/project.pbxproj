@@ -38,6 +38,7 @@
 		B3D3A84B1B51876C00B89D67 /* FlatTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D3A84A1B51876C00B89D67 /* FlatTextField.swift */; };
 		B3DEF8FE1B7C09100033837C /* BalanceInterestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DEF8FD1B7C090F0033837C /* BalanceInterestTableViewController.swift */; };
 		B3DEF9011B7D872F0033837C /* PaymentContainerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DEF9001B7D872F0033837C /* PaymentContainerTableViewController.swift */; };
+		B3E65F5E1BBCA57B00EC0AF1 /* ScenarioTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E65F5D1BBCA57B00EC0AF1 /* ScenarioTableViewController.swift */; };
 		B3F1C1E51B2FBB4B009283B0 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F1C1E41B2FBB4B009283B0 /* CoreDataStack.swift */; };
 		B3F1C1F11B3B89FD009283B0 /* TypeModalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F1C1EF1B3B89FD009283B0 /* TypeModalVC.swift */; };
 		B3F1C1F21B3B89FD009283B0 /* TypeModalVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3F1C1F01B3B89FD009283B0 /* TypeModalVC.xib */; };
@@ -60,8 +61,8 @@
 		46D31C8ED3C59FD32023E227 /* Pods-PrincipallyCoreDataTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PrincipallyCoreDataTest.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PrincipallyCoreDataTest/Pods-PrincipallyCoreDataTest.debug.xcconfig"; sourceTree = "<group>"; };
 		5F7BB4C21F7749EC3D0AAADC /* Pods-PrincipallyCoreDataTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PrincipallyCoreDataTest.release.xcconfig"; path = "Pods/Target Support Files/Pods-PrincipallyCoreDataTest/Pods-PrincipallyCoreDataTest.release.xcconfig"; sourceTree = "<group>"; };
 		B32299B81B10F14A00AAD0F0 /* PrincipallyCoreDataTest-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PrincipallyCoreDataTest-Bridging-Header.h"; sourceTree = "<group>"; };
-		B32299B91B10F14B00AAD0F0 /* linkingfile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = linkingfile.c; sourceTree = "<group>"; };
-		B32299BA1B10F14B00AAD0F0 /* linkingfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linkingfile.h; sourceTree = "<group>"; };
+		B32299B91B10F14B00AAD0F0 /* linkingfile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = linkingfile.c; path = PrincipallyCoreDataTest/linkingfile.c; sourceTree = "<group>"; };
+		B32299BA1B10F14B00AAD0F0 /* linkingfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = linkingfile.h; path = PrincipallyCoreDataTest/linkingfile.h; sourceTree = "<group>"; };
 		B32344F81B3E041900B1709C /* LoanTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoanTableViewCell.swift; sourceTree = "<group>"; };
 		B32344FE1B3F6A4900B1709C /* PayExtraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayExtraViewController.swift; sourceTree = "<group>"; };
 		B336CF711BB224C5005B59AD /* GraphViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
@@ -95,6 +96,7 @@
 		B3D3A84A1B51876C00B89D67 /* FlatTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlatTextField.swift; sourceTree = "<group>"; };
 		B3DEF8FD1B7C090F0033837C /* BalanceInterestTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalanceInterestTableViewController.swift; sourceTree = "<group>"; };
 		B3DEF9001B7D872F0033837C /* PaymentContainerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentContainerTableViewController.swift; sourceTree = "<group>"; };
+		B3E65F5D1BBCA57B00EC0AF1 /* ScenarioTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenarioTableViewController.swift; sourceTree = "<group>"; };
 		B3F1C1E41B2FBB4B009283B0 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		B3F1C1EF1B3B89FD009283B0 /* TypeModalVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeModalVC.swift; sourceTree = "<group>"; };
 		B3F1C1F01B3B89FD009283B0 /* TypeModalVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TypeModalVC.xib; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 			children = (
 				B3D0D18C1B09311500BD0C0C /* PaymentViewController.swift */,
 				B3942D631B52BC29005BCD2C /* PayExtraEachMonthViewController.swift */,
+				B3E65F5D1BBCA57B00EC0AF1 /* ScenarioTableViewController.swift */,
 			);
 			name = Scenario;
 			sourceTree = "<group>";
@@ -197,16 +200,13 @@
 		B3D0D1651B08F6DC00BD0C0C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B3E65F5C1BBCA51E00EC0AF1 /* Scraps */,
 				B3D0D1731B08F6DC00BD0C0C /* LaunchScreen.xib */,
-				B32344FE1B3F6A4900B1709C /* PayExtraViewController.swift */,
-				B39A495D1B1DE6F200707C56 /* Scraps.swift */,
 				B32299B81B10F14A00AAD0F0 /* PrincipallyCoreDataTest-Bridging-Header.h */,
 				B3D0D17D1B08F6DC00BD0C0C /* PrincipallyCoreDataTestTests */,
 				B3D0D1631B08F6DC00BD0C0C /* Products */,
 				4D82B59D8F27F01D9F8DAE57 /* Pods */,
 				FA518D15FCFA1774E8D57243 /* Frameworks */,
-				B32299BA1B10F14B00AAD0F0 /* linkingfile.h */,
-				B32299B91B10F14B00AAD0F0 /* linkingfile.c */,
 				B3D0D1661B08F6DC00BD0C0C /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -255,16 +255,25 @@
 			name = ReDoneEntry;
 			sourceTree = "<group>";
 		};
+		B3E65F5C1BBCA51E00EC0AF1 /* Scraps */ = {
+			isa = PBXGroup;
+			children = (
+				B3F1C1F51B3CCFA3009283B0 /* EnteredViewController.swift */,
+				B3D0D18A1B09044E00BD0C0C /* LoanEntryViewController.swift */,
+				B32344FE1B3F6A4900B1709C /* PayExtraViewController.swift */,
+				B39A495D1B1DE6F200707C56 /* Scraps.swift */,
+			);
+			name = Scraps;
+			sourceTree = "<group>";
+		};
 		B3F1C1EA1B3853DE009283B0 /* Entry  */ = {
 			isa = PBXGroup;
 			children = (
-				B3F1C1F71B3CD73F009283B0 /* LoanEntryTableViewController.swift */,
-				B3D0D18A1B09044E00BD0C0C /* LoanEntryViewController.swift */,
 				B3F1C1EF1B3B89FD009283B0 /* TypeModalVC.swift */,
-				B3DEF8FF1B7C091E0033837C /* ReDoneEntry */,
 				B3F1C1F01B3B89FD009283B0 /* TypeModalVC.xib */,
-				B3F1C1F51B3CCFA3009283B0 /* EnteredViewController.swift */,
+				B3F1C1F71B3CD73F009283B0 /* LoanEntryTableViewController.swift */,
 				B32344F81B3E041900B1709C /* LoanTableViewCell.swift */,
+				B3DEF8FF1B7C091E0033837C /* ReDoneEntry */,
 			);
 			name = "Entry ";
 			sourceTree = "<group>";
@@ -272,6 +281,8 @@
 		FA518D15FCFA1774E8D57243 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B32299BA1B10F14B00AAD0F0 /* linkingfile.h */,
+				B32299B91B10F14B00AAD0F0 /* linkingfile.c */,
 				38D15229D7FA277940AF7BB4 /* Pods_PrincipallyCoreDataTest.framework */,
 			);
 			name = Frameworks;
@@ -440,6 +451,7 @@
 				B3DEF8FE1B7C09100033837C /* BalanceInterestTableViewController.swift in Sources */,
 				B32344FF1B3F6A4900B1709C /* PayExtraViewController.swift in Sources */,
 				B378D1B71B65268E00AD66F5 /* TestLoanEntryViewController.swift in Sources */,
+				B3E65F5E1BBCA57B00EC0AF1 /* ScenarioTableViewController.swift in Sources */,
 				B3F1C1F61B3CCFA3009283B0 /* EnteredViewController.swift in Sources */,
 				B3D3A8461B4DE8C800B89D67 /* GraphOfEnteredLoan.swift in Sources */,
 				B3D0D16B1B08F6DC00BD0C0C /* PrincipallyCoreDataTest.xcdatamodeld in Sources */,

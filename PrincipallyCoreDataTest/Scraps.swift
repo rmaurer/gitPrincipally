@@ -640,4 +640,18 @@ else if segmentIndex == nil {
 println("STILL NILL")
 }*/
 
+
+var totalGraphPoints = [Double]()
+var interestGraphPoints = [Double]()
+
+if enteredLoan != nil {
+
+totalGraphPoints = enteredLoan!.makeArrayOfAllTotalPayments()
+interestGraphPoints = enteredLoan!.makeArrayOfAllInterestPayments()
+}
+else {
+totalGraphPoints = [0]
+interestGraphPoints = [0]
+}
+
 */

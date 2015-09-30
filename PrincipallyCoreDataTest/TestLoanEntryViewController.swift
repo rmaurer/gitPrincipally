@@ -36,6 +36,8 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
        */
         //resign first responders
         
+        println("this is hte done button and should not be run on view did load")
+        loadChildViews()
         self.loanNameOutlet.resignFirstResponder()
         BIView.interest.resignFirstResponder()
         BIView.balance.resignFirstResponder()
@@ -54,6 +56,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
             BIView.interest.userInteractionEnabled = true
             BIView.balance.userInteractionEnabled = true
             loanNameOutlet.userInteractionEnabled = true
+            editingPen.hidden = false
             selectedLoan = nil 
             loanIsEnteredGraphIsShowing = !loanIsEnteredGraphIsShowing
         }
@@ -89,6 +92,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
                 BIView.interest.userInteractionEnabled = false
                 BIView.balance.userInteractionEnabled = false
                 loanNameOutlet.userInteractionEnabled = false
+                editingPen.hidden = true
                 loanIsEnteredGraphIsShowing = !loanIsEnteredGraphIsShowing
             }
             
@@ -99,6 +103,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
     @IBOutlet weak var doneButtonOutlet: UIBarButtonItem!
     
     func flipAroundWithoutLoadingLoan(){
+        println("flipAroundWithoutLoadingLoan should not be run")
         loadChildViews()
         loanNameOutlet?.text = selectedLoan!.name
         BIView.balance.text = "$\(selectedLoan!.balance)"
@@ -109,6 +114,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
         selectLoantype.setTitle(selectedLoan!.loanType, forState: .Normal)
         selectLoantype.enabled = false
         loanNameOutlet.userInteractionEnabled = false
+        editingPen.hidden = true 
         graphView.firstLoan = selectedLoan
         graphView.makeGraphVisibleWithWoundUpLoan()
         
@@ -168,13 +174,15 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
         super.viewDidLoad()
         loanNameOutlet.delegate = self
         editingPen.hidden = false
-        loadChildViews()
+        //loadChildViews()
         if selectedLoan != nil {
+            println("selectedLoan did not equal nil")
             flipAroundWithoutLoadingLoan()
         }
     }
     
     func loadChildViews() {
+        println("loadchildViews was run")
         //grab each of the views that we're going to need
         BIView = self.childViewControllers[0] as! BalanceInterestTableViewController
         paymentView = self.childViewControllers[2] as! PaymentContainerTableViewController

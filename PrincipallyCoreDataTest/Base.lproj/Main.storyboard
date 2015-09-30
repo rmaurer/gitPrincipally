@@ -5,6 +5,36 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
+        <!--Scenario Table View Controller-->
+        <scene sceneID="TY0-B4-SgN">
+            <objects>
+                <tableViewController id="z7p-Nd-fEj" customClass="ScenarioTableViewController" customModule="PrincipallyCoreDataTest" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="huY-Bp-4hD">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="06E-tl-hfx">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="06E-tl-hfx" id="HRD-CK-IlI">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="fb8-qA-fd8" kind="push" id="ktj-D4-5VO"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="z7p-Nd-fEj" id="75r-S7-gD2"/>
+                            <outlet property="delegate" destination="z7p-Nd-fEj" id="vnE-O0-BoI"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="WSD-zr-o74"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tHF-hU-azS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="117" y="-747"/>
+        </scene>
         <!--Repayment-->
         <scene sceneID="EDy-by-VsE">
             <objects>
@@ -17,53 +47,34 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5jT-co-AIc" userLabel="payExtraContainer">
+                            <containerView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5jT-co-AIc" userLabel="payExtraContainer">
                                 <rect key="frame" x="0.0" y="71" width="320" height="448"/>
                                 <connections>
                                     <segue destination="LtZ-II-WpF" kind="embed" identifier="payExtraSegue" id="6hq-r4-xgc"/>
                                 </connections>
                             </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JDE-Cb-FqU" userLabel="changePlanContainer">
+                            <containerView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JDE-Cb-FqU" userLabel="changePlanContainer">
                                 <rect key="frame" x="16" y="56" width="288" height="463"/>
                                 <connections>
                                     <segue destination="wrx-Ay-XQp" kind="embed" identifier="changePlanSegue" id="UL1-U0-iBj"/>
                                 </connections>
                             </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fmd-Rb-XSs">
+                            <containerView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fmd-Rb-XSs">
                                 <rect key="frame" x="0.0" y="56" width="320" height="463"/>
                                 <connections>
                                     <segue destination="Ypv-AD-ikc" kind="embed" identifier="doBothSegue" id="HN9-74-RcA"/>
                                 </connections>
                             </containerView>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="MD7-ya-Sx4">
-                                <rect key="frame" x="16" y="28" width="292" height="29"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <segments>
-                                    <segment title="Pay Extra"/>
-                                    <segment title="Change Plan"/>
-                                    <segment title="Do Both"/>
-                                </segments>
-                                <color key="tintColor" red="0.1019607843" green="0.64705882349999999" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <connections>
-                                    <action selector="scenarioSegmentedControl:" destination="fb8-qA-fd8" eventType="valueChanged" id="69t-5M-VxO"/>
-                                </connections>
-                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="fmd-Rb-XSs" firstAttribute="leading" secondItem="NFk-c1-b61" secondAttribute="leading" id="6Pa-05-a1v"/>
                             <constraint firstItem="JDE-Cb-FqU" firstAttribute="bottom" secondItem="xiE-Fg-cYU" secondAttribute="top" id="99i-fF-cmk"/>
-                            <constraint firstItem="JDE-Cb-FqU" firstAttribute="top" secondItem="MD7-ya-Sx4" secondAttribute="bottom" id="CNB-Xt-v01"/>
                             <constraint firstItem="JDE-Cb-FqU" firstAttribute="leading" secondItem="NFk-c1-b61" secondAttribute="leadingMargin" id="EQ3-Zg-UVh"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="MD7-ya-Sx4" secondAttribute="trailing" constant="-4" id="HLW-JZ-Gxa"/>
                             <constraint firstItem="xiE-Fg-cYU" firstAttribute="top" secondItem="fmd-Rb-XSs" secondAttribute="bottom" id="IXL-7i-03C"/>
-                            <constraint firstItem="fmd-Rb-XSs" firstAttribute="top" secondItem="MD7-ya-Sx4" secondAttribute="bottom" id="Ii8-bL-2v2"/>
                             <constraint firstAttribute="trailing" secondItem="fmd-Rb-XSs" secondAttribute="trailing" id="Ivg-N3-zHG"/>
                             <constraint firstAttribute="trailing" secondItem="5jT-co-AIc" secondAttribute="trailing" id="PVt-ws-kDL"/>
-                            <constraint firstItem="5jT-co-AIc" firstAttribute="top" secondItem="MD7-ya-Sx4" secondAttribute="bottom" constant="15" id="Vbn-Vk-J2x"/>
                             <constraint firstAttribute="trailingMargin" secondItem="JDE-Cb-FqU" secondAttribute="trailing" id="fr2-Cn-QsJ"/>
-                            <constraint firstItem="MD7-ya-Sx4" firstAttribute="top" secondItem="cv1-DM-JM2" secondAttribute="bottom" constant="8" id="h7E-Pw-3o1"/>
-                            <constraint firstItem="MD7-ya-Sx4" firstAttribute="leading" secondItem="NFk-c1-b61" secondAttribute="leadingMargin" id="hVU-dk-B3k"/>
                             <constraint firstItem="xiE-Fg-cYU" firstAttribute="top" secondItem="5jT-co-AIc" secondAttribute="bottom" id="lbb-5Q-nSw"/>
                             <constraint firstItem="5jT-co-AIc" firstAttribute="leading" secondItem="NFk-c1-b61" secondAttribute="leading" id="pdR-oO-aBq"/>
                             <constraint firstItem="xiE-Fg-cYU" firstAttribute="top" secondItem="JDE-Cb-FqU" secondAttribute="bottom" id="vVB-CR-jVC"/>
@@ -72,6 +83,20 @@
                     <tabBarItem key="tabBarItem" title="Repayment" image="KnobsRedux" id="nX2-oO-hn6"/>
                     <navigationItem key="navigationItem" id="us2-J7-P3O">
                         <nil key="title"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="MD7-ya-Sx4">
+                            <rect key="frame" x="14" y="8" width="292" height="29"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <segments>
+                                <segment title="Pay Extra"/>
+                                <segment title="Change Plan"/>
+                                <segment title="Do Both"/>
+                            </segments>
+                            <color key="tintColor" red="0.1019607843" green="0.64705882349999999" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="scenarioSegmentedControl:" destination="fb8-qA-fd8" eventType="valueChanged" id="69t-5M-VxO"/>
+                            </connections>
+                        </segmentedControl>
                     </navigationItem>
                     <connections>
                         <outlet property="changePlanContainer" destination="JDE-Cb-FqU" id="Fcg-u1-NZ1"/>
@@ -81,7 +106,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yoh-Eo-h2a" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-266" y="-818"/>
+            <point key="canvasLocation" x="530" y="-747"/>
         </scene>
         <!--Loans-->
         <scene sceneID="RxR-Mu-P94">
@@ -131,7 +156,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="HTK-Sk-kDb" kind="relationship" relationship="viewControllers" id="2Zy-js-Sfi"/>
-                        <segue destination="fb8-qA-fd8" kind="relationship" relationship="viewControllers" id="T0Q-HG-2Zn"/>
+                        <segue destination="AQf-9C-hhY" kind="relationship" relationship="viewControllers" id="qav-PO-bYy"/>
                         <segue destination="LKy-XX-jGn" kind="relationship" relationship="viewControllers" id="uIO-mh-nFE"/>
                         <segue destination="RzY-QV-ALa" kind="relationship" relationship="viewControllers" id="bb0-80-J0R"/>
                         <segue destination="MnV-LT-hUz" kind="relationship" relationship="viewControllers" id="Cgx-Ok-6GI"/>
@@ -139,7 +164,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RMX-Al-w05" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-692" y="-894"/>
+            <point key="canvasLocation" x="-708" y="-902"/>
         </scene>
         <!--Compare-->
         <scene sceneID="Q3J-iz-KGi">
@@ -460,7 +485,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pGz-tt-Tgk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="77" y="-811"/>
+            <point key="canvasLocation" x="915" y="-764"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="mar-ZY-FBc">
@@ -487,7 +512,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uyp-Oe-hSK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="790" y="-707.5"/>
+            <point key="canvasLocation" x="1276" y="-771.5"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="lJE-2C-XMi">
@@ -514,7 +539,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J15-vA-h24" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="475" y="-777.5"/>
+            <point key="canvasLocation" x="1651" y="-771.5"/>
         </scene>
         <!--Home-->
         <scene sceneID="TvY-jS-pkk">
@@ -565,7 +590,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Loan Name" textAlignment="center" minimumFontSize="25" translatesAutoresizingMaskIntoConstraints="NO" id="HG7-Km-grx">
-                                        <rect key="frame" x="10" y="3" width="300" height="43"/>
+                                        <rect key="frame" x="67" y="3" width="186" height="43"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -578,21 +603,19 @@
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pen" translatesAutoresizingMaskIntoConstraints="NO" id="FxO-gm-OLL">
                                         <rect key="frame" x="254" y="36" width="13" height="13"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="13" id="IbJ-8Y-ICM"/>
-                                            <constraint firstAttribute="height" constant="13" id="tf5-xK-fAk"/>
+                                            <constraint firstAttribute="width" constant="13" id="aXJ-Jy-ivc"/>
+                                            <constraint firstAttribute="height" constant="13" id="z24-Xo-BmX"/>
                                         </constraints>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.10196078431372549" green="0.6470588235294118" blue="0.5725490196078431" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="centerY" secondItem="HG7-Km-grx" secondAttribute="centerY" id="0Bb-Bb-1u4"/>
                                     <constraint firstAttribute="height" constant="49" id="2lF-f6-jx8"/>
-                                    <constraint firstAttribute="centerY" secondItem="HG7-Km-grx" secondAttribute="centerY" id="FzD-kD-pKQ"/>
-                                    <constraint firstAttribute="centerX" secondItem="HG7-Km-grx" secondAttribute="centerX" id="KOe-Dg-OoW"/>
-                                    <constraint firstAttribute="trailing" secondItem="HG7-Km-grx" secondAttribute="trailing" constant="10" id="TTy-HM-MXC"/>
-                                    <constraint firstAttribute="centerX" secondItem="FxO-gm-OLL" secondAttribute="centerX" constant="-100" id="o3p-JM-lCz"/>
-                                    <constraint firstAttribute="bottom" secondItem="FxO-gm-OLL" secondAttribute="bottom" id="oze-mR-Jdh"/>
-                                    <constraint firstItem="HG7-Km-grx" firstAttribute="leading" secondItem="GZa-NF-fuq" secondAttribute="leading" constant="10" id="zct-cU-Wfz"/>
+                                    <constraint firstAttribute="centerX" secondItem="HG7-Km-grx" secondAttribute="centerX" id="WIL-Yz-fie"/>
+                                    <constraint firstItem="FxO-gm-OLL" firstAttribute="leading" secondItem="HG7-Km-grx" secondAttribute="trailing" constant="1" id="hjP-jN-TAA"/>
+                                    <constraint firstItem="FxO-gm-OLL" firstAttribute="top" secondItem="HG7-Km-grx" secondAttribute="bottom" constant="-10" id="n0W-D3-H7c"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yOI-CR-uTr" userLabel="GreyLine">
@@ -694,7 +717,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0uU-j6-5fi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="517" y="-1333"/>
+            <point key="canvasLocation" x="437" y="-1673"/>
         </scene>
         <!--Balance Interest Table View Controller-->
         <scene sceneID="FrH-y6-wMB">
@@ -793,7 +816,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sQc-h3-TSN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="913" y="-1761"/>
+            <point key="canvasLocation" x="863" y="-2045"/>
         </scene>
         <!--Payment Container Table View Controller-->
         <scene sceneID="XHm-bS-Iel">
@@ -987,7 +1010,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4xo-l6-nAc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="913" y="-1538"/>
+            <point key="canvasLocation" x="863" y="-1806"/>
         </scene>
         <!--Graph View Controller-->
         <scene sceneID="Pm0-mR-ZZK">
@@ -1027,6 +1050,7 @@
                             </view>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="0ra-ow-gh0">
                                 <rect key="frame" x="34" y="145" width="252" height="31"/>
+                                <color key="tintColor" red="0.1019607843" green="0.64705882349999999" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Qzb-EP-dqu"/>
                                 </constraints>
@@ -1118,7 +1142,26 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kvt-OS-ER3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="913" y="-1231"/>
+            <point key="canvasLocation" x="863" y="-1491"/>
+        </scene>
+        <!--Repayment-->
+        <scene sceneID="bqd-l8-GaY">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="AQf-9C-hhY" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Repayment" image="KnobsRedux" id="pnj-JK-qnp"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="95I-RT-Bs4">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="z7p-Nd-fEj" kind="relationship" relationship="rootViewController" id="Vmn-00-QQn"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Sx-E5-iqk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-276" y="-747"/>
         </scene>
     </scenes>
     <resources>

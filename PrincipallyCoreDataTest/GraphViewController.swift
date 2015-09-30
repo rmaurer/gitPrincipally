@@ -68,7 +68,7 @@ class GraphViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        println("graphView viewdidload was run") 
         
         // Do any additional setup after loading the view.
     }
@@ -152,7 +152,7 @@ class GraphViewController: UIViewController {
         
         graphOfEnteredLoan.enteredLoan = firstLoan
         graphOfEnteredLoan.setNeedsDisplay()    
-        //graphOfEnteredLoan.CAWhiteLine.duration = NSTimeInterval(firstLoan.monthsInRepaymentTerm.floatValue - firstLoan.monthsUntilRepayment.floatValue)
+        graphOfEnteredLoan.CAWhiteLine.duration = NSTimeInterval(firstLoan.monthsInRepaymentTerm.floatValue - firstLoan.monthsUntilRepayment.floatValue)
 
     }
     
