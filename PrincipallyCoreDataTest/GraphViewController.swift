@@ -26,6 +26,7 @@ class GraphViewController: UIViewController {
     //global Loan variable 
     var firstLoan: Loan!
     
+    @IBOutlet weak var graphOfEnteredLoan: GraphOfEnteredLoan!
     
     //graph view
     
@@ -33,6 +34,11 @@ class GraphViewController: UIViewController {
     
     @IBAction func loanDateSliderAction(sender: UISlider) {
         sender.value = floor(sender.value)
+        
+        let totalMonths = firstLoan.monthsInRepaymentTerm.floatValue - firstLoan.monthsUntilRepayment.floatValue
+        
+        graphOfEnteredLoan.CAWhiteLine.timeOffset = CFTimeInterval(sender.value / totalMonths)
+    
         let mpForWorkingLoan = firstLoan.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
         
         var currentPayment = mpForWorkingLoan[Int(sender.value)] as! MonthlyPayment
@@ -44,6 +50,12 @@ class GraphViewController: UIViewController {
         principleLabel.text = "$\(mpPrincipal)"
         interestLabel.text = "$\(mpInterest)"
         totalLabel.text = "$\(mpTotal)"
+        
+        
+        var monthAndYear = firstLoan.getStringOfYearAndMonthForPaymentNumber(Double(sender.value))
+        paymentDateLabel.text = "Payment for \(monthAndYear)"
+        
+        
         
     }
     
@@ -130,9 +142,18 @@ class GraphViewController: UIViewController {
         interestLabel.text = "$\(mpInterest)"
         totalLabel.text = "$\(mpTotal)"
         
+        var monthAndYear = firstLoan.getStringOfYearAndMonthForPaymentNumber(0)
+        paymentDateLabel.text = "Payment for \(monthAndYear)"
+        
         
         //Step 2: Make a graph of the loan
         //START HERE -- SET UP STORYBOARD OF THE GRAPH CONTAINER
+        
+        
+        graphOfEnteredLoan.enteredLoan = firstLoan
+        graphOfEnteredLoan.setNeedsDisplay()    
+        //graphOfEnteredLoan.CAWhiteLine.duration = NSTimeInterval(firstLoan.monthsInRepaymentTerm.floatValue - firstLoan.monthsUntilRepayment.floatValue)
+
     }
     
     func graphFlippedAroundNotVisible(){

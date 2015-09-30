@@ -12,37 +12,45 @@ import CoreData
 class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates within the story board.
 
         var enteredLoan:Loan? = nil
-        @IBInspectable var borderColor: UIColor = UIColor(red: 26/255, green: 165/255, blue: 146/255, alpha: 1)
-        @IBInspectable var startColor: UIColor = UIColor(red: 26/255, green: 165/255, blue: 146/255, alpha: 0.7)
-        @IBInspectable var endColor: UIColor = UIColor(red: 26/255, green: 165/255, blue: 146/255, alpha: 0.6)
+        //@IBInspectable var borderColor: UIColor = UIColor(red: 26/255, green: 165/255, blue: 146/255, alpha: 1)
+        //@IBInspectable var startColor: UIColor = UIColor(red: 26/255, green: 165/255, blue: 146/255, alpha: 0.7)
+        //@IBInspectable var endColor: UIColor = UIColor(red: 26/255, green: 165/255, blue: 146/255, alpha: 0.6)
         let alwaysX = CGFloat()
         let alwaysY = CGFloat()
         let CAWhiteLine = CALayer()
     
+        @IBInspectable var startColor: UIColor = UIColor.redColor()
+        @IBInspectable var endColor: UIColor = UIColor.greenColor()
+    
+        @IBInspectable var pStartColor: UIColor = UIColor.greenColor()
+        @IBInspectable var pEndColor: UIColor = UIColor.greenColor()
+    
+        @IBInspectable var bStartColor: UIColor = UIColor.greenColor()
+        @IBInspectable var bEndColor: UIColor = UIColor.greenColor()
+    
+
         override func drawRect(rect: CGRect) {
             
-            var principalGraphPoints : [Double] = enteredLoan!.makeArrayOfAllPrincipalPayments()
+            //var principalGraphPoints : [Double] = enteredLoan!.makeArrayOfAllPrincipalPayments()
+            var totalGraphPoints : [Double] = enteredLoan!.makeArrayOfAllTotalPayments()
             var interestGraphPoints : [Double] = enteredLoan!.makeArrayOfAllInterestPayments()
             let width = rect.width
             let height = rect.height
             
-            let context = UIGraphicsGetCurrentContext()
-            CGContextSetLineWidth(context, 12.0)
-            CGContextSetStrokeColorWithColor(context, borderColor.CGColor)
-            
-            
+
             //set up background clipping area
-            var path = UIBezierPath(rect: rect)
-            CGContextStrokeRect(context, rect)
-            
-            
-           // var path = UIBezierPath(roundedRect: rect,
-           //     byRoundingCorners: UIRectCorner.AllCorners,
-           //     cornerRadii: CGSize(width: 8.0, height: 8.0))
+            var path = UIBezierPath(roundedRect: rect,
+                byRoundingCorners: UIRectCorner.AllCorners,
+                cornerRadii: CGSize(width: 8.0, height: 8.0))
             path.addClip()
             
-            //2 - get the current context
+            //get context
+            let context = UIGraphicsGetCurrentContext()
+            
+            //set up colors
             let colors = [startColor.CGColor, endColor.CGColor]
+            let pcolors = [pStartColor.CGColor, pEndColor.CGColor]
+            let bcolors = [bStartColor.CGColor, bEndColor.CGColor]
             
             //3 - set up the color space
             let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -55,12 +63,21 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
                 colors,
                 colorLocations)
             
+            let pgradient = CGGradientCreateWithColors(colorSpace,
+                pcolors,
+                colorLocations)
+            
+            let bgradient = CGGradientCreateWithColors(colorSpace,
+                bcolors,
+                colorLocations)
+
+            
             //6 - draw the gradient
             var startPoint = CGPoint.zeroPoint
             var endPoint = CGPoint(x:0, y:self.bounds.height)
             
             CGContextDrawLinearGradient(context,
-                gradient,
+                bgradient,
                 startPoint,
                 endPoint,
                 0)
@@ -71,7 +88,7 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             var columnXPoint = { (column:Int) -> CGFloat in
                 //Calculate gap between points
                 let spacer = (width - margin*2 - 4) /
-                    CGFloat((principalGraphPoints.count - 1))
+                    CGFloat((interestGraphPoints.count - 1))
                 var x:CGFloat = CGFloat(column) * spacer
                 x += margin + 2
                 return x
@@ -82,17 +99,135 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             let topBorder:CGFloat = 60
             let bottomBorder:CGFloat = 50
             let graphHeight = height - topBorder - bottomBorder
-            let maxValue = maxElement(principalGraphPoints)
+            let maxValue = maxElement(interestGraphPoints)
+            let totalMaxValue = maxElement(totalGraphPoints)
             var columnYPoint = { (graphPoint:Double) -> CGFloat in
                 var y:CGFloat = CGFloat(graphPoint) /
-                    CGFloat(maxValue) * graphHeight
+                    CGFloat(totalMaxValue) * graphHeight
                 y = graphHeight + topBorder - y // Flip the graph
                 return y
             }
             
+            UIColor.whiteColor().setFill()
+            UIColor.whiteColor().setStroke()
+            
+            var totalGraphPath = UIBezierPath()
+            totalGraphPath.moveToPoint(CGPoint(x:columnXPoint(0),y:columnYPoint(totalGraphPoints[0])))
+            
+            for i in 1..<totalGraphPoints.count {
+                let nextPoint = CGPoint(x:columnXPoint(i),
+                    y:columnYPoint(totalGraphPoints[i]))
+                totalGraphPath.addLineToPoint(nextPoint)
+            }
+            
+            //1 - save the state of the context (commented out for now)
+            CGContextSaveGState(context)
+            
+            //2 - make a copy of the path
+            var totalClippingPath = totalGraphPath.copy() as! UIBezierPath
+            
+            //3 - add lines to the copied path to complete the clip area
+            //3 - add lines to the copied path to complete the clip area
+            totalClippingPath.addLineToPoint(CGPoint(
+                x: columnXPoint(interestGraphPoints.count - 1),
+                y:height-margin))
+            totalClippingPath.addLineToPoint(CGPoint(
+                x:columnXPoint(0),
+                y:height-margin))
+            totalClippingPath.closePath()
             // draw the line graph
             
-            UIColor.blueColor().setFill()
+            //4 - add the clipping path to the context
+            totalClippingPath.addClip()
+            
+            let highestYPPoint = columnYPoint(totalMaxValue)
+            startPoint = CGPoint(x:margin, y: highestYPPoint)
+            endPoint = CGPoint(x:margin, y:self.bounds.height)
+            
+            CGContextDrawLinearGradient(context, pgradient, startPoint, endPoint, 0)
+            CGContextRestoreGState(context)
+            
+            //draw the line on top of the clipped gradient
+            totalGraphPath.lineWidth = 2.0
+            totalGraphPath.stroke()
+            
+            ////start other line
+            ////
+            
+            UIColor.whiteColor().setFill()
+            UIColor.whiteColor().setStroke()
+            
+            //set up the points line
+            var graphPath = UIBezierPath()
+            //go to start of line
+            graphPath.moveToPoint(CGPoint(x:columnXPoint(0),
+                y:columnYPoint(interestGraphPoints[0])))
+            
+            //add points for each item in the graphPoints array
+            //at the correct (x, y) for the point
+            for i in 1..<interestGraphPoints.count {
+                let nextPoint = CGPoint(x:columnXPoint(i),
+                    y:columnYPoint(interestGraphPoints[i]))
+                graphPath.addLineToPoint(nextPoint)
+                println(interestGraphPoints[i])
+            }
+
+            
+            //1 - save the state of the context (commented out for now)
+            CGContextSaveGState(context)
+            
+            //2 - make a copy of the path
+            var clippingPath = graphPath.copy() as! UIBezierPath
+            
+            //3 - add lines to the copied path to complete the clip area
+            clippingPath.addLineToPoint(CGPoint(
+                x: columnXPoint(interestGraphPoints.count - 1),
+                y:height-margin))
+            clippingPath.addLineToPoint(CGPoint(
+                x:columnXPoint(0),
+                y:height-margin))
+            clippingPath.closePath()
+            
+            //4 - add the clipping path to the context
+            clippingPath.addClip()
+            let highestYPoint = columnYPoint(maxValue)
+            startPoint = CGPoint(x:margin, y: highestYPoint)
+            endPoint = CGPoint(x:margin, y:self.bounds.height)
+            
+            CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, 0)
+            CGContextRestoreGState(context)
+            
+            //draw the line on top of the clipped gradient
+            graphPath.lineWidth = 2.0
+            graphPath.stroke()
+
+            
+            //Draw horizontal graph lines on the top of everything
+            var linePath = UIBezierPath()
+            
+            //top line
+            linePath.moveToPoint(CGPoint(x:margin, y: topBorder))
+            linePath.addLineToPoint(CGPoint(x: width - margin,
+                y:topBorder))
+            
+            //center line
+            linePath.moveToPoint(CGPoint(x:margin,
+                y: graphHeight/2 + topBorder))
+            linePath.addLineToPoint(CGPoint(x:width - margin,
+                y:graphHeight/2 + topBorder))
+            
+            //bottom line
+            linePath.moveToPoint(CGPoint(x:margin,
+                y:height - bottomBorder))
+            linePath.addLineToPoint(CGPoint(x:width - margin,
+                y:height - bottomBorder))
+            let color = UIColor(white: 1.0, alpha: 0.3)
+            color.setStroke()
+            
+            linePath.lineWidth = 1.0
+            linePath.stroke()
+            
+            /*UIColor.blueColor().setFill()
             UIColor.blueColor().setStroke()
             
             //set up the points line
@@ -152,12 +287,12 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             }
             //draw the line on top of the clipped gradient
             interestGraphPath.lineWidth = 2.0
-            interestGraphPath.stroke()
+            interestGraphPath.stroke() */
             
             ///Draw line to mark one particular payment
             
             //self.whiteLine.speed = 0.0
-        
+        /*
             CAWhiteLine.frame = CGRectMake(22,0,4,CGFloat(rect.height))
             CAWhiteLine.backgroundColor = UIColor.whiteColor().CGColor
             
@@ -170,7 +305,7 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             
             CAWhiteLine.addAnimation(animation, forKey: "animate transform animation")
             
-            CAWhiteLine.speed = 0
+            CAWhiteLine.speed = 0*/
             
             
     }

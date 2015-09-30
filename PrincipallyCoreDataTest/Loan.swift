@@ -194,7 +194,12 @@ class Loan: NSManagedObject {
         return monthsUntilRepayment
     }
     
-    func getStringOfYearAndMonthForPaymentNumber(mpNumber:Double) -> String{
+    func getStringOfYearAndMonthForPaymentNumber(monthNumber:Double) -> String{
+        var mpNumber = monthNumber
+        
+        //if self.monthsUntilRepayment.doubleValue > 0 {
+        //    mpNumber = monthNumber + self.monthsUntilRepayment.doubleValue
+        //}
         let now = NSDate()
         let calendar = NSCalendar.currentCalendar()
         let components = calendar.components(.CalendarUnitHour | .CalendarUnitMinute | .CalendarUnitMonth | .CalendarUnitYear | .CalendarUnitDay, fromDate: now)
