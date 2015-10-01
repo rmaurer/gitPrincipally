@@ -157,6 +157,16 @@ class CoreDataStack {
         return unsavedScenario
     }
     
+    func getAllScenarios() -> [NSManagedObject] {
+        var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
+        //2 - Create the Fetch Request
+        let fetchRequest = NSFetchRequest(entityName:"Scenario")
+        //3 - Execute hte Fetch Request
+        var error: NSError?
+        let fetchedResults = managedObjectContext.executeFetchRequest(fetchRequest, error: &error) as? [NSManagedObject]
+        return fetchedResults!
+    }
+    
 
   class func applicationDocumentsDirectory() -> NSURL {
     let fileManager = NSFileManager.defaultManager()

@@ -7,22 +7,29 @@
 //
 
 import UIKit
+import CoreData
 
 class ScenarioTableViewController: UITableViewController {
+    
+    var myScenarios = [NSManagedObject]()
+    var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
+    var defaultScenario: Scenario!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
+        myScenarios = CoreDataStack.getAllScenarios(CoreDataStack.sharedInstance)()
+        self.tableView.reloadData()
     }
 
     // MARK: - Table view data source
@@ -30,24 +37,30 @@ class ScenarioTableViewController: UITableViewController {
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return 0
+        return myScenarios.count
     }
 
-    /*
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! UITableViewCell
-
+        var cell = tableView.dequeueReusableCellWithIdentifier("scenarioCell", forIndexPath: indexPath) as? UITableViewCell
+        
+        if cell == nil {
+            cell = UITableViewCell(style: UITableViewCellStyle.Default,reuseIdentifier: "scenarioCell")}
+        
+        let newScenario = myScenarios[indexPath.row] as! Scenario
+        
+        cell!.textLabel!.text = newScenario.valueForKey("name") as? String
+        
         // Configure the cell...
 
-        return cell
+        return cell!
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.
