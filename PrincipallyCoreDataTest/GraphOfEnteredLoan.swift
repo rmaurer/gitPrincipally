@@ -88,7 +88,7 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             
             //calculate the x point
             
-            let margin:CGFloat = 20.0
+            let margin:CGFloat = 0.0
             var columnXPoint = { (column:Int) -> CGFloat in
                 //Calculate gap between points
                 let spacer = (width - margin*2 - 4) /
@@ -302,7 +302,7 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             ///Draw line to mark one particular payment
             
             //self.whiteLine.speed = 0.0
-        
+        /*
             CAWhiteLine.frame = CGRectMake(22,0,2,CGFloat(rect.height))
             CAWhiteLine.backgroundColor = UIColor.whiteColor().CGColor
             
@@ -315,7 +315,7 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             
             CAWhiteLine.addAnimation(animation, forKey: "animate transform animation")
             
-            CAWhiteLine.speed = 0
+            CAWhiteLine.speed = 0*/
             
             
     }

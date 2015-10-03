@@ -26,6 +26,10 @@
 		B39A495B1B1B40D800707C56 /* Scenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49591B1B40D800707C56 /* Scenario.swift */; };
 		B39A495C1B1B40D800707C56 /* MonthlyPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A495A1B1B40D800707C56 /* MonthlyPayment.swift */; };
 		B39A495E1B1DE6F200707C56 /* Scraps.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A495D1B1DE6F200707C56 /* Scraps.swift */; };
+		B3CD91171BBDECCC007A5EA2 /* RepaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CD91161BBDECCC007A5EA2 /* RepaymentViewController.swift */; };
+		B3CD91191BBDECE6007A5EA2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CD91181BBDECE6007A5EA2 /* SettingsViewController.swift */; };
+		B3CD911B1BBDF064007A5EA2 /* SecnarioNavController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CD911A1BBDF064007A5EA2 /* SecnarioNavController.swift */; };
+		B3CD911D1BBE005C007A5EA2 /* RepaymentExtraTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CD911C1BBE005C007A5EA2 /* RepaymentExtraTableViewController.swift */; };
 		B3D0D1681B08F6DC00BD0C0C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D0D1671B08F6DC00BD0C0C /* AppDelegate.swift */; };
 		B3D0D16B1B08F6DC00BD0C0C /* PrincipallyCoreDataTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B3D0D1691B08F6DC00BD0C0C /* PrincipallyCoreDataTest.xcdatamodeld */; };
 		B3D0D1701B08F6DC00BD0C0C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3D0D16E1B08F6DC00BD0C0C /* Main.storyboard */; };
@@ -80,6 +84,10 @@
 		B39A49591B1B40D800707C56 /* Scenario.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scenario.swift; sourceTree = "<group>"; };
 		B39A495A1B1B40D800707C56 /* MonthlyPayment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonthlyPayment.swift; sourceTree = "<group>"; };
 		B39A495D1B1DE6F200707C56 /* Scraps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scraps.swift; sourceTree = "<group>"; };
+		B3CD91161BBDECCC007A5EA2 /* RepaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepaymentViewController.swift; sourceTree = "<group>"; };
+		B3CD91181BBDECE6007A5EA2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		B3CD911A1BBDF064007A5EA2 /* SecnarioNavController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecnarioNavController.swift; sourceTree = "<group>"; };
+		B3CD911C1BBE005C007A5EA2 /* RepaymentExtraTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepaymentExtraTableViewController.swift; sourceTree = "<group>"; };
 		B3D0D1621B08F6DC00BD0C0C /* PrincipallyCoreDataTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrincipallyCoreDataTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3D0D1661B08F6DC00BD0C0C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B3D0D1671B08F6DC00BD0C0C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -163,6 +171,16 @@
 			name = Scenario;
 			sourceTree = "<group>";
 		};
+		B3CD91151BBDECB0007A5EA2 /* Repayment */ = {
+			isa = PBXGroup;
+			children = (
+				B3CD91161BBDECCC007A5EA2 /* RepaymentViewController.swift */,
+				B3CD91181BBDECE6007A5EA2 /* SettingsViewController.swift */,
+				B3CD911C1BBE005C007A5EA2 /* RepaymentExtraTableViewController.swift */,
+			);
+			name = Repayment;
+			sourceTree = "<group>";
+		};
 		B3D0D1591B08F6DB00BD0C0C = {
 			isa = PBXGroup;
 			children = (
@@ -183,6 +201,7 @@
 		B3D0D1641B08F6DC00BD0C0C /* PrincipallyCoreDataTest */ = {
 			isa = PBXGroup;
 			children = (
+				B3CD91151BBDECB0007A5EA2 /* Repayment */,
 				B3713F191B48500C00C1ABEF /* Media.xcassets */,
 				B39A494C1B17F33F00707C56 /* Loans */,
 				B3F1C1EA1B3853DE009283B0 /* Entry  */,
@@ -240,6 +259,7 @@
 				B3D3A8481B51728C00B89D67 /* FlatLabel.swift */,
 				B3D3A84A1B51876C00B89D67 /* FlatTextField.swift */,
 				B3713F1D1B4864B500C1ABEF /* NavController.swift */,
+				B3CD911A1BBDF064007A5EA2 /* SecnarioNavController.swift */,
 			);
 			name = "Design Subclasses";
 			sourceTree = "<group>";
@@ -443,19 +463,23 @@
 			files = (
 				B378D1BD1B65AC3200AD66F5 /* ReverseParkedTextField.swift in Sources */,
 				B3DEF9011B7D872F0033837C /* PaymentContainerTableViewController.swift in Sources */,
+				B3CD91191BBDECE6007A5EA2 /* SettingsViewController.swift in Sources */,
 				B39A495B1B1B40D800707C56 /* Scenario.swift in Sources */,
 				B378D1B91B65619200AD66F5 /* SelectLoanTypeView.swift in Sources */,
 				B39A49581B1A9AA300707C56 /* Loan.swift in Sources */,
 				B39A495C1B1B40D800707C56 /* MonthlyPayment.swift in Sources */,
 				B3D3A84B1B51876C00B89D67 /* FlatTextField.swift in Sources */,
 				B3DEF8FE1B7C09100033837C /* BalanceInterestTableViewController.swift in Sources */,
+				B3CD911B1BBDF064007A5EA2 /* SecnarioNavController.swift in Sources */,
 				B32344FF1B3F6A4900B1709C /* PayExtraViewController.swift in Sources */,
 				B378D1B71B65268E00AD66F5 /* TestLoanEntryViewController.swift in Sources */,
 				B3E65F5E1BBCA57B00EC0AF1 /* ScenarioTableViewController.swift in Sources */,
 				B3F1C1F61B3CCFA3009283B0 /* EnteredViewController.swift in Sources */,
+				B3CD91171BBDECCC007A5EA2 /* RepaymentViewController.swift in Sources */,
 				B3D3A8461B4DE8C800B89D67 /* GraphOfEnteredLoan.swift in Sources */,
 				B3D0D16B1B08F6DC00BD0C0C /* PrincipallyCoreDataTest.xcdatamodeld in Sources */,
 				B3F1C1E51B2FBB4B009283B0 /* CoreDataStack.swift in Sources */,
+				B3CD911D1BBE005C007A5EA2 /* RepaymentExtraTableViewController.swift in Sources */,
 				B32344F91B3E041900B1709C /* LoanTableViewCell.swift in Sources */,
 				B3D3A8491B51728C00B89D67 /* FlatLabel.swift in Sources */,
 				B3942D661B531DA0005BCD2C /* GraphOfScenario.swift in Sources */,

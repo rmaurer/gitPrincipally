@@ -209,8 +209,8 @@ class Loan: NSManagedObject {
         var returnMonth : Int = 0
         let yearsToAdd = floor(mpNumber / 12)
         let monthsToAdd = mpNumber % 12
-        println("year to add \(yearsToAdd)")
-        println("month to add \(monthsToAdd)")
+        //println("year to add \(yearsToAdd)")
+        //println("month to add \(monthsToAdd)")
         
         if nowMonth + Int(monthsToAdd) > 12 {
             returnYear = nowYear + Int(yearsToAdd) + 1
@@ -218,8 +218,8 @@ class Loan: NSManagedObject {
         } else{
             returnYear = nowYear + Int(yearsToAdd)
             returnMonth = nowMonth + Int(monthsToAdd)
-            println("should get in here")
-            println(returnYear)
+            //println("should get in here")
+            //println(returnYear)
         }
         let returnMonthString = convertMonthNumberToName(Int(returnMonth))
         

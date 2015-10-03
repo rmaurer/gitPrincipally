@@ -37,7 +37,18 @@ class GraphViewController: UIViewController {
         
         let totalMonths = firstLoan.monthsInRepaymentTerm.floatValue - firstLoan.monthsUntilRepayment.floatValue
         
-        graphOfEnteredLoan.CAWhiteLine.timeOffset = CFTimeInterval(sender.value / totalMonths)
+        //
+        
+        UIView.animateWithDuration(0.1, delay: 0, options: .CurveLinear, animations: {
+            var graphLineFrame = self.graphLine.frame
+            var totalWidth = self.graphOfEnteredLoan.frame.width
+            var widthRatio = sender.value / sender.maximumValue
+            graphLineFrame.origin.x = CGFloat(widthRatio) * totalWidth
+            self.graphLine.frame = graphLineFrame
+            
+            }, completion: nil)
+        println(graphLine.frame.origin.x)
+        //graphOfEnteredLoan.CAWhiteLine.timeOffset = CFTimeInterval(sender.value / totalMonths)
     
         let mpForWorkingLoan = firstLoan.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
         
@@ -58,6 +69,8 @@ class GraphViewController: UIViewController {
         
         
     }
+    
+    @IBOutlet weak var graphLine: UIView!
     
     @IBOutlet weak var paymentDateLabel: UILabel!
     
@@ -152,7 +165,7 @@ class GraphViewController: UIViewController {
         
         graphOfEnteredLoan.enteredLoan = firstLoan
         graphOfEnteredLoan.setNeedsDisplay()    
-        graphOfEnteredLoan.CAWhiteLine.duration = NSTimeInterval(firstLoan.monthsInRepaymentTerm.floatValue - firstLoan.monthsUntilRepayment.floatValue)
+        //graphOfEnteredLoan.CAWhiteLine.duration = NSTimeInterval(firstLoan.monthsInRepaymentTerm.floatValue - firstLoan.monthsUntilRepayment.floatValue)
 
     }
     
