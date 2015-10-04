@@ -27,22 +27,11 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
     
     @IBAction func doneButton(sender: UIBarButtonItem) {
 
-        
-       /* //grab each of the views that we're going to need
-        let BIView = self.childViewControllers[0] as! BalanceInterestTableViewController
-        let paymentView = self.childViewControllers[2] as! PaymentContainerTableViewController
-        let graphView = self.childViewControllers[1] as! GraphViewController
-        
-       */
-        //resign first responders
-        
-        println("this is hte done button and should not be run on view did load")
         loadChildViews()
         self.loanNameOutlet.resignFirstResponder()
         BIView.interest.resignFirstResponder()
         BIView.balance.resignFirstResponder()
-        
-        
+        paymentView.monthlyAmountTextField.resignFirstResponder()
         
         if loanIsEnteredGraphIsShowing {
             graphView.graphFlippedAroundNotVisible()    
@@ -246,5 +235,14 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
             alert.show()
             return "Loan Name"
         }
+    }
+    
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        self.view.endEditing(true)
+        loadChildViews()
+        self.loanNameOutlet.resignFirstResponder()
+        BIView.interest.resignFirstResponder()
+        BIView.balance.resignFirstResponder()
+        paymentView.monthlyAmountTextField.resignFirstResponder()
     }
 }

@@ -199,28 +199,78 @@
                                     <action selector="viewSlider:" destination="M0b-mN-yPa" eventType="valueChanged" id="IsZ-dS-rvj"/>
                                 </connections>
                             </slider>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Fj-8X-UR3">
-                                <rect key="frame" x="71" y="364" width="200" height="117"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Fj-8X-UR3">
+                                <rect key="frame" x="16" y="327" width="288" height="162"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XJb-Pb-BDT">
-                                        <rect key="frame" x="0.0" y="0.0" width="34" height="117"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bWm-rJ-oZT" userLabel="BlueView" customClass="GraphOfScenario" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="162"/>
+                                        <subviews>
+                                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pOE-wF-53b">
+                                                <rect key="frame" x="8" y="2" width="202" height="157"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="202" id="1xt-4G-SJL"/>
+                                                </constraints>
+                                                <connections>
+                                                    <segue destination="RQi-cn-Ygo" kind="embed" id="I7U-vn-51P"/>
+                                                </connections>
+                                            </containerView>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="pOE-wF-53b" secondAttribute="bottom" id="6Dx-dT-rEC"/>
+                                            <constraint firstItem="pOE-wF-53b" firstAttribute="top" secondItem="bWm-rJ-oZT" secondAttribute="top" id="HPZ-4Z-Mur"/>
+                                            <constraint firstItem="pOE-wF-53b" firstAttribute="leading" secondItem="bWm-rJ-oZT" secondAttribute="leading" id="yCE-uI-cBV"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="startColor">
+                                                <color key="value" red="0.4766090214" green="0.37373736499999999" blue="0.28653344510000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="endColor">
+                                                <color key="value" red="0.564653933" green="0.45339596269999999" blue="0.35711643100000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="pStartColor">
+                                                <color key="value" red="0.4766090214" green="0.37373736499999999" blue="0.28653344510000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="pEndColor">
+                                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="bStartColor">
+                                                <color key="value" red="1" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="bEndColor">
+                                                <color key="value" red="1" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XJb-Pb-BDT" userLabel="YellowView">
+                                        <rect key="frame" x="0.0" y="0.0" width="5" height="162"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FY6-eW-HV4" userLabel="innerYellow" customClass="GraphOfScenario" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="282" height="162"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="282" id="b1u-Sh-Oje"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
                                         <color key="backgroundColor" red="1" green="1" blue="0.40000000596046448" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="117" id="AsY-u7-BLo"/>
-                                            <constraint firstAttribute="width" constant="34" id="swP-RG-oQ5"/>
+                                            <constraint firstItem="FY6-eW-HV4" firstAttribute="leading" secondItem="XJb-Pb-BDT" secondAttribute="leading" id="Y0z-Yd-hM1"/>
+                                            <constraint firstAttribute="bottom" secondItem="FY6-eW-HV4" secondAttribute="bottom" id="nra-EY-bd5"/>
+                                            <constraint firstItem="FY6-eW-HV4" firstAttribute="top" secondItem="XJb-Pb-BDT" secondAttribute="top" id="pkT-v3-bOO"/>
                                         </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bWm-rJ-oZT">
-                                        <rect key="frame" x="36" y="0.0" width="128" height="117"/>
-                                        <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="bWm-rJ-oZT" secondAttribute="bottom" id="6Ij-oQ-hh9"/>
-                                    <constraint firstItem="bWm-rJ-oZT" firstAttribute="top" secondItem="9Fj-8X-UR3" secondAttribute="top" id="d4c-FV-ihT"/>
-                                    <constraint firstAttribute="trailing" secondItem="bWm-rJ-oZT" secondAttribute="trailing" id="i7c-u1-1HE"/>
-                                    <constraint firstItem="bWm-rJ-oZT" firstAttribute="leading" secondItem="XJb-Pb-BDT" secondAttribute="trailing" id="vdS-4P-LWN"/>
+                                    <constraint firstAttribute="trailing" secondItem="bWm-rJ-oZT" secondAttribute="trailing" id="3ZP-CH-fue"/>
+                                    <constraint firstAttribute="trailing" secondItem="XJb-Pb-BDT" secondAttribute="trailing" constant="282" id="5aQ-rD-fZF"/>
+                                    <constraint firstAttribute="bottom" secondItem="XJb-Pb-BDT" secondAttribute="bottom" id="BH8-5S-R0z"/>
+                                    <constraint firstItem="XJb-Pb-BDT" firstAttribute="top" secondItem="9Fj-8X-UR3" secondAttribute="top" id="D7O-VE-Nku"/>
+                                    <constraint firstItem="bWm-rJ-oZT" firstAttribute="top" secondItem="9Fj-8X-UR3" secondAttribute="top" id="LAR-nW-xSG"/>
+                                    <constraint firstItem="bWm-rJ-oZT" firstAttribute="leading" secondItem="9Fj-8X-UR3" secondAttribute="leading" id="MNz-Qn-geQ"/>
+                                    <constraint firstAttribute="bottom" secondItem="bWm-rJ-oZT" secondAttribute="bottom" id="Ylj-ma-Wgh"/>
+                                    <constraint firstItem="XJb-Pb-BDT" firstAttribute="leading" secondItem="9Fj-8X-UR3" secondAttribute="leading" id="fxj-2k-XV9"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -248,9 +298,13 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="blueView" destination="bWm-rJ-oZT" id="nv2-2R-q4m"/>
+                        <outlet property="defaultScenarioView" destination="bWm-rJ-oZT" id="Wiy-3r-Veg"/>
+                        <outlet property="innerYellowWidth" destination="b1u-Sh-Oje" id="Apm-Dj-ZpI"/>
                         <outlet property="planPickerOutlet" destination="tWz-1y-mOZ" id="xBm-Kd-RZj"/>
+                        <outlet property="rightEdgeYellow" destination="5aQ-rD-fZF" id="d8h-Gf-89V"/>
+                        <outlet property="scenarioParentView" destination="9Fj-8X-UR3" id="qnV-dA-dfj"/>
                         <outlet property="viewSliderOutlet" destination="aNW-rX-vRt" id="sob-BZ-0Z5"/>
+                        <outlet property="yellowGraphOfScenario" destination="FY6-eW-HV4" id="hIp-vX-b6d"/>
                         <outlet property="yellowView" destination="XJb-Pb-BDT" id="Aey-4H-D5d"/>
                     </connections>
                 </viewController>
@@ -1409,6 +1463,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uKY-X2-1Dq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-260" y="-846"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="pct-EK-Nvr">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="RQi-cn-Ygo" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fxK-fQ-0Fr"/>
+                        <viewControllerLayoutGuide type="bottom" id="Hzv-Nh-EOe"/>
+                    </layoutGuides>
+                    <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="k1B-J6-TZH">
+                        <rect key="frame" x="0.0" y="0.0" width="202" height="157"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <toolbarItems/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pUq-0l-f4x" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <resources>

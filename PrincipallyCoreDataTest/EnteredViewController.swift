@@ -24,7 +24,7 @@ class EnteredViewController: UIViewController {
     @IBAction func graphSlider(sender: UISlider) {
         sender.value = floor(sender.value)
         let totalMonths = clickedLoan!.monthsInRepaymentTerm.floatValue - clickedLoan!.monthsUntilRepayment.floatValue
-        graphOfEnteredLoan.CAWhiteLine.timeOffset = CFTimeInterval(sender.value / totalMonths)
+        //graphOfEnteredLoan.CAWhiteLine.timeOffset = CFTimeInterval(sender.value / totalMonths)
         
         let mpForThisLoan = clickedLoan!.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
         var thisLoan = mpForThisLoan[Int(sender.value)] as! MonthlyPayment

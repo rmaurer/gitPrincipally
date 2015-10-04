@@ -7,11 +7,18 @@
 //
 
 import UIKit
+import CoreData
 
 class RepaymentViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
     @IBOutlet weak var planPickerOutlet: UIPickerView!
     
+    @IBOutlet weak var yellowGraphOfScenario: GraphOfScenario!
+    
+
+    @IBOutlet weak var scenarioParentView: UIView!
+    
+    @IBOutlet weak var innerYellowWidth: NSLayoutConstraint!
     
     @IBOutlet weak var sideConstraintTest: NSLayoutConstraint!
     
@@ -19,11 +26,12 @@ class RepaymentViewController: UIViewController, UIPickerViewDataSource, UIPicke
         super.viewDidLoad()
         planPickerOutlet.dataSource = self
         planPickerOutlet.delegate = self
-        viewSliderOutlet.maximumValue = Float(blueView.frame.width)
-        //sideConstraintTest.constant = -yellowView.frame.width
+        viewSliderOutlet.maximumValue = Float(scenarioParentView.frame.width)
+        defaultScenarioView.graphedScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
+        yellowGraphOfScenario.graphedScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
+        //innerYellowWidth.constant = scenarioParentView.frame.width
+        rightEdgeYellow.constant = scenarioParentView.frame.width - 1
         
-        //-yellowView.frame.width
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -49,24 +57,22 @@ class RepaymentViewController: UIViewController, UIPickerViewDataSource, UIPicke
         //updateLabel()
     }
 
-    @IBOutlet weak var blueView: UIView!
+    @IBOutlet weak var defaultScenarioView: GraphOfScenario!
     
     @IBOutlet weak var yellowView: UIView!
     
     @IBOutlet weak var viewSliderOutlet: UISlider!
+    
+    @IBOutlet weak var rightEdgeYellow: NSLayoutConstraint!
     
     @IBAction func viewSlider(sender: UISlider) {
         
         sender.value = floor(sender.value)
         UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseOut, animations: {
             var yellowViewFrame = self.yellowView.frame
-            yellowViewFrame.origin.x = CGFloat(sender.value)
-
-            self.yellowView.frame = yellowViewFrame
-            
-            }, completion: { finished in
-                println("Basket doors opened!")
-        })
+           // yellowViewFrame.origin.x = CGFloat(sender.value)
+            self.yellowView.frame = CGRectMake(yellowViewFrame.origin.x, yellowViewFrame.origin.y, CGFloat(sender.value), yellowViewFrame.height)
+            }, completion: nil)
         
         
         

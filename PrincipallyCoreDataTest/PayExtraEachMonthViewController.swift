@@ -114,7 +114,7 @@ class PayExtraEachMonthViewController: UIViewController {
             graphOfExtraPaymentScenario.setNeedsDisplay()
         }else{
             println("it's a string")
-            graphOfExtraPaymentScenario.CAWhiteLine.timeOffset = 0.5
+            //graphOfExtraPaymentScenario.CAWhiteLine.timeOffset = 0.5
             //it's a string, and we don't do any calculations
         }
     }
@@ -155,8 +155,8 @@ class PayExtraEachMonthViewController: UIViewController {
         super.viewDidLoad()
         unsavedScenario = CoreDataStack.getUnsaved(CoreDataStack.sharedInstance)()
         defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
-        graphOfExtraPaymentScenario.defaultScenario = defaultScenario
-        graphOfExtraPaymentScenario.unsavedScenario = unsavedScenario
+        graphOfExtraPaymentScenario.graphedScenario = defaultScenario
+        //graphOfExtraPaymentScenario.unsavedScenario = unsavedScenario
         var error: NSError?
         graphSliderOutlet.maximumValue = Float(defaultScenario.concatenatedPayment.count) - 1
         graphSliderOutlet.setValue(0, animated: true)
