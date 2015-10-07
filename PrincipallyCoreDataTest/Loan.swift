@@ -68,8 +68,10 @@ class Loan: NSManagedObject {
         let PV = self.balance.doubleValue
         
         //Check if payment has already started.  In which case, calculate the repayment amount based on the total number of months on the loan 
+        
+        //START HERE: Shouldn't this be monthsinrepaymentterm - monthsuntilrepayment. Otherwise say you were already 2 years into payment.  Monthsinrepayment would be 120, and
         if monthsUntilRepayment <= 0 {
-            let n = Double(self.monthsInRepaymentTerm.integerValue * -1) //Make it negative for purposes of the formula
+            let n = Double(self.monthsInRepaymentTerm.integerValue + self.monthsUntilRepayment.integerValue) * -1 //Make it negative for purposes of the formula
             let defaultMonthlyPayment = (r * PV) / (1 - pow((1+r),n))
             return defaultMonthlyPayment
         }

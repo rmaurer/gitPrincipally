@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9981954E5BBAA1C834901D64 /* Pods_PrincipallyCoreDataTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38D15229D7FA277940AF7BB4 /* Pods_PrincipallyCoreDataTest.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		B31DD0041BC1967300F97C30 /* NewScenarioContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31DD0031BC1967300F97C30 /* NewScenarioContainerViewController.swift */; };
 		B32299BB1B10F14B00AAD0F0 /* linkingfile.c in Sources */ = {isa = PBXBuildFile; fileRef = B32299B91B10F14B00AAD0F0 /* linkingfile.c */; };
 		B32344F91B3E041900B1709C /* LoanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32344F81B3E041900B1709C /* LoanTableViewCell.swift */; };
 		B32344FF1B3F6A4900B1709C /* PayExtraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32344FE1B3F6A4900B1709C /* PayExtraViewController.swift */; };
@@ -64,6 +65,7 @@
 		38D15229D7FA277940AF7BB4 /* Pods_PrincipallyCoreDataTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PrincipallyCoreDataTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		46D31C8ED3C59FD32023E227 /* Pods-PrincipallyCoreDataTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PrincipallyCoreDataTest.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PrincipallyCoreDataTest/Pods-PrincipallyCoreDataTest.debug.xcconfig"; sourceTree = "<group>"; };
 		5F7BB4C21F7749EC3D0AAADC /* Pods-PrincipallyCoreDataTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PrincipallyCoreDataTest.release.xcconfig"; path = "Pods/Target Support Files/Pods-PrincipallyCoreDataTest/Pods-PrincipallyCoreDataTest.release.xcconfig"; sourceTree = "<group>"; };
+		B31DD0031BC1967300F97C30 /* NewScenarioContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewScenarioContainerViewController.swift; sourceTree = "<group>"; };
 		B32299B81B10F14A00AAD0F0 /* PrincipallyCoreDataTest-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PrincipallyCoreDataTest-Bridging-Header.h"; sourceTree = "<group>"; };
 		B32299B91B10F14B00AAD0F0 /* linkingfile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = linkingfile.c; path = PrincipallyCoreDataTest/linkingfile.c; sourceTree = "<group>"; };
 		B32299BA1B10F14B00AAD0F0 /* linkingfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = linkingfile.h; path = PrincipallyCoreDataTest/linkingfile.h; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				B3CD91161BBDECCC007A5EA2 /* RepaymentViewController.swift */,
 				B3CD91181BBDECE6007A5EA2 /* SettingsViewController.swift */,
 				B3CD911C1BBE005C007A5EA2 /* RepaymentExtraTableViewController.swift */,
+				B31DD0031BC1967300F97C30 /* NewScenarioContainerViewController.swift */,
 			);
 			name = Repayment;
 			sourceTree = "<group>";
@@ -464,6 +467,7 @@
 				B378D1BD1B65AC3200AD66F5 /* ReverseParkedTextField.swift in Sources */,
 				B3DEF9011B7D872F0033837C /* PaymentContainerTableViewController.swift in Sources */,
 				B3CD91191BBDECE6007A5EA2 /* SettingsViewController.swift in Sources */,
+				B31DD0041BC1967300F97C30 /* NewScenarioContainerViewController.swift in Sources */,
 				B39A495B1B1B40D800707C56 /* Scenario.swift in Sources */,
 				B378D1B91B65619200AD66F5 /* SelectLoanTypeView.swift in Sources */,
 				B39A49581B1A9AA300707C56 /* Loan.swift in Sources */,

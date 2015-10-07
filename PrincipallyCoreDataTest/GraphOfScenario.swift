@@ -12,6 +12,7 @@ import CoreData
 class GraphOfScenario: UIView {
 
     var graphedScenario:Scenario? = nil
+    
     @IBInspectable var startColor: UIColor = UIColor.redColor()
     @IBInspectable var endColor: UIColor = UIColor.greenColor()
     
@@ -21,8 +22,8 @@ class GraphOfScenario: UIView {
     @IBInspectable var bStartColor: UIColor = UIColor.greenColor()
     @IBInspectable var bEndColor: UIColor = UIColor.greenColor()
     
-    let alwaysX = CGFloat()
-    let alwaysY = CGFloat()
+    var maxHeight = Double()
+    var maxWidth = Int()//CGFloat()
 
     
     override func drawRect(rect: CGRect) {
@@ -30,10 +31,12 @@ class GraphOfScenario: UIView {
         
         if graphedScenario != nil {
             
+            
             var interestGraphPoints : [Double] = graphedScenario!.makeArrayOfAllInterestPayments()
             var totalGraphPoints : [Double] = graphedScenario!.makeArrayOfTotalPayments()
-            var app = principallyApp()
-            app.printAllScenariosAndLoans()
+            
+            //var app = principallyApp()
+            //app.printAllScenariosAndLoans()
             //var currentScenarioInterestGraphPoints : [Double] = currentScenario!.makeArrayOfAllInterestPayments()
             let width = rect.width
             let height = rect.height
@@ -83,12 +86,13 @@ class GraphOfScenario: UIView {
                 0)
             
             //calculate the x point
-            
             let margin:CGFloat = 0.0
+            let spacer = (width - margin*2 - 4) /
+                CGFloat((interestGraphPoints.count - 1))
+            
+            
             var columnXPoint = { (column:Int) -> CGFloat in
                 //Calculate gap between points
-                let spacer = (width - margin*2 - 4) /
-                    CGFloat((interestGraphPoints.count - 1))
                 var x:CGFloat = CGFloat(column) * spacer
                 x += margin + 2
                 return x
@@ -97,10 +101,11 @@ class GraphOfScenario: UIView {
             // calculate the y point
             
             let topBorder:CGFloat = 0
-            let bottomBorder:CGFloat = 27
+            let bottomBorder:CGFloat = 0
             let graphHeight = height - topBorder - bottomBorder
             let maxValue = maxElement(interestGraphPoints)
-            let totalMaxValue = maxElement(totalGraphPoints)
+            let totalMaxValue = maxHeight//maxElement(totalGraphPoints)
+            
             var columnYPoint = { (graphPoint:Double) -> CGFloat in
                 var y:CGFloat = CGFloat(graphPoint) /
                     CGFloat(totalMaxValue) * graphHeight
@@ -110,14 +115,21 @@ class GraphOfScenario: UIView {
             
             UIColor.whiteColor().setFill()
             UIColor.whiteColor().setStroke()
-            
+            //START HERE: THIS FAILED.  POSSIBLY SOME ISSUE WITH CHANGING COLUMNXPOINT
             var totalGraphPath = UIBezierPath()
             totalGraphPath.moveToPoint(CGPoint(x:columnXPoint(0),y:columnYPoint(totalGraphPoints[0])))
             
-            for i in 1..<totalGraphPoints.count {
+            for i in 1...maxWidth{//<totalGraphPoints.count {
+                if i<totalGraphPoints.count {
                 let nextPoint = CGPoint(x:columnXPoint(i),
                     y:columnYPoint(totalGraphPoints[i]))
                 totalGraphPath.addLineToPoint(nextPoint)
+                }
+                else {
+                    let nextPoint = CGPoint(x:columnXPoint(i),
+                        y:0)
+                    totalGraphPath.addLineToPoint(nextPoint)
+                }
             }
             
             //1 - save the state of the context (commented out for now)
@@ -224,6 +236,29 @@ class GraphOfScenario: UIView {
                 y: third * 3))//height - bottomBorder))
             linePath.addLineToPoint(CGPoint(x:width - margin,
                 y: third * 3))//height - bottomBorder))
+            
+            //year line set up
+            let yearSpacer = spacer * 12
+            var firstSpacer = CGFloat(self.getMonthUntilJanuary()) * spacer
+            var numberOfYears = Int(floor(Float((maxWidth - self.getMonthUntilJanuary()))/12) - 1)
+            var yearLineHeight = CGFloat(height - (height/20))
+            
+            //first year line
+            linePath.moveToPoint(CGPoint(x:firstSpacer,
+                y: CGFloat(height)))//height - bottomBorder))
+            linePath.addLineToPoint(CGPoint(x:firstSpacer,
+                y: yearLineHeight))//height - bottomBorder))
+            
+            //all the years
+            for year in 1...numberOfYears {
+                let currentSpacer = CGFloat(firstSpacer + (yearSpacer * CGFloat(year)))
+                linePath.moveToPoint(CGPoint(x:currentSpacer,
+                    y: CGFloat(height)))//height - bottomBorder))
+                linePath.addLineToPoint(CGPoint(x:currentSpacer,
+                    y: yearLineHeight))//height - bottomBorder))
+            }
+            
+            
             let color = UIColor(white: 1.0, alpha: 0.3)
             color.setStroke()
             
@@ -237,6 +272,16 @@ class GraphOfScenario: UIView {
         
         }
         
+    }
+    
+    func getMonthUntilJanuary() -> Int {
+        var monthsUntilJanuary = Int()
+        let now = NSDate()
+        let calendar = NSCalendar.currentCalendar()
+        let components = calendar.components(.CalendarUnitHour | .CalendarUnitMinute | .CalendarUnitMonth | .CalendarUnitYear | .CalendarUnitDay, fromDate: now)
+        let nowMonth = components.month
+        monthsUntilJanuary = 12 - nowMonth
+        return monthsUntilJanuary
     }
 
 }

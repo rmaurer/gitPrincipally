@@ -202,25 +202,9 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Fj-8X-UR3">
                                 <rect key="frame" x="16" y="327" width="288" height="162"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bWm-rJ-oZT" userLabel="BlueView" customClass="GraphOfScenario" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="288" height="162"/>
-                                        <subviews>
-                                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pOE-wF-53b">
-                                                <rect key="frame" x="8" y="2" width="202" height="157"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="202" id="1xt-4G-SJL"/>
-                                                </constraints>
-                                                <connections>
-                                                    <segue destination="RQi-cn-Ygo" kind="embed" id="I7U-vn-51P"/>
-                                                </connections>
-                                            </containerView>
-                                        </subviews>
-                                        <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="pOE-wF-53b" secondAttribute="bottom" id="6Dx-dT-rEC"/>
-                                            <constraint firstItem="pOE-wF-53b" firstAttribute="top" secondItem="bWm-rJ-oZT" secondAttribute="top" id="HPZ-4Z-Mur"/>
-                                            <constraint firstItem="pOE-wF-53b" firstAttribute="leading" secondItem="bWm-rJ-oZT" secondAttribute="leading" id="yCE-uI-cBV"/>
-                                        </constraints>
+                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bWm-rJ-oZT" userLabel="BlueView" customClass="GraphOfScenario" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
+                                        <rect key="frame" x="-1" y="0.0" width="288" height="162"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="color" keyPath="startColor">
                                                 <color key="value" red="0.4766090214" green="0.37373736499999999" blue="0.28653344510000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -235,42 +219,32 @@
                                                 <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="color" keyPath="bStartColor">
-                                                <color key="value" red="1" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="color" keyPath="bEndColor">
-                                                <color key="value" red="1" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XJb-Pb-BDT" userLabel="YellowView">
-                                        <rect key="frame" x="0.0" y="0.0" width="5" height="162"/>
-                                        <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FY6-eW-HV4" userLabel="innerYellow" customClass="GraphOfScenario" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="282" height="162"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="282" id="b1u-Sh-Oje"/>
-                                                </constraints>
-                                            </view>
-                                        </subviews>
-                                        <color key="backgroundColor" red="1" green="1" blue="0.40000000596046448" alpha="1" colorSpace="calibratedRGB"/>
+                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pOE-wF-53b">
+                                        <rect key="frame" x="0.0" y="0.0" width="202" height="162"/>
                                         <constraints>
-                                            <constraint firstItem="FY6-eW-HV4" firstAttribute="leading" secondItem="XJb-Pb-BDT" secondAttribute="leading" id="Y0z-Yd-hM1"/>
-                                            <constraint firstAttribute="bottom" secondItem="FY6-eW-HV4" secondAttribute="bottom" id="nra-EY-bd5"/>
-                                            <constraint firstItem="FY6-eW-HV4" firstAttribute="top" secondItem="XJb-Pb-BDT" secondAttribute="top" id="pkT-v3-bOO"/>
+                                            <constraint firstAttribute="width" constant="202" id="1xt-4G-SJL"/>
                                         </constraints>
-                                    </view>
+                                        <connections>
+                                            <segue destination="RQi-cn-Ygo" kind="embed" id="I7U-vn-51P"/>
+                                        </connections>
+                                    </containerView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="bWm-rJ-oZT" secondAttribute="trailing" id="3ZP-CH-fue"/>
-                                    <constraint firstAttribute="trailing" secondItem="XJb-Pb-BDT" secondAttribute="trailing" constant="282" id="5aQ-rD-fZF"/>
-                                    <constraint firstAttribute="bottom" secondItem="XJb-Pb-BDT" secondAttribute="bottom" id="BH8-5S-R0z"/>
-                                    <constraint firstItem="XJb-Pb-BDT" firstAttribute="top" secondItem="9Fj-8X-UR3" secondAttribute="top" id="D7O-VE-Nku"/>
                                     <constraint firstItem="bWm-rJ-oZT" firstAttribute="top" secondItem="9Fj-8X-UR3" secondAttribute="top" id="LAR-nW-xSG"/>
                                     <constraint firstItem="bWm-rJ-oZT" firstAttribute="leading" secondItem="9Fj-8X-UR3" secondAttribute="leading" id="MNz-Qn-geQ"/>
+                                    <constraint firstItem="pOE-wF-53b" firstAttribute="top" secondItem="9Fj-8X-UR3" secondAttribute="top" id="ULF-fh-d6v"/>
                                     <constraint firstAttribute="bottom" secondItem="bWm-rJ-oZT" secondAttribute="bottom" id="Ylj-ma-Wgh"/>
-                                    <constraint firstItem="XJb-Pb-BDT" firstAttribute="leading" secondItem="9Fj-8X-UR3" secondAttribute="leading" id="fxj-2k-XV9"/>
+                                    <constraint firstItem="pOE-wF-53b" firstAttribute="leading" secondItem="9Fj-8X-UR3" secondAttribute="leading" id="khi-c8-Von"/>
+                                    <constraint firstAttribute="bottom" secondItem="pOE-wF-53b" secondAttribute="bottom" id="wos-QY-hZf"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -298,14 +272,11 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="containerWidth" destination="1xt-4G-SJL" id="sBW-jA-5AE"/>
                         <outlet property="defaultScenarioView" destination="bWm-rJ-oZT" id="Wiy-3r-Veg"/>
-                        <outlet property="innerYellowWidth" destination="b1u-Sh-Oje" id="Apm-Dj-ZpI"/>
                         <outlet property="planPickerOutlet" destination="tWz-1y-mOZ" id="xBm-Kd-RZj"/>
-                        <outlet property="rightEdgeYellow" destination="5aQ-rD-fZF" id="d8h-Gf-89V"/>
                         <outlet property="scenarioParentView" destination="9Fj-8X-UR3" id="qnV-dA-dfj"/>
                         <outlet property="viewSliderOutlet" destination="aNW-rX-vRt" id="sob-BZ-0Z5"/>
-                        <outlet property="yellowGraphOfScenario" destination="FY6-eW-HV4" id="hIp-vX-b6d"/>
-                        <outlet property="yellowView" destination="XJb-Pb-BDT" id="Aey-4H-D5d"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8TJ-xY-aIR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -450,6 +421,7 @@
                     <connections>
                         <outlet property="extraAmountOutlet" destination="uL1-Od-8gj" id="gYg-WL-IjT"/>
                         <outlet property="frequencyLabelOutlet" destination="r4p-dX-huc" id="rF1-Wu-t35"/>
+                        <outlet property="frequencySliderOutlet" destination="A2C-8Q-IaH" id="DIy-kM-Sxl"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jbx-e5-A64" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -565,7 +537,7 @@
                                             <action selector="extraAmountEditingChanged:" destination="LtZ-II-WpF" eventType="editingChanged" id="9Yl-IN-ZET"/>
                                         </connections>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Extra Amount Paid" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5R-C6-2qG">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Extra Amount Paid" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5R-C6-2qG">
                                         <rect key="frame" x="0.0" y="0.0" width="90" height="52"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -635,7 +607,7 @@
                                     <constraint firstItem="fCf-kF-bCb" firstAttribute="leading" secondItem="5Rr-X4-EQz" secondAttribute="trailing" id="sXC-nk-jqw"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HeE-vj-4kH" customClass="GraphOfScenario" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HeE-vj-4kH" customClass="GraphOfScenario" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
                                 <rect key="frame" x="15" y="134" width="290" height="120"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Amout Saved" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t8h-MC-n4z">
@@ -1464,23 +1436,62 @@
             </objects>
             <point key="canvasLocation" x="-260" y="-846"/>
         </scene>
-        <!--View Controller-->
+        <!--New Scenario Container View Controller-->
         <scene sceneID="pct-EK-Nvr">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="RQi-cn-Ygo" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="RQi-cn-Ygo" customClass="NewScenarioContainerViewController" customModule="PrincipallyCoreDataTest" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fxK-fQ-0Fr"/>
                         <viewControllerLayoutGuide type="bottom" id="Hzv-Nh-EOe"/>
                     </layoutGuides>
                     <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="k1B-J6-TZH">
-                        <rect key="frame" x="0.0" y="0.0" width="202" height="157"/>
+                        <rect key="frame" x="0.0" y="0.0" width="202" height="162"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XYu-OF-T0n" customClass="GraphOfScenario" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
+                                <rect key="frame" x="16" y="0.0" width="202" height="162"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="202" id="dWR-DD-o4e"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="startColor">
+                                        <color key="value" red="0.19376453760000001" green="0.50850099329999998" blue="0.85232251879999998" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="endColor">
+                                        <color key="value" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="pStartColor">
+                                        <color key="value" red="0.19376453760000001" green="0.50850099329999998" blue="0.85232251879999998" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="pEndColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="bStartColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="bEndColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="XYu-OF-T0n" firstAttribute="leading" secondItem="k1B-J6-TZH" secondAttribute="leadingMargin" id="33P-qt-XZr"/>
+                            <constraint firstItem="Hzv-Nh-EOe" firstAttribute="top" secondItem="XYu-OF-T0n" secondAttribute="bottom" id="6Tq-TS-jUj"/>
+                            <constraint firstItem="XYu-OF-T0n" firstAttribute="top" secondItem="fxK-fQ-0Fr" secondAttribute="bottom" id="dbH-T8-QRx"/>
+                        </constraints>
                     </view>
                     <toolbarItems/>
+                    <connections>
+                        <outlet property="graphWidth" destination="dWR-DD-o4e" id="WZi-xi-610"/>
+                        <outlet property="newScenario" destination="XYu-OF-T0n" id="hTb-WL-qvO"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pUq-0l-f4x" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="874" y="-630"/>
         </scene>
     </scenes>
     <resources>

@@ -17,6 +17,8 @@ class RepaymentExtraTableViewController: UITableViewController {
     @IBAction func extraAmountAction(sender: UITextField) {
     }
     
+    @IBOutlet weak var frequencySliderOutlet: UISlider!
+    
     @IBAction func frequencySlider(sender: UISlider) {
         sender.value = Float(Int(sender.value))
         switch sender.value {

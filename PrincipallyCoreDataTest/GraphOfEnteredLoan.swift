@@ -99,7 +99,7 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             // calculate the y point
             
             let topBorder:CGFloat = 0
-            let bottomBorder:CGFloat = 27
+            let bottomBorder:CGFloat = 0
             let graphHeight = height - topBorder - bottomBorder
             let maxValue = maxElement(interestGraphPoints)
             let totalMaxValue = maxElement(totalGraphPoints)

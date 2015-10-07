@@ -13,25 +13,107 @@ class RepaymentViewController: UIViewController, UIPickerViewDataSource, UIPicke
 
     @IBOutlet weak var planPickerOutlet: UIPickerView!
     
-    @IBOutlet weak var yellowGraphOfScenario: GraphOfScenario!
-    
+    @IBOutlet weak var containerWidth: NSLayoutConstraint!
 
     @IBOutlet weak var scenarioParentView: UIView!
-    
-    @IBOutlet weak var innerYellowWidth: NSLayoutConstraint!
-    
-    @IBOutlet weak var sideConstraintTest: NSLayoutConstraint!
+        
+    var myContainerView = NewScenarioContainerViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         planPickerOutlet.dataSource = self
         planPickerOutlet.delegate = self
-        viewSliderOutlet.maximumValue = Float(scenarioParentView.frame.width)
+        viewSliderOutlet.maximumValue = Float(self.view.frame.width) - 32//Float(defaultScenarioView.frame.width)
         defaultScenarioView.graphedScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
-        yellowGraphOfScenario.graphedScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
-        //innerYellowWidth.constant = scenarioParentView.frame.width
-        rightEdgeYellow.constant = scenarioParentView.frame.width - 1
+         var totalGraphPoints : [Double] = defaultScenarioView.graphedScenario!.makeArrayOfTotalPayments()
+        //you need to set these for both Default & new!
+        defaultScenarioView.maxHeight = Double(maxElement(totalGraphPoints))
+        defaultScenarioView.maxWidth = totalGraphPoints.count
         
+        containerWidth.constant = 0
+        myContainerView = self.childViewControllers[1] as! NewScenarioContainerViewController
+        myContainerView.width = self.view.frame.width - 32
+
+    }
+    
+    func updateScenarios() {
+        //pull up the scenarios
+        //defaultScenarioView is just self.defaultScenarioView
+        myContainerView = self.childViewControllers[1] as! NewScenarioContainerViewController
+        let updatedScenarioView = myContainerView.newScenario
+        
+        //pull up extra information
+        let myExtraPaymentView = self.childViewControllers[0] as! RepaymentExtraTableViewController
+        
+        //extra Amount
+        let extraAmountText = myExtraPaymentView.extraAmountOutlet.text.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
+        
+        if let extraAmountnumber = NSNumberFormatter().numberFromString(extraAmountText){
+        }
+        else {
+            let alert = UIAlertView()
+            alert.title = "Alert"
+            alert.message = "Please make sure your extra payment amount is a number"
+            alert.addButtonWithTitle("Understood")
+            alert.show()
+            let extraAmountnumber = 0
+        }
+        //extra amount frequency 
+        let monthsWithExtraPaymentTotal = frequencySliderValueToMonthNumber(Int(floor(myExtraPaymentView.frequencySliderOutlet.value)))
+        
+        //get Picker Value
+        let plan = pickerData[planPickerOutlet.selectedRowInComponent(0)]
+        
+        switch plan {
+        case "Default":
+            var test = "test"
+        case "Standard Flat":
+            var test = "test"
+        case "Standard Graduated":
+            var test = "test"
+        case "Extended Flat":
+            var unsavedScenario = CoreDataStack.getUnsaved(CoreDataStack.sharedInstance)()
+            //start with this one as a test.  We are going to take the unsavedScenario, and wind it up with the extra payment information.  Then we want to return the max(defaultscenarioMP.count, unsavedscenarioMP.count) for the maxWidth.  We return max(allPaymentsBothDefaultAndUnsaved) for maxHeight.  Then we set maxWidth and MaxHeight for both of the views
+            
+            var test = "test"
+        case "Extended Graduated":
+            var test = "test"
+        case "Income Based Repayment (IBR)":
+            var test = "test"
+        case "Pay As You Earn (PAYE)":
+            var test = "test"
+        case "Private Refinance":
+            var test = "test"
+        default: break
+        }
+        
+    }
+    
+    func frequencySliderValueToMonthNumber(ssender:Int) -> Int {
+        switch ssender {
+        case 0:
+            return 0
+        case 1,2,3,4,5,6,7,8,9,10,11:
+            return ssender
+        case 12:
+            return 12
+        case 13:
+            return 18
+        case 14:
+            return 24
+        case 15:
+            return 30
+        case 16:
+            return 36
+        case 17:
+            return 48
+        case 18:
+            return 60
+        case 19:
+            return 999
+        default:
+            return 0
+    }
     }
 
     override func didReceiveMemoryWarning() {
@@ -59,24 +141,21 @@ class RepaymentViewController: UIViewController, UIPickerViewDataSource, UIPicke
 
     @IBOutlet weak var defaultScenarioView: GraphOfScenario!
     
-    @IBOutlet weak var yellowView: UIView!
     
     @IBOutlet weak var viewSliderOutlet: UISlider!
     
-    @IBOutlet weak var rightEdgeYellow: NSLayoutConstraint!
     
     @IBAction func viewSlider(sender: UISlider) {
         
         sender.value = floor(sender.value)
-        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseOut, animations: {
-            var yellowViewFrame = self.yellowView.frame
-           // yellowViewFrame.origin.x = CGFloat(sender.value)
-            self.yellowView.frame = CGRectMake(yellowViewFrame.origin.x, yellowViewFrame.origin.y, CGFloat(sender.value), yellowViewFrame.height)
+        
+        UIView.animateWithDuration(0.7, delay: 1.0, options: .CurveEaseOut, animations: {
+            var constant = sender.value
+            self.containerWidth.constant = CGFloat(constant)
             }, completion: nil)
         
-        
-        
     }
+    
     
   
     
