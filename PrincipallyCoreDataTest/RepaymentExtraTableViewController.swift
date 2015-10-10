@@ -8,9 +8,20 @@
 
 import UIKit
 
-class RepaymentExtraTableViewController: UITableViewController {
+protocol ChildViewControllerDelegate {
+    func updateScenarios(childViewController:RepaymentExtraTableViewController)
+}
 
+class RepaymentExtraTableViewController: UITableViewController {
     
+    var delegate:ChildViewControllerDelegate?
+
+    var parentView = RepaymentViewController()
+    
+    @IBAction func recalculateButton(sender: UIButton) {
+        self.delegate?.updateScenarios(self)
+        //parentView.updateScenarios()
+    }
     @IBOutlet weak var extraAmountOutlet: UITextField!
     
     
@@ -54,6 +65,7 @@ class RepaymentExtraTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         frequencyLabelOutlet.text = "Never"
+        //parentView = self.parentViewController as! RepaymentViewController
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -77,7 +89,7 @@ class RepaymentExtraTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return 3
+        return 4
     }
     
      override func tableView(tableView:UITableView, heightForRowAtIndexPath indexPath:NSIndexPath) -> CGFloat {
@@ -87,6 +99,8 @@ class RepaymentExtraTableViewController: UITableViewController {
         case 1:
             return 45
         case 2:
+            return 45
+        case 3:
             return 45
         default:
             return 0

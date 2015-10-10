@@ -99,7 +99,7 @@ class PayExtraEachMonthViewController: UIViewController {
             //get the monthNumber
             let monthNumber = convertSliderNumberToMonthsWithExtraPayment(Int(frequencySliderOutlet.value))
             
-            unsavedScenario.makeNewExtraPaymentScenario(managedObjectContext,extra:extra,MWEPTotal:monthNumber)
+            unsavedScenario.makeNewExtraPaymentScenario(managedObjectContext,extra:Double(extra),MWEPTotal:monthNumber)
             
             var error: NSError?
             if !managedObjectContext.save(&error) {

@@ -94,7 +94,9 @@ class Scenario: NSManagedObject {
     }
 
     //want it to add in interestOverLife, timeToRepay, and ConcadenatedPayment
-    func makeNewExtraPaymentScenario (managedObjectContext:NSManagedObjectContext, extra:Int, MWEPTotal:Int){
+    func makeNewExtraPaymentScenario (managedObjectContext:NSManagedObjectContext, extra:Double, MWEPTotal:Int) -> [Double]{
+        
+        //remember, you are calling this on the newScenario
         println("got into MakeNewExtraPayment")
         
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
@@ -109,12 +111,14 @@ class Scenario: NSManagedObject {
         self.nnewTotalScenarioInterest = 0
         self.nnewTotalScenarioMonths = 0
      
+        //delete the concatenatedPayment
         if self.concatenatedPayment.count > 0 {
             for MP in self.concatenatedPayment {
                 managedObjectContext.deleteObject(MP as! NSManagedObject)
             }
         }
         
+        //delte all loans attached to the newScenario
         if self.allLoans.count > 0 {
             for loan in self.allLoans {
                 var lloan = loan as! Loan
@@ -143,7 +147,7 @@ class Scenario: NSManagedObject {
             oldLoan.copySelfToNewLoan(newLoan, managedObjectContext: managedObjectContext)
             lArray.append(newLoan)
         }
-                        println("Got past making lArray")
+        println("Got past making lArray")
         //now the highest interest-rate loan is first and the lowest rated is last
         lArray.sort {$0.interest.doubleValue > $1.interest.doubleValue}
         
@@ -165,7 +169,7 @@ class Scenario: NSManagedObject {
             }
             else if MWEPSoFar < MWEPTotal {
                 let endMonthForExtraPayment = minElement([MWEPTotal, loansTotalMonths])
-                MWEPSoFar = loan.enteredLoanWithExtraPayment(managedObjectContext,extraAmount:Double(extra),currentScenario:self,extraStart:MWEPSoFar, extraEnd:endMonthForExtraPayment)
+                MWEPSoFar = loan.enteredLoanWithExtraPayment(managedObjectContext,extraAmount:extra,currentScenario:self,extraStart:MWEPSoFar, extraEnd:endMonthForExtraPayment)
                 newScenarioMonths = maxElement([newScenarioMonths, loan.defaultTotalLoanMonths.integerValue])
                 if !managedObjectContext.save(&error) {
                     println("Could not save: \(error)") }
@@ -180,9 +184,13 @@ class Scenario: NSManagedObject {
         
         self.nnewTotalScenarioMonths = newScenarioMonths
         self.windUpConcatenatedPaymentWithAllLoans(managedObjectContext)
+        //cannot be any MORE months if all you're doing is making an extra payment.  So we'll return here the default count, plus the largest total payment in newConcatenatedPayment
+        let maxWidthMaxHeight = [defaultScenario.defaultTotalScenarioMonths.doubleValue, self.nnewScenarioMaxPayment.doubleValue]
         if !managedObjectContext.save(&error) {
             println("Could not save: \(error)") }
         println("got past saving")
+        
+        return maxWidthMaxHeight
         //return self.interestOverLife.doubleValue
             }
     
@@ -319,7 +327,8 @@ class Scenario: NSManagedObject {
             newMax = maxElement([newMax,monthlyPaymentToBeAddedToScenario.totalPayment.doubleValue])
             mpForAllLoans.addObject(monthlyPaymentToBeAddedToScenario)
         }
-        self.nnewTotalScenarioInterest = newInterest
+        //TODO: SET THIS BACK TO NNEWTOTALSCENARIOINTEREST.  Right now you are getting around the issue of the graphedScenario sometimes being default and sometimes being the newscenario
+        self.defaultTotalScenarioInterest = newInterest
         self.nnewScenarioMaxPayment = newMax
         self.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
 
@@ -328,6 +337,15 @@ class Scenario: NSManagedObject {
             println("Could not save: \(error)") }
     }
 
+    func extendedFlatWindUpWithExtraPayments(managedObjectContext:NSManagedObjectContext, extraAmount:NSNumber, MWEPT:Int) -> [Double] {
+        //START HERE: YOU SHOULD ADD COPY over makeNewExtraPaymentScenario for extended repayment
+        let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
+        let oSet = defaultScenario.allLoans
+        
+        let maxMonthsInDefaultRepayment :Int = self.defaultTotalScenarioMonths.integerValue
+        
+        return [180,500] // test just so this doesn't throw and error right now
+    }
     
 
 }

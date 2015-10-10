@@ -143,7 +143,7 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
-		B39A494C1B17F33F00707C56 /* Loans */ = {
+		B39A494C1B17F33F00707C56 /* DataStructures */ = {
 			isa = PBXGroup;
 			children = (
 				B39A49571B1A9AA300707C56 /* Loan.swift */,
@@ -152,7 +152,7 @@
 				B3F1C1E41B2FBB4B009283B0 /* CoreDataStack.swift */,
 				B3D0D1671B08F6DC00BD0C0C /* AppDelegate.swift */,
 			);
-			name = Loans;
+			name = DataStructures;
 			sourceTree = "<group>";
 		};
 		B39A494D1B17F35F00707C56 /* Compare */ = {
@@ -173,7 +173,7 @@
 			name = Scenario;
 			sourceTree = "<group>";
 		};
-		B3CD91151BBDECB0007A5EA2 /* Repayment */ = {
+		B3CD91151BBDECB0007A5EA2 /* Scenario Repayment */ = {
 			isa = PBXGroup;
 			children = (
 				B3CD91161BBDECCC007A5EA2 /* RepaymentViewController.swift */,
@@ -181,7 +181,7 @@
 				B3CD911C1BBE005C007A5EA2 /* RepaymentExtraTableViewController.swift */,
 				B31DD0031BC1967300F97C30 /* NewScenarioContainerViewController.swift */,
 			);
-			name = Repayment;
+			name = "Scenario Repayment";
 			sourceTree = "<group>";
 		};
 		B3D0D1591B08F6DB00BD0C0C = {
@@ -204,17 +204,14 @@
 		B3D0D1641B08F6DC00BD0C0C /* PrincipallyCoreDataTest */ = {
 			isa = PBXGroup;
 			children = (
-				B3CD91151BBDECB0007A5EA2 /* Repayment */,
+				B39A494C1B17F33F00707C56 /* DataStructures */,
+				B3F1C1EA1B3853DE009283B0 /* Loan Entry */,
+				B3CD91151BBDECB0007A5EA2 /* Scenario Repayment */,
 				B3713F191B48500C00C1ABEF /* Media.xcassets */,
-				B39A494C1B17F33F00707C56 /* Loans */,
-				B3F1C1EA1B3853DE009283B0 /* Entry  */,
-				B39A494D1B17F35F00707C56 /* Compare */,
-				B39A494E1B17F37400707C56 /* Scenario */,
 				B3D0D16E1B08F6DC00BD0C0C /* Main.storyboard */,
-				B3713F1F1B48A0E600C1ABEF /* EntryFormController.swift */,
 				B3D0D1691B08F6DC00BD0C0C /* PrincipallyCoreDataTest.xcdatamodeld */,
-				B3D0D1651B08F6DC00BD0C0C /* Supporting Files */,
 				B3D3A8471B51723D00B89D67 /* Design Subclasses */,
+				B3D0D1651B08F6DC00BD0C0C /* Supporting Files */,
 			);
 			path = PrincipallyCoreDataTest;
 			sourceTree = "<group>";
@@ -222,6 +219,7 @@
 		B3D0D1651B08F6DC00BD0C0C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B3713F1F1B48A0E600C1ABEF /* EntryFormController.swift */,
 				B3E65F5C1BBCA51E00EC0AF1 /* Scraps */,
 				B3D0D1731B08F6DC00BD0C0C /* LaunchScreen.xib */,
 				B32299B81B10F14A00AAD0F0 /* PrincipallyCoreDataTest-Bridging-Header.h */,
@@ -281,6 +279,8 @@
 		B3E65F5C1BBCA51E00EC0AF1 /* Scraps */ = {
 			isa = PBXGroup;
 			children = (
+				B39A494D1B17F35F00707C56 /* Compare */,
+				B39A494E1B17F37400707C56 /* Scenario */,
 				B3F1C1F51B3CCFA3009283B0 /* EnteredViewController.swift */,
 				B3D0D18A1B09044E00BD0C0C /* LoanEntryViewController.swift */,
 				B32344FE1B3F6A4900B1709C /* PayExtraViewController.swift */,
@@ -289,7 +289,7 @@
 			name = Scraps;
 			sourceTree = "<group>";
 		};
-		B3F1C1EA1B3853DE009283B0 /* Entry  */ = {
+		B3F1C1EA1B3853DE009283B0 /* Loan Entry */ = {
 			isa = PBXGroup;
 			children = (
 				B3F1C1EF1B3B89FD009283B0 /* TypeModalVC.swift */,
@@ -298,7 +298,7 @@
 				B32344F81B3E041900B1709C /* LoanTableViewCell.swift */,
 				B3DEF8FF1B7C091E0033837C /* ReDoneEntry */,
 			);
-			name = "Entry ";
+			name = "Loan Entry";
 			sourceTree = "<group>";
 		};
 		FA518D15FCFA1774E8D57243 /* Frameworks */ = {

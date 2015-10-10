@@ -22,8 +22,8 @@ class GraphOfScenario: UIView {
     @IBInspectable var bStartColor: UIColor = UIColor.greenColor()
     @IBInspectable var bEndColor: UIColor = UIColor.greenColor()
     
-    var maxHeight = Double()
-    var maxWidth = Int()//CGFloat()
+    var maxHeight = Double() //Max total payment.  NOT max height in points/pixels 
+    var maxWidth = Int()//Months CGFloat()
 
     
     override func drawRect(rect: CGRect) {
@@ -88,7 +88,8 @@ class GraphOfScenario: UIView {
             //calculate the x point
             let margin:CGFloat = 0.0
             let spacer = (width - margin*2 - 4) /
-                CGFloat((interestGraphPoints.count - 1))
+                CGFloat(maxWidth)//(interestGraphPoints.count - 1))
+            //maxWidth is being set to 0 somehow.
             
             
             var columnXPoint = { (column:Int) -> CGFloat in
@@ -115,9 +116,16 @@ class GraphOfScenario: UIView {
             
             UIColor.whiteColor().setFill()
             UIColor.whiteColor().setStroke()
-            //START HERE: THIS FAILED.  POSSIBLY SOME ISSUE WITH CHANGING COLUMNXPOINT
+            
             var totalGraphPath = UIBezierPath()
+            println(graphedScenario!.name)
+            println(totalGraphPoints)
+            println(columnXPoint(0)
+                )
+            println(columnYPoint(743.43))
             totalGraphPath.moveToPoint(CGPoint(x:columnXPoint(0),y:columnYPoint(totalGraphPoints[0])))
+            
+            //This is the TOTAL PAYMENTS line
             
             for i in 1...maxWidth{//<totalGraphPoints.count {
                 if i<totalGraphPoints.count {
@@ -127,7 +135,7 @@ class GraphOfScenario: UIView {
                 }
                 else {
                     let nextPoint = CGPoint(x:columnXPoint(i),
-                        y:0)
+                        y:height)
                     totalGraphPath.addLineToPoint(nextPoint)
                 }
             }
@@ -175,13 +183,23 @@ class GraphOfScenario: UIView {
             graphPath.moveToPoint(CGPoint(x:columnXPoint(0),
                 y:columnYPoint(interestGraphPoints[0])))
             
+            //THIS IS THE INTEREST CURVE LINE
+            
             //add points for each item in the graphPoints array
             //at the correct (x, y) for the point
-            for i in 1..<interestGraphPoints.count {
+            for i in 1...maxWidth {
+                
+            if i < interestGraphPoints.count {
                 let nextPoint = CGPoint(x:columnXPoint(i),
                     y:columnYPoint(interestGraphPoints[i]))
                 graphPath.addLineToPoint(nextPoint)
-                println(interestGraphPoints[i])
+                //println(interestGraphPoints[i])
+                }
+            else {
+                let nextPoint = CGPoint(x:columnXPoint(i),
+                    y:height)
+                totalGraphPath.addLineToPoint(nextPoint)
+                }
             }
             
             
