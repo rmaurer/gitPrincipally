@@ -14,12 +14,14 @@ class SelectLoanTypeView: UIView {
      let clearColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
+    
     override func drawRect(rect: CGRect) {
         let width = CGFloat(rect.width)
         let height = CGFloat(rect.height)
         let padding : CGFloat = 5
         let widthMinusPadding = width - padding
         let heightMinuspadding = height - padding
+        
        var path = UIBezierPath()
         path.moveToPoint(CGPointMake(padding,padding))
         path.addLineToPoint(CGPointMake(widthMinusPadding,padding))

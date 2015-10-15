@@ -9,6 +9,10 @@
 import UIKit
 import CoreData
 
+protocol TypeViewDelegate{
+    func chooseTypeDidFinish(type:String)
+}
+
 
 class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeViewDelegate  {
     //BalanceInterestDelgate
@@ -40,7 +44,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
                 duration: 1.0,
                 options: UIViewAnimationOptions.TransitionFlipFromRight
                 | UIViewAnimationOptions.ShowHideTransitionViews, completion: nil)
-            sender.title = "Done"
+            sender.title = "Save Loan"
             selectLoantype.enabled = true
             BIView.interest.userInteractionEnabled = true
             BIView.balance.userInteractionEnabled = true

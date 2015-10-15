@@ -12,15 +12,18 @@ class SecnarioNavController: UINavigationController {
 
     var color = UIColor(red: 26/255.0, green: 165/255.0, blue: 146/255.0, alpha: 1)
     var clippedcolor = UIColor(red: 0/255, green: 148/255, blue: 127/255, alpha: 1)
-    var stupidcolor = UIColor(red: 30/255, green: 149/255, blue: 127/255, alpha: 1)
-    
+    var stupidcolor = UIColor(red: 61/255, green: 38/255, blue: 69/255, alpha: 1)
+    var pinkColor = UIColor(red:242/255, green:95/255, blue:92/255, alpha:1)
+    var greenPrincipallyColor = UIColor(red: 30/255, green: 149/255, blue: 127/255, alpha: 1)
+    //73 53 72
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationBar.barTintColor = stupidcolor
-        self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
-       // self.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-        //self.navigationBar.shadowImage = UIImage()
-        self.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationBar.barTintColor = UIColor.whiteColor()//pinkColor
+        self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : greenPrincipallyColor]
+        self.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+        self.navigationBar.shadowImage = UIImage()
+        self.navigationBar.tintColor = greenPrincipallyColor
+        self.navigationBar.translucent = false 
         
     }
 

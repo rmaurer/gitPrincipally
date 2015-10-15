@@ -9,11 +9,11 @@
 import UIKit
 import CoreData
 
-protocol TypeViewDelegate{
+/*protocol TypeViewDelegate{
     func chooseTypeDidFinish(type:String)
-}
+} */
 
-class LoanEntryViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, TypeViewDelegate {
+/*class LoanEntryViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, TypeViewDelegate {
     
 //MARK: CoreData MOC
     var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
@@ -220,4 +220,4 @@ class LoanEntryViewController: UIViewController, UIPickerViewDataSource, UIPicke
     }
     
 
-}
+} */
