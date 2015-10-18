@@ -20,7 +20,7 @@ class SecnarioNavController: UINavigationController {
         super.viewDidLoad()
         self.navigationBar.barTintColor = UIColor.whiteColor()//pinkColor
         self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : greenPrincipallyColor]
-        self.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+        //self.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
         self.navigationBar.shadowImage = UIImage()
         self.navigationBar.tintColor = greenPrincipallyColor
         self.navigationBar.translucent = false 

@@ -96,7 +96,6 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
     @IBOutlet weak var doneButtonOutlet: UIBarButtonItem!
     
     func flipAroundWithoutLoadingLoan(){
-        println("flipAroundWithoutLoadingLoan should not be run")
         loadChildViews()
         loanNameOutlet?.text = selectedLoan!.name
         BIView.balance.text = "$\(selectedLoan!.balance)"

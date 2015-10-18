@@ -347,5 +347,31 @@ class Scenario: NSManagedObject {
         return [180,500] // test just so this doesn't throw and error right now
     }
     
+    func scenario_DeleteAssociatedObjectsFromManagedObjectContext(managedObjectContext:NSManagedObjectContext){
+        //delete the concatenatedPayment
+        if self.concatenatedPayment.count > 0 {
+            for MP in self.concatenatedPayment {
+                managedObjectContext.deleteObject(MP as! NSManagedObject)
+            }
+        }
+        
+        //delte all loans attached to the newScenario
+        if self.allLoans.count > 0 {
+            for loan in self.allLoans {
+                var lloan = loan as! Loan
+                for payment in lloan.mpForOneLoan {
+                    managedObjectContext.deleteObject(payment as! NSManagedObject)
+                }
+                managedObjectContext.deleteObject(loan as! NSManagedObject)
+            }
+        }
+        //have to save, otherwise you will still have the MPs in the concatenated payment when it's passed
+        var error: NSError?
+        if !managedObjectContext.save(&error) {
+            println("Could not save: \(error)") }
 
+    }
+    
+    
+    
 }

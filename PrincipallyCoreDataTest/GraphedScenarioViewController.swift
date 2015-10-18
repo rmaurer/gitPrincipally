@@ -7,9 +7,18 @@
 //
 
 import UIKit
+import CoreData
 
 class GraphedScenarioViewController: UIViewController {
 
+    @IBOutlet weak var nameLabelOutlet: UILabel!
+    var name : String = ""
+    var repaymentType : String = ""
+    var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
+    
+    //globalScenarioVariable
+    var currentScenario: Scenario!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -21,15 +30,34 @@ class GraphedScenarioViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func scenario_WindUpForGraph() {
+        let entity = NSEntityDescription.entityForName("Scenario", inManagedObjectContext: managedObjectContext)
+        //set variable of what will be inserted into the entity "Loan"
+        currentScenario = Scenario(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+        currentScenario.name = name
+        var error: NSError?
+        if !managedObjectContext.save(&error) {
+            println("Could not save \(error), \(error?.userInfo)")
+        }
     }
-    */
+    
+    func scenario_UserWantsToEditAgain(){
+        //we've got to delete the scenario from the list
+        currentScenario.scenario_DeleteAssociatedObjectsFromManagedObjectContext(managedObjectContext)
+        managedObjectContext.deleteObject(currentScenario as NSManagedObject)
+        var error: NSError?
+        if !managedObjectContext.save(&error) {
+            println("could not save: \(error)")
+        }
+
+    }
+    
+    func scenario_makeGraphVisibleWithWoundUpScenario(){
+        nameLabelOutlet.text = currentScenario.name
+    }
+    
+    func scenario_MakeGraphVisibleWithoutAddingScenario() {
+        //set up various outputs in the graphView using currentScenario
+    }
 
 }

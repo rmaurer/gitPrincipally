@@ -62,6 +62,38 @@ class ScenarioTableViewController: UITableViewController {
         return cell!
     }
 
+    override func prepareForSegue
+        (segue: UIStoryboardSegue, sender: AnyObject?) {
+            
+            if segue.identifier == "scenarioPressSegue" {
+                let indexPath = tableView.indexPathForSelectedRow()!
+                
+                let selectedScenario = myScenarios[indexPath.row] as! Scenario
+                var vc:ReDoneRepaymentViewController = segue.destinationViewController as! ReDoneRepaymentViewController
+                vc.selectedScenario = selectedScenario
+            }
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle
+        editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+            
+            var error: NSError?
+            
+            if editingStyle == UITableViewCellEditingStyle.Delete {
+                //1
+                let scenarioToRemove = myScenarios[indexPath.row] as! Scenario
+                scenarioToRemove.scenario_DeleteAssociatedObjectsFromManagedObjectContext(managedObjectContext)
+                //2
+                managedObjectContext.deleteObject(scenarioToRemove as NSManagedObject)
+                //3
+                if !managedObjectContext.save(&error) {
+                    println("Could not save: \(error)") }
+                //4
+                //TODO:Fix this so that the loans properly re-allign.  This is throwing off the deleting process right now
+                self.tableView.reloadData()
+            }
+    }
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {

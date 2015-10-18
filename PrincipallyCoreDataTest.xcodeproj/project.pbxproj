@@ -180,7 +180,6 @@
 			children = (
 				B3D0D18C1B09311500BD0C0C /* PaymentViewController.swift */,
 				B3942D631B52BC29005BCD2C /* PayExtraEachMonthViewController.swift */,
-				B3E65F5D1BBCA57B00EC0AF1 /* ScenarioTableViewController.swift */,
 			);
 			name = Scenario;
 			sourceTree = "<group>";
@@ -209,6 +208,7 @@
 			children = (
 				B3C123ED1BCC996F00C6FBDA /* Plan XIB */,
 				B3C123E61BCC97BF00C6FBDA /* ReDone Repayment */,
+				B3E65F5D1BBCA57B00EC0AF1 /* ScenarioTableViewController.swift */,
 				B3CD91161BBDECCC007A5EA2 /* RepaymentViewController.swift */,
 				B3CD91181BBDECE6007A5EA2 /* SettingsViewController.swift */,
 				B3CD911C1BBE005C007A5EA2 /* RepaymentExtraTableViewController.swift */,

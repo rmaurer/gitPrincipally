@@ -43,6 +43,8 @@ class TypeModalVC: UIViewController {
             return "Parent PLUS"
         case "Direct Consolidated Loan":
             return "Consolidated"
+        case "Direct Consolidated Loan that Includes ParentPLUS":
+            return "Consolidated with ParentPLUS"
         case "FFEL Program":
             return "FFELP"
         case "Private Loan":

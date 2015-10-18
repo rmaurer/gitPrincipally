@@ -11,7 +11,7 @@ import UIKit
 class PlanTypeViewController: UIViewController {
 
     @IBAction func standardButtonAction(sender: UIButton) {
-        type = sender.currentTitle!//getAbbreviation(sender.currentTitle!)
+        type = getAbbreviation(sender.currentTitle!)
         self.dismissViewControllerAnimated(true, completion: nil)
         delegate!.chooseTypeDidFinish(type)
     
@@ -40,13 +40,25 @@ class PlanTypeViewController: UIViewController {
         case "Standard":
             return "Standard"
         case "Standard Graduated":
-            return "Gradated"
+            return "Graduated"
         case "Extended":
-            return "extended"
+            return "Extended"
         case "Extended Graduated":
             return "Extended Grad."
+        case "Private Refinance":
+            return "Refi"
         case "Income Based Repayment":
             return "IBR"
+        case "Income Contingent Repayment":
+            return "ICR"
+        case "Pay As You Earn":
+            return "PAYE"
+        case "Income Based Repayment with Public Interest Loan Forgiveness":
+            return "IBR with PILF"
+        case "Income Contingent Repayment with Public Interest Loan Forgiveness":
+            return "ICR with PILF"
+        case "Pay As You Earn with Public Interest Loan Forgiveness":
+            return "PAYE with PILF"
         default:
             return "Type"
         }

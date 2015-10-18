@@ -14,24 +14,6 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U1M-9J-59b">
-                    <rect key="frame" x="41" y="57" width="63" height="30"/>
-                    <state key="normal" title="Standard">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="KYt-VM-VEU"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HOC-JD-RFR">
-                    <rect key="frame" x="41" y="87" width="140" height="30"/>
-                    <state key="normal" title="Standard Graduated">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="1pP-OH-I3x"/>
-                    </connections>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EZF-tc-l17">
                     <rect key="frame" x="41" y="173" width="143" height="30"/>
                     <state key="normal" title="Extended Graduated">
@@ -41,13 +23,67 @@
                         <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="ryd-HZ-zUu"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ByF-XB-jjo">
+                    <rect key="frame" x="41" y="211" width="120" height="30"/>
+                    <state key="normal" title="Private Refinance">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="YnD-Lo-Yqx"/>
+                    </connections>
+                </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t0x-X0-YHJ">
-                    <rect key="frame" x="41" y="204" width="181" height="30"/>
+                    <rect key="frame" x="41" y="249" width="181" height="30"/>
                     <state key="normal" title="Income Based Repayment">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="eMz-j2-bC8"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MEA-jZ-4Hw">
+                    <rect key="frame" x="41" y="287" width="114" height="30"/>
+                    <state key="normal" title="Pay As You Earn">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="4l2-4E-89P"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fRA-7V-4Ai">
+                    <rect key="frame" x="41" y="321" width="213" height="30"/>
+                    <state key="normal" title="Income Contingent Repayment">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="p7X-pk-6bM"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Yz-bL-IqW">
+                    <rect key="frame" x="41" y="355" width="441" height="30"/>
+                    <state key="normal" title="Income Based Repayment with Public Interest Loan Forgiveness">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="AF0-q7-Dja"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FSK-vW-oYk">
+                    <rect key="frame" x="41" y="393" width="374" height="30"/>
+                    <state key="normal" title="Pay As You Earn with Public Interest Loan Forgiveness">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="19C-ii-c7W"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UAu-bZ-3r1">
+                    <rect key="frame" x="43" y="428" width="473" height="30"/>
+                    <state key="normal" title="Income Contingent Repayment with Public Interest Loan Forgiveness">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="myk-yT-Bkz"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SrG-XH-CFG">
@@ -59,13 +95,22 @@
                         <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="igs-9z-oO3"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3i0-jK-Fk2">
-                    <rect key="frame" x="71" y="285" width="46" height="30"/>
-                    <state key="normal" title="Button">
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U1M-9J-59b">
+                    <rect key="frame" x="41" y="67" width="63" height="30"/>
+                    <state key="normal" title="Standard">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="test:" destination="-1" eventType="touchUpInside" id="C82-vu-0U6"/>
+                        <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="KYt-VM-VEU"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HOC-JD-RFR">
+                    <rect key="frame" x="41" y="98" width="140" height="30"/>
+                    <state key="normal" title="Standard Graduated">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="1pP-OH-I3x"/>
                     </connections>
                 </button>
             </subviews>
