@@ -34,7 +34,7 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             if enteredLoan != nil {
             
             //var principalGraphPoints : [Double] = enteredLoan!.makeArrayOfAllPrincipalPayments()
-            var totalGraphPoints : [Double] = enteredLoan!.makeArrayOfAllTotalPayments()
+            var totalGraphPoints : [Double] = enteredLoan!.makeArrayOfAllPrincipalPayments()//enteredLoan!.makeArrayOfAllTotalPayments()
             var interestGraphPoints : [Double] = enteredLoan!.makeArrayOfAllInterestPayments()
             let width = rect.width
             let height = rect.height

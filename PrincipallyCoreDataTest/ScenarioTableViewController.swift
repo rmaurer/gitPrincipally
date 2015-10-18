@@ -14,10 +14,38 @@ class ScenarioTableViewController: UITableViewController {
     var myScenarios = [NSManagedObject]()
     var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
     var defaultScenario: Scenario!
+    var compareScenarioArray = [Scenario]()
     
+    var tableIsNotInSelectionMode : Bool = true
+    
+    @IBOutlet weak var compareButtonOutlet: UIBarButtonItem!
+    
+    @IBAction func compareButton(sender: UIBarButtonItem) {
 
+        if tableIsNotInSelectionMode{
+            self.tableView.setEditing(true, animated: true)
+            self.tableView.reloadData()
+             tableIsNotInSelectionMode = !tableIsNotInSelectionMode
+        }
+        
+        else{
+            if compareScenarioArray.count < 2 {
+                self.tableView.setEditing(false, animated: true)
+                self.tableView.reloadData()
+                tableIsNotInSelectionMode = !tableIsNotInSelectionMode
+                compareScenarioArray.removeAll(keepCapacity: false)
+                compareButtonOutlet.title = "Compare"}
+            else {
+            self.performSegueWithIdentifier("compareSegue", sender: compareScenarioArray)
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.allowsSelection = true
+        self.tableView.allowsMultipleSelection = true
+        self.tableView.allowsMultipleSelectionDuringEditing = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,8 +60,7 @@ class ScenarioTableViewController: UITableViewController {
         self.tableView.reloadData()
     }
 
-    // MARK: - Table view data source
-
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
@@ -45,6 +72,29 @@ class ScenarioTableViewController: UITableViewController {
         // Return the number of rows in the section.
         return myScenarios.count
     }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if tableIsNotInSelectionMode {
+            self.performSegueWithIdentifier("scenarioPressSegue", sender: indexPath)}
+        else {
+            compareScenarioArray.append(myScenarios[indexPath.row] as! Scenario)
+            compareButtonOutlet.title = "Compare(\(compareScenarioArray.count))"
+            println("multiple selections??")
+        }
+        
+    }
+    
+    override func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+        for index in 0...compareScenarioArray.count-1 {
+            if compareScenarioArray[index].name == (myScenarios[indexPath.row] as! Scenario).name {
+                compareScenarioArray.removeAtIndex(index)
+            }
+            
+        }
+        compareButtonOutlet.title = "Compare(\(compareScenarioArray.count))"
+    }
+    
+   
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -56,8 +106,6 @@ class ScenarioTableViewController: UITableViewController {
         let newScenario = myScenarios[indexPath.row] as! Scenario
         
         cell!.textLabel!.text = newScenario.valueForKey("name") as? String
-        
-        // Configure the cell...
 
         return cell!
     }
@@ -66,8 +114,7 @@ class ScenarioTableViewController: UITableViewController {
         (segue: UIStoryboardSegue, sender: AnyObject?) {
             
             if segue.identifier == "scenarioPressSegue" {
-                let indexPath = tableView.indexPathForSelectedRow()!
-                
+                let indexPath = (sender as! NSIndexPath)
                 let selectedScenario = myScenarios[indexPath.row] as! Scenario
                 var vc:ReDoneRepaymentViewController = segue.destinationViewController as! ReDoneRepaymentViewController
                 vc.selectedScenario = selectedScenario
@@ -94,49 +141,5 @@ class ScenarioTableViewController: UITableViewController {
             }
     }
     
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+ 
 }

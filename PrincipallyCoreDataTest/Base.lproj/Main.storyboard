@@ -14,14 +14,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="scenarioCell" id="06E-tl-hfx">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="scenarioCell" id="06E-tl-hfx">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="06E-tl-hfx" id="HRD-CK-IlI">
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="P5m-vm-kJa" kind="push" identifier="scenarioPressSegue" id="HqB-ed-fFz"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -30,13 +27,22 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Repayment Options" id="WSD-zr-o74">
-                        <barButtonItem key="leftBarButtonItem" title="Compare" id="0Ki-oe-dUe"/>
+                        <barButtonItem key="leftBarButtonItem" title="Compare" id="0Ki-oe-dUe">
+                            <connections>
+                                <action selector="compareButton:" destination="z7p-Nd-fEj" id="jTm-r2-ikc"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="tpZ-K5-Pl0">
                             <connections>
                                 <segue destination="P5m-vm-kJa" kind="push" id="zrI-ZB-f8a"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="compareButtonOutlet" destination="0Ki-oe-dUe" id="SpB-uQ-r6v"/>
+                        <segue destination="P5m-vm-kJa" kind="push" identifier="scenarioPressSegue" id="pMj-hj-kvU"/>
+                        <segue destination="5c0-0W-c2I" kind="push" identifier="compareSegue" id="uN8-Dp-HUZ"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tHF-hU-azS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -562,6 +568,16 @@
             </objects>
             <point key="canvasLocation" x="858" y="-919"/>
         </scene>
+        <!--Page View Controller-->
+        <scene sceneID="WFl-7p-CwE">
+            <objects>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="5c0-0W-c2I" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="sYg-MR-mQF"/>
+                </pageViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="C7m-D3-OSQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="284" y="-178"/>
+        </scene>
         <!--Graphed Scenario View Controller-->
         <scene sceneID="SHl-6I-oGl">
             <objects>
@@ -866,7 +882,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8TJ-xY-aIR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1147" y="-874"/>
+            <point key="canvasLocation" x="1391" y="-856"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="gpv-ZW-JK7">
@@ -898,7 +914,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iTq-Zp-Y0h" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1583" y="-726"/>
+            <point key="canvasLocation" x="1827" y="-708"/>
         </scene>
         <!--Repayment Extra Table View Controller-->
         <scene sceneID="tOa-w6-Gkb">
@@ -961,7 +977,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jbx-e5-A64" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1206" y="-309"/>
+            <point key="canvasLocation" x="1450" y="-291"/>
         </scene>
         <!--Loans-->
         <scene sceneID="dUc-da-yEy">
@@ -1468,22 +1484,22 @@
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="startColor">
-                                        <color key="value" red="0.76089900730000004" green="0.25649610160000003" blue="0.0" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                        <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="endColor">
-                                        <color key="value" red="0.76089900730000004" green="0.25649610160000003" blue="0.0" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                        <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="pStartColor">
-                                        <color key="value" red="0.19376453760000001" green="0.50850099329999998" blue="0.85232251879999998" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                        <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="pEndColor">
-                                        <color key="value" red="0.19376453760000001" green="0.50850099329999998" blue="0.85232251879999998" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                        <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="bStartColor">
-                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="value" red="0.98039215690000003" green="0.91372549020000005" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="bEndColor">
-                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="value" red="0.1019607843" green="0.64705882349999999" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
@@ -1658,7 +1674,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pUq-0l-f4x" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1524" y="-1162"/>
+            <point key="canvasLocation" x="1768" y="-1144"/>
         </scene>
     </scenes>
     <resources>
@@ -1674,6 +1690,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="XVU-tj-TA1"/>
-        <segue reference="HqB-ed-fFz"/>
+        <segue reference="pMj-hj-kvU"/>
     </inferredMetricsTieBreakers>
 </document>
