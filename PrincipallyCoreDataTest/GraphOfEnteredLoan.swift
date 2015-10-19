@@ -59,15 +59,16 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             
             //4 - set up the color stops
             let colorLocations:[CGFloat] = [0.0, 1.0]
+            let thinColorLocations:[CGFloat] = [0.0,1.0]//0.5]//1.0]
             
             //5 - create the gradient
             let gradient = CGGradientCreateWithColors(colorSpace,
                 colors,
-                colorLocations)
+                thinColorLocations)
             
             let pgradient = CGGradientCreateWithColors(colorSpace,
                 pcolors,
-                colorLocations)
+                thinColorLocations)
             
             let bgradient = CGGradientCreateWithColors(colorSpace,
                 bcolors,

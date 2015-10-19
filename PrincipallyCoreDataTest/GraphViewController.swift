@@ -21,6 +21,7 @@ class GraphViewController: UIViewController {
     var pickerYear : String = ""
     var sliderTerm : NSNumber = 0
     var monthlyAmount : NSNumber = 0
+    var numberOfMonthsPaid : NSNumber = 0
     var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
     
     //global Loan variable 
@@ -127,7 +128,7 @@ class GraphViewController: UIViewController {
         case 1:
             firstLoan.defaultMonthlyPayment = monthlyAmount
             firstLoan.enteredLoanByPayment(managedObjectContext)
-            firstLoan.monthsUntilRepayment = 0
+            firstLoan.monthsUntilRepayment = NSNumber(double: numberOfMonthsPaid.doubleValue * -1)
             var error: NSError?
             if !managedObjectContext.save(&error) {
                 println("Could not save \(error), \(error?.userInfo)")

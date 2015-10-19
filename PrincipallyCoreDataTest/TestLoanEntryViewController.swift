@@ -36,6 +36,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
         BIView.interest.resignFirstResponder()
         BIView.balance.resignFirstResponder()
         paymentView.monthlyAmountTextField.resignFirstResponder()
+        paymentView.monthsAlreadyPaidTextField.resignFirstResponder()
         
         if loanIsEnteredGraphIsShowing {
             graphView.graphFlippedAroundNotVisible()    
@@ -65,6 +66,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
             graphView.pickerYear = paymentView.pickerData[1][paymentView.pickerOutlet.selectedRowInComponent(1)]
             graphView.sliderTerm = Int(paymentView.termSlider.value) * 12
             graphView.monthlyAmount = getNSNumberFromString(paymentView.monthlyAmountTextField.text)
+            graphView.numberOfMonthsPaid = getNSNumberFromString(paymentView.monthsAlreadyPaidTextField.text)
             
             
             //Just making sure there isn't an error in the interest/balance inputs.  Granted, this is super messy, but it works for now

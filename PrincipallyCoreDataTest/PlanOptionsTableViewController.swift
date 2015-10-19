@@ -13,6 +13,34 @@ class PlanOptionsTableViewController: UITableViewController {
     var selectedRepaymentPlan : String?
     
     @IBAction func extraPaymentSliderAction(sender: UISlider) {
+        sender.value = Float(Int(sender.value))
+        switch sender.value {
+        case 0:
+            return extraPaymentAmountLabel.text = "Never"
+        case 1:
+            return extraPaymentAmountLabel.text = "1 month"
+        case 2,3,4,5,6,7,8,9,10,11:
+            return extraPaymentAmountLabel.text = "\(Int(sender.value)) months"
+        case 12:
+            return extraPaymentAmountLabel.text = "12 months"
+        case 13:
+            return extraPaymentAmountLabel.text = "18 months"
+        case 14:
+            return extraPaymentAmountLabel.text = "24 months"
+        case 15:
+            return extraPaymentAmountLabel.text = "30 months"
+        case 16:
+            return extraPaymentAmountLabel.text = "3 years"
+        case 17:
+            return extraPaymentAmountLabel.text = "4 years"
+        case 18:
+            return extraPaymentAmountLabel.text = "5 years"
+        case 19:
+            return extraPaymentAmountLabel.text = "Every time"
+        default:
+            return extraPaymentAmountLabel.text = "Every time"
+        }
+        
     }
     @IBOutlet weak var extraPaymentLabel: UILabel! //1
    
@@ -33,7 +61,7 @@ class PlanOptionsTableViewController: UITableViewController {
     @IBOutlet weak var variableInterestRateSwitchOutlet: UISwitch! //4
     
     @IBAction func variableInterestRateSwitchAction(sender: UISwitch) {
-        //reload the table, because now you'll want other rows to show
+        self.tableView.reloadData()
     }
     
     @IBOutlet weak var changeinRateLabel: UILabel! //5
@@ -75,9 +103,12 @@ class PlanOptionsTableViewController: UITableViewController {
     
     @IBOutlet weak var PAYEDatesSwtich12: UISwitch!
     
+    @IBOutlet weak var instructionsLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        extraPaymentAmountLabel.text = "Never"
+        extraPaymentSliderOutlet.maximumValue = Float(19)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -101,7 +132,7 @@ class PlanOptionsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return 14
+        return 15
     }
 
     
@@ -127,15 +158,15 @@ class PlanOptionsTableViewController: UITableViewController {
                 extraAmountTextField.hidden = true
                 return 0
             }
-        case 3,4,5:
+        case 3,4:
             if selectedRepaymentPlan == "Refi" {
                 interestRateOnRefinanceLabel.hidden = false
                 interestRateOnRefinanceTextFieldOutlet.hidden = false
                 variableInterestRateLabel.hidden = false
                 variableInterestRateSwitchOutlet.hidden = false
-                changeinRateLabel.hidden = false
-                changeInRateSliderOutlet.hidden = false
-                changeInRateAmountLabel.hidden = false
+               // changeinRateLabel.hidden = false
+               // changeInRateSliderOutlet.hidden = false
+               // changeInRateAmountLabel.hidden = false
                 return 45
             }
             else{
@@ -143,6 +174,19 @@ class PlanOptionsTableViewController: UITableViewController {
                 interestRateOnRefinanceTextFieldOutlet.hidden = true
                 variableInterestRateLabel.hidden = true
                 variableInterestRateSwitchOutlet.hidden = true
+              //  changeinRateLabel.hidden = true
+              //  changeInRateSliderOutlet.hidden = true
+              //  changeInRateAmountLabel.hidden = true
+                return 0
+            }
+        case 5:
+            if selectedRepaymentPlan == "Refi" && variableInterestRateSwitchOutlet != false{
+                changeinRateLabel.hidden = false
+                changeInRateSliderOutlet.hidden = false
+                changeInRateAmountLabel.hidden = false
+                return 45
+            }
+            else {
                 changeinRateLabel.hidden = true
                 changeInRateSliderOutlet.hidden = true
                 changeInRateAmountLabel.hidden = true
@@ -214,6 +258,15 @@ class PlanOptionsTableViewController: UITableViewController {
                 return 0
             }
         case 13:
+            if selectedRepaymentPlan == nil {
+                instructionsLabel.hidden = false
+                return 60
+            }
+            else {
+                instructionsLabel.hidden = true
+                return 0
+            }
+        case 14:
             return self.tableView.frame.size.height
         default:
             return 45

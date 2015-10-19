@@ -14,6 +14,18 @@ class GraphedScenarioViewController: UIViewController {
     @IBOutlet weak var nameLabelOutlet: UILabel!
     var name : String = ""
     var repaymentType : String = ""
+    var frequencyOfExtraPayments : Int!
+    var amountOfExtraPayments : Double!
+    var interestRateOnRefi : Double!
+    var variableInterestRate : Bool = false
+    var changeInInterestRate : Double! // this one will need enum to describe options
+    var AGI : Double!
+    var familySize : Int!
+    var qualifyingJob : Bool = false
+    var IBRDateOptions : Bool = false
+    var ICRReqs:Bool = false
+    var PAYEReqs:Bool = false 
+    
     var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
     
     //globalScenarioVariable

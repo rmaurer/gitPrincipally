@@ -25,9 +25,9 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
     
     var planOptionsView = PlanOptionsTableViewController()
     var graphedScenarioView = GraphedScenarioViewController()
-    
+
     var selectedScenario: Scenario?
-    
+
     @IBOutlet weak var whiteBackgroundView: UIView!
     
     @IBOutlet weak var parentFlipView: UIView!
@@ -56,8 +56,26 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
             scenarioWasEnteredGraphIsShowing = !scenarioWasEnteredGraphIsShowing
 
         }
+            //here is where the scenario is entered.
         else{
             graphedScenarioView.name = planNameOutlet.text
+            graphedScenarioView.repaymentType =
+                self.selectPlanTypeButtonOutlet.currentTitle!
+            
+            //here's where we load up GraphedScenarioView with all of the information
+            graphedScenarioView.frequencyOfExtraPayments = frequencySliderValueToMonthNumber(planOptionsView.extraPaymentSliderOutlet.value)
+            graphedScenarioView.amountOfExtraPayments = getNSNumberFromExtraPaymentString(planOptionsView.extraAmountTextField.text).doubleValue
+            graphedScenarioView.interestRateOnRefi = getNSNumberFromInterestRateString(planOptionsView.interestRateOnRefinanceTextFieldOutlet.text).doubleValue
+            graphedScenarioView.variableInterestRate = planOptionsView.variableInterestRateSwitchOutlet.on
+            graphedScenarioView.changeInInterestRate = interestRateSliderToLIBORNumber(planOptionsView.changeInRateSliderOutlet.value)
+            graphedScenarioView.AGI = getNSNumberFromAGIString(planOptionsView.adjustedGrossIncomeTextField6.text).doubleValue
+            graphedScenarioView.familySize = getNSNumberFromFamilySizeString(planOptionsView.familySizeTextField8.text).integerValue
+            graphedScenarioView.qualifyingJob = planOptionsView.qualifyingJobSwitch.on
+            graphedScenarioView.IBRDateOptions = planOptionsView.IBRDatesSwitch10.on
+            graphedScenarioView.ICRReqs = planOptionsView.ICRDatesSwitch10.on
+            graphedScenarioView.PAYEReqs = planOptionsView.PAYEDatesSwtich12.on
+            
+            
             graphedScenarioView.scenario_WindUpForGraph()
             graphedScenarioView.scenario_makeGraphVisibleWithWoundUpScenario()
             UIView.transitionFromView(tableContainer,
@@ -130,6 +148,126 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
     func loadChildViews(){
         planOptionsView = self.childViewControllers[1] as! PlanOptionsTableViewController
         graphedScenarioView = self.childViewControllers[0] as! GraphedScenarioViewController
+    }
+    
+    func frequencySliderValueToMonthNumber(ssender:Float) -> Int {
+        switch floor(ssender) {
+            //matching these up with with the months value seen in //RepaymentExtraTableViewController
+        case 0:
+            return 0
+        case 1,2,3,4,5,6,7,8,9,10,11:
+            return Int(floor(ssender))
+        case 12:
+            return 12
+        case 13:
+            return 18
+        case 14:
+            return 24
+        case 15:
+            return 30
+        case 16:
+            return 36
+        case 17:
+            return 48
+        case 18:
+            return 60
+        case 19:
+            return 999
+        default:
+            return 0
+        }
+    }
+    
+    func interestRateSliderToLIBORNumber(ssender:Float) -> Double {
+        switch floor(ssender){
+        case 0: return 0.19
+        case 1: return 0.4
+        case 2: return 2
+        case 3: return 5
+        case 4: return 11
+        default: return 0.19
+        }
+    }
+
+    func getNSNumberFromExtraPaymentString(input:String) -> NSNumber {
+        var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
+        println(cleaninput)
+        if NSString(string: cleaninput).length == 0 {
+            return 0
+        }
+        else if let number = NSNumberFormatter().numberFromString(cleaninput){
+            return number
+        }
+        else {
+            let alert = UIAlertView()
+            alert.title = "Alert"
+            alert.message = "Please make sure your extra payment amount is entered correct"
+            alert.addButtonWithTitle("Understood")
+            alert.show()
+            return -1
+        }
+    }
+    
+    func getNSNumberFromInterestRateString(input:String) -> NSNumber {
+        var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
+        println(cleaninput)
+        if NSString(string: cleaninput).length == 0 {
+            return 0
+        }
+        else if let number = NSNumberFormatter().numberFromString(cleaninput){
+            return number
+        }
+        else {
+            let alert = UIAlertView()
+            alert.title = "Alert"
+            alert.message = "Please make sure your interest rate is entered correctly"
+            alert.addButtonWithTitle("Understood")
+            alert.show()
+            return -1
+        }
+    }
+
+    
+    func getNSNumberFromAGIString(input:String) -> NSNumber {
+        var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
+        println(cleaninput)
+        if NSString(string: cleaninput).length == 0 {
+            return 0
+        }
+        else if let number = NSNumberFormatter().numberFromString(cleaninput){
+            return number
+        }
+        else {
+            let alert = UIAlertView()
+            alert.title = "Alert"
+            alert.message = "Please make sure your adjusted gross income is entered correctly"
+            alert.addButtonWithTitle("Understood")
+            alert.show()
+            return -1
+        }
+    }
+    
+    func getNSNumberFromFamilySizeString(input:String) -> NSNumber {
+        var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
+        println(cleaninput)
+        if NSString(string: cleaninput).length == 0 {
+            return 0
+        }
+        else if let number = NSNumberFormatter().numberFromString(cleaninput){
+            return number
+        }
+        else {
+            let alert = UIAlertView()
+            alert.title = "Alert"
+            alert.message = "Please make sure your family size is entered correctly"
+            alert.addButtonWithTitle("Understood")
+            alert.show()
+            return -1
+        }
     }
 
 /*

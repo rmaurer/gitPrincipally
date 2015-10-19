@@ -51,6 +51,9 @@ class PaymentContainerTableViewController: UITableViewController, UIPickerViewDa
     
     @IBOutlet weak var monthlyAmountTextField: UITextField!
     
+    @IBOutlet weak var monthsAlreadyPaidLabel: UILabel!
+    
+    @IBOutlet weak var monthsAlreadyPaidTextField: UITextField!
     
     @IBOutlet weak var pickerView: UIView!
     
@@ -85,7 +88,7 @@ class PaymentContainerTableViewController: UITableViewController, UIPickerViewDa
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return 5
+        return 6
     }
     
     
@@ -105,6 +108,8 @@ class PaymentContainerTableViewController: UITableViewController, UIPickerViewDa
                 pickerView.hidden = false
                 montlyAmountLabel.hidden = true
                 monthlyAmountTextField.hidden = true
+                monthsAlreadyPaidLabel.hidden = true
+                monthsAlreadyPaidTextField.hidden = true
                 return 45
             }
             else{
@@ -129,9 +134,18 @@ class PaymentContainerTableViewController: UITableViewController, UIPickerViewDa
                 termViewContainer.hidden = true
                 montlyAmountLabel.hidden = false
                 monthlyAmountTextField.hidden = false
+                monthsAlreadyPaidLabel.hidden = false
+                monthsAlreadyPaidTextField.hidden = false
                 return 45
             }
         case 4:
+            if segmentedOutlet.selectedSegmentIndex == 0 {
+                return 0
+            }
+            else{
+                return 45
+            }
+        case 5:
             //return 0
             if segmentedOutlet.selectedSegmentIndex == 0 {
                 return  0
