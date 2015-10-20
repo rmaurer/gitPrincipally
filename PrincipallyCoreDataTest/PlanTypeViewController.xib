@@ -14,6 +14,24 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U1M-9J-59b">
+                    <rect key="frame" x="41" y="67" width="63" height="30"/>
+                    <state key="normal" title="Standard">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="KYt-VM-VEU"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HOC-JD-RFR">
+                    <rect key="frame" x="43" y="105" width="140" height="30"/>
+                    <state key="normal" title="Standard Graduated">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="1pP-OH-I3x"/>
+                    </connections>
+                </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EZF-tc-l17">
                     <rect key="frame" x="41" y="173" width="143" height="30"/>
                     <state key="normal" title="Extended Graduated">
@@ -95,22 +113,13 @@
                         <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="igs-9z-oO3"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U1M-9J-59b">
-                    <rect key="frame" x="41" y="67" width="63" height="30"/>
-                    <state key="normal" title="Standard">
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nEI-np-B94">
+                    <rect key="frame" x="41" y="38" width="242" height="30"/>
+                    <state key="normal" title="Default (loans as you entered them)">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="KYt-VM-VEU"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HOC-JD-RFR">
-                    <rect key="frame" x="41" y="98" width="140" height="30"/>
-                    <state key="normal" title="Standard Graduated">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="1pP-OH-I3x"/>
+                        <action selector="standardButtonAction:" destination="-1" eventType="touchUpInside" id="RqZ-0I-t3z"/>
                     </connections>
                 </button>
             </subviews>

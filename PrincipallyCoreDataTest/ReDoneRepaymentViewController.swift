@@ -69,6 +69,7 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
             graphedScenarioView.variableInterestRate = planOptionsView.variableInterestRateSwitchOutlet.on
             graphedScenarioView.changeInInterestRate = interestRateSliderToLIBORNumber(planOptionsView.changeInRateSliderOutlet.value)
             graphedScenarioView.AGI = getNSNumberFromAGIString(planOptionsView.adjustedGrossIncomeTextField6.text).doubleValue
+           graphedScenarioView.annualSalaryIncrease = getNSNumberFromAnnualSalaryIncreaseString(planOptionsView.annualSalaryIncreaseTextField7.text).doubleValue
             graphedScenarioView.familySize = getNSNumberFromFamilySizeString(planOptionsView.familySizeTextField8.text).integerValue
             graphedScenarioView.qualifyingJob = planOptionsView.qualifyingJobSwitch.on
             graphedScenarioView.IBRDateOptions = planOptionsView.IBRDatesSwitch10.on
@@ -92,8 +93,6 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
     func flipAroundGraphWithoutLoadingScenario(){
         loadChildViews()
         graphedScenarioView.currentScenario = selectedScenario
-        
-        //graphedScenarioView.scenario_MakeGraphVisibleWithoutAddingScenario()
         graphedScenarioView.scenario_makeGraphVisibleWithWoundUpScenario()
         
         
@@ -264,6 +263,26 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
             let alert = UIAlertView()
             alert.title = "Alert"
             alert.message = "Please make sure your family size is entered correctly"
+            alert.addButtonWithTitle("Understood")
+            alert.show()
+            return -1
+        }
+    }
+    
+    func getNSNumberFromAnnualSalaryIncreaseString(input:String) -> NSNumber {
+        var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
+        println(cleaninput)
+        if NSString(string: cleaninput).length == 0 {
+            return 0
+        }
+        else if let number = NSNumberFormatter().numberFromString(cleaninput){
+            return number
+        }
+        else {
+            let alert = UIAlertView()
+            alert.title = "Alert"
+            alert.message = "Please make sure your annual salary increase is entered correctly"
             alert.addButtonWithTitle("Understood")
             alert.show()
             return -1

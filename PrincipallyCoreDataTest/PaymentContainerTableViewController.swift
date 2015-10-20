@@ -26,19 +26,17 @@ class PaymentContainerTableViewController: UITableViewController, UIPickerViewDa
         self.tableView.reloadData()
     }
     
-    @IBOutlet weak var termViewContainer: UIView!
+    @IBOutlet weak var monthsAlreadyPaidLabel: UILabel!
     
-    @IBOutlet weak var termYearsLabel: UILabel!
+    @IBOutlet weak var alreadyPaidStepper: UIStepper!
+    @IBAction func alreadyPaidStepperAction(sender: UIStepper) {
+        monthsAlreadyPaidLabel.text = String(Int(sender.value))
+    }
+    
+   
   
     @IBOutlet weak var TermLabel: UILabel!
     
-    @IBOutlet weak var termSlider: UISlider!
-    
-    @IBAction func termSliderAction(sender: UISlider) {
-        var sliderByFives = Int(sender.value/5) * 5
-        sender.value = Float(sliderByFives)
-        termYearsLabel.text = "\(sliderByFives) years"
-    }
     
     @IBOutlet weak var dateLabel: UILabel!
 
@@ -46,14 +44,6 @@ class PaymentContainerTableViewController: UITableViewController, UIPickerViewDa
     
     @IBOutlet weak var pickerOutlet: UIPickerView!
     
-    
-    @IBOutlet weak var montlyAmountLabel: UILabel!
-    
-    @IBOutlet weak var monthlyAmountTextField: UITextField!
-    
-    @IBOutlet weak var monthsAlreadyPaidLabel: UILabel!
-    
-    @IBOutlet weak var monthsAlreadyPaidTextField: UITextField!
     
     @IBOutlet weak var pickerView: UIView!
     
@@ -88,7 +78,7 @@ class PaymentContainerTableViewController: UITableViewController, UIPickerViewDa
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return 6
+        return 4
     }
     
     
@@ -99,59 +89,29 @@ class PaymentContainerTableViewController: UITableViewController, UIPickerViewDa
             return 60
         case 1:
             if segmentedOutlet.selectedSegmentIndex == 0 {
-                termYearsLabel.hidden = false
                 TermLabel.hidden = false
-                termSlider.hidden = false
-                dateLabel.hidden = false
-                pickerOutlet.hidden = false
-                termViewContainer.hidden = false
-                pickerView.hidden = false
-                montlyAmountLabel.hidden = true
-                monthlyAmountTextField.hidden = true
-                monthsAlreadyPaidLabel.hidden = true
-                monthsAlreadyPaidTextField.hidden = true
-                return 45
+                monthsAlreadyPaidLabel.hidden = false
+                alreadyPaidStepper.hidden = false
+                dateLabel.hidden = true
+                pickerOutlet.hidden = true
+              
+                return 90
             }
             else{
                 return 0}
         case 2:
             if segmentedOutlet.selectedSegmentIndex == 0 {
-                return tableView.frame.size.height - 120
-            }
-            else{
-                return 0}
-        case 3:
-            if segmentedOutlet.selectedSegmentIndex == 0 {
                 return 0
             }
             else{
-                termYearsLabel.hidden = true
                 TermLabel.hidden = true
-                termSlider.hidden = true
-                dateLabel.hidden = true
-                pickerOutlet.hidden = true
-                pickerView.hidden = true
-                termViewContainer.hidden = true
-                montlyAmountLabel.hidden = false
-                monthlyAmountTextField.hidden = false
-                monthsAlreadyPaidLabel.hidden = false
-                monthsAlreadyPaidTextField.hidden = false
-                return 45
-            }
-        case 4:
-            if segmentedOutlet.selectedSegmentIndex == 0 {
-                return 0
-            }
-            else{
-                return 45
-            }
-        case 5:
-            //return 0
-            if segmentedOutlet.selectedSegmentIndex == 0 {
-                return  0
-            }
-            else{
-                return tableView.frame.size.height - 90}
+                monthsAlreadyPaidLabel.hidden = true
+                alreadyPaidStepper.hidden = true
+                dateLabel.hidden = false
+                pickerOutlet.hidden = false
+                return tableView.frame.size.height - 120}
+        case 3:
+            return tableView.frame.size.height - 90
         default:
             return 0
         }

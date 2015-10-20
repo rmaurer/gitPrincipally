@@ -33,6 +33,7 @@
         <attribute name="nnewScenarioMaxPayment" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="nnewTotalScenarioInterest" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="nnewTotalScenarioMonths" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="repaymentType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="scenarioDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timeToRepay" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="allLoans" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Loan" inverseName="thisLoansScenario" inverseEntity="Loan" syncable="YES"/>
@@ -41,6 +42,6 @@
     <elements>
         <element name="Loan" positionX="-306" positionY="-243" width="128" height="255"/>
         <element name="MonthlyPayment" positionX="-461" positionY="-7" width="128" height="133"/>
-        <element name="Scenario" positionX="-551" positionY="-288" width="128" height="225"/>
+        <element name="Scenario" positionX="-551" positionY="-288" width="128" height="240"/>
     </elements>
 </model>

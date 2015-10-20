@@ -110,8 +110,8 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
                 y = graphHeight + topBorder - y // Flip the graph
                 return y
             }
-            
-            UIColor.whiteColor().setFill()
+            UIColor.lightGrayColor().setFill()
+            //UIColor.whiteColor().setFill()
             UIColor.whiteColor().setStroke()
             
             var totalGraphPath = UIBezierPath()
@@ -151,7 +151,7 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             CGContextRestoreGState(context)
             
             //draw the line on top of the clipped gradient
-            totalGraphPath.lineWidth = 2.0
+            totalGraphPath.lineWidth = 10.0 //was 2
             totalGraphPath.stroke()
             
             ////start other line
@@ -201,7 +201,7 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
             CGContextRestoreGState(context)
             
             //draw the line on top of the clipped gradient
-            graphPath.lineWidth = 2.0
+            graphPath.lineWidth = 10.0 //was 2
             graphPath.stroke()
 
             

@@ -46,6 +46,7 @@ class Scenario: NSManagedObject {
     @NSManaged var nnewTotalScenarioMonths: NSNumber
     @NSManaged var defaultScenarioMaxPayment: NSNumber
     @NSManaged var nnewScenarioMaxPayment: NSNumber
+    @NSManaged var repaymentType : String
     
     
     func getDefault(managedObjectContext:NSManagedObjectContext) -> Scenario {

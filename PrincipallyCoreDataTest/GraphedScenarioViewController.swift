@@ -11,6 +11,8 @@ import CoreData
 
 class GraphedScenarioViewController: UIViewController {
 
+    @IBOutlet weak var graphOfScenario: GraphOfScenario!
+    
     @IBOutlet weak var nameLabelOutlet: UILabel!
     var name : String = ""
     var repaymentType : String = ""
@@ -20,6 +22,7 @@ class GraphedScenarioViewController: UIViewController {
     var variableInterestRate : Bool = false
     var changeInInterestRate : Double! // this one will need enum to describe options
     var AGI : Double!
+    var annualSalaryIncrease : Double!
     var familySize : Int!
     var qualifyingJob : Bool = false
     var IBRDateOptions : Bool = false
@@ -47,6 +50,45 @@ class GraphedScenarioViewController: UIViewController {
         //set variable of what will be inserted into the entity "Loan"
         currentScenario = Scenario(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
         currentScenario.name = name
+        currentScenario.repaymentType = repaymentType
+        //currentScenario.description as String = "You are repaying your loans under the \(repaymentType) plan"
+        
+        
+        switch currentScenario.repaymentType  {
+        case "Default":
+            currentScenario.makeNewExtraPaymentScenario(managedObjectContext, extra:amountOfExtraPayments, MWEPTotal: frequencyOfExtraPayments)
+        case "Standard Flat":
+            //start here: make these into payments :) 
+            var test = 0
+        case "Standard Graduated":
+            var test = 0
+            //no longer doing this
+        case "Extended":
+            var test = 0
+        case "Extended Graduated":
+            var test = 0
+        case "Default":
+            var test = 0
+        case "Refi":
+            var test = 0
+        case "IBR":
+            var test = 0
+        case "ICR":
+            var test = 0
+        case "PAYE":
+            var test = 0
+        case "IBR with PILF":
+            var test = 0
+        case "ICR with PILF":
+            var test = 0
+        case "PAYE with PILF":
+            var test = 0
+        default:
+            var test = 0
+        }
+
+        
+        
         var error: NSError?
         if !managedObjectContext.save(&error) {
             println("Could not save \(error), \(error?.userInfo)")
@@ -66,10 +108,8 @@ class GraphedScenarioViewController: UIViewController {
     
     func scenario_makeGraphVisibleWithWoundUpScenario(){
         nameLabelOutlet.text = currentScenario.name
+        graphOfScenario.graphedScenario = currentScenario
     }
     
-    func scenario_MakeGraphVisibleWithoutAddingScenario() {
-        //set up various outputs in the graphView using currentScenario
-    }
 
 }

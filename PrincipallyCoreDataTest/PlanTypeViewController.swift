@@ -37,6 +37,8 @@ class PlanTypeViewController: UIViewController {
     
     func getAbbreviation (sender:String) -> String {
         switch sender{
+        case "Default (loans as you entered them)":
+            return "Default"
         case "Standard":
             return "Standard"
         case "Standard Graduated":
