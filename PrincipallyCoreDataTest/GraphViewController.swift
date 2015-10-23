@@ -10,39 +10,45 @@ import UIKit
 import CoreData
 
 class GraphViewController: UIViewController {
-    //loan data
-    var mystring : String = "did not work"
-    var interest : NSNumber = 0
-    var balance : NSNumber = 0
+    //Scenario data
     var name : String = ""
-    var type : String = ""
-    var segmentedEntryType : Int = 0
-    var pickerMonth : String = ""
-    var pickerYear : String = ""
-    var sliderTerm : NSNumber = 0
-    var monthlyAmount : NSNumber = 0
-    var numberOfMonthsPaid : NSNumber = 0
+    var repaymentType : String = ""
+    var frequencyOfExtraPayments : Int!
+    var amountOfExtraPayments : Double!
+    var interestRateOnRefi : Double!
+    var variableInterestRate : Bool = false
+    var changeInInterestRate : Double! // this one will need enum to describe options
+    var AGI : Double!
+    var annualSalaryIncrease : Double!
+    var familySize : Int!
+    var qualifyingJob : Bool = false
+    var IBRDateOptions : Bool = false
+    var ICRReqs:Bool = false
+    var PAYEReqs:Bool = false
     var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
+   // var selectedScenario: Scenario!
+    var currentScenario: Scenario!
+
     
-    //global Loan variable 
-    var firstLoan: Loan!
-    
-    @IBOutlet weak var graphOfEnteredLoan: GraphOfEnteredLoan!
-    
+    @IBOutlet weak var nameLabelOutlet: UILabel!
+    //global Loan variable
+
+    @IBOutlet weak var graphOfScenario: GraphOfScenario!
+
     //graph view
     
     @IBOutlet weak var loanDateSliderOutlet: UISlider!
     
     @IBAction func loanDateSliderAction(sender: UISlider) {
         sender.value = floor(sender.value)
-        
-        let totalMonths = firstLoan.monthsInRepaymentTerm.floatValue - firstLoan.monthsUntilRepayment.floatValue
+        let concatPayment = currentScenario.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
+        let totalMonths = concatPayment.count - 1
         
         //
         
         UIView.animateWithDuration(0.1, delay: 0, options: .CurveLinear, animations: {
             var graphLineFrame = self.graphLine.frame
-            var totalWidth = self.graphOfEnteredLoan.frame.width
+            var totalWidth = self.graphOfScenario.frame.width
             var widthRatio = sender.value / sender.maximumValue
             graphLineFrame.origin.x = CGFloat(widthRatio) * totalWidth
             self.graphLine.frame = graphLineFrame
@@ -50,10 +56,8 @@ class GraphViewController: UIViewController {
             }, completion: nil)
         println(graphLine.frame.origin.x)
         //graphOfEnteredLoan.CAWhiteLine.timeOffset = CFTimeInterval(sender.value / totalMonths)
-    
-        let mpForWorkingLoan = firstLoan.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
         
-        var currentPayment = mpForWorkingLoan[Int(sender.value)] as! MonthlyPayment
+        var currentPayment = concatPayment[Int(sender.value)] as! MonthlyPayment
         
         let mpInterest = round(currentPayment.interest.floatValue * 100) / 100
         let mpPrincipal = round(currentPayment.principal.floatValue * 100) / 100
@@ -64,10 +68,8 @@ class GraphViewController: UIViewController {
         totalLabel.text = "$\(mpTotal)"
         
         
-        var monthAndYear = firstLoan.getStringOfYearAndMonthForPaymentNumber(Double(sender.value))
+        var monthAndYear = currentScenario.getStringOfYearAndMonthForPaymentNumber(Double(sender.value))
         paymentDateLabel.text = "Payment for \(monthAndYear)"
-        
-        
         
     }
     
@@ -94,59 +96,83 @@ class GraphViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    func windUpLoanForGraph(){
-        //Step 1: Wind up the loan, save it
-        //pull entity within the managedObjectContext of "loan"
-        let entity = NSEntityDescription.entityForName("Loan", inManagedObjectContext: managedObjectContext)
+    func scenario_WindUpForGraph() {
+        let entity = NSEntityDescription.entityForName("Scenario", inManagedObjectContext: managedObjectContext)
         //set variable of what will be inserted into the entity "Loan"
-        firstLoan = Loan(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+        currentScenario = Scenario(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+        currentScenario.name = name
+        currentScenario.repaymentType = repaymentType
+        //currentScenario.description as String = "You are repaying your loans under the \(repaymentType) plan"
         
-        //Set the characteristics of what will be added
-        firstLoan.name = name as String
-        firstLoan.balance = balance
-        firstLoan.interest = interest
-        firstLoan.loanType = type
         
-        switch segmentedEntryType {
-        case 0:
-            firstLoan.monthsInRepaymentTerm = sliderTerm
-            firstLoan.monthsUntilRepayment = firstLoan.getMonthsUntilRepayment(pickerMonth, year:pickerYear)
-            if firstLoan.monthsUntilRepayment.integerValue + firstLoan.monthsInRepaymentTerm.integerValue < 1 {
-                let alert = UIAlertView()
-                alert.title = "Alert"
-                alert.message = "Your loan should be paid off already based on the dates you entered"
-                alert.addButtonWithTitle("Understood")
-                alert.show()
-            }else{
-                firstLoan.enterLoanByDate(managedObjectContext)
-                var error: NSError?
-                if !managedObjectContext.save(&error) {
-                    println("Could not save \(error), \(error?.userInfo)")
-                }
+        switch currentScenario.repaymentType  {
+        case "Default":
+            //Todo: This should be deleted.  Will no longer have default entry
+            //currentScenario.makeNewExtraPaymentScenario(managedObjectContext, extra:amountOfExtraPayments, MWEPTotal: frequencyOfExtraPayments)
+            var test  = 0
+        case "Standard":
+            
+            if frequencyOfExtraPayments == 0 {
+                println("no extra payments")
+                currentScenario.standardFlat_WindUp(managedObjectContext)
             }
-        case 1:
-            firstLoan.defaultMonthlyPayment = monthlyAmount
-            firstLoan.enteredLoanByPayment(managedObjectContext)
-            firstLoan.monthsUntilRepayment = NSNumber(double: numberOfMonthsPaid.doubleValue * -1)
-            var error: NSError?
-            if !managedObjectContext.save(&error) {
-                println("Could not save \(error), \(error?.userInfo)")
+            else {
+                println("yes, extra payments")
+                currentScenario.standardFlatExtraPayment_WindUp(managedObjectContext, extra:amountOfExtraPayments, MWEPTotal: frequencyOfExtraPayments)
+                println(currentScenario.scenarioDescription)
+                
             }
+
+        case "Standard Graduated":
+            var test = 0
+            //no longer doing this
+        case "Extended":
+            var test = 0
+        case "Extended Graduated":
+            var test = 0
+        case "Default":
+            var test = 0
+        case "Refi":
+            var test = 0
+        case "IBR":
+            var test = 0
+        case "ICR":
+            var test = 0
+        case "PAYE":
+            var test = 0
+        case "IBR with PILF":
+            var test = 0
+        case "ICR with PILF":
+            var test = 0
+        case "PAYE with PILF":
+            var test = 0
         default:
-            break;
+            var test = 0
+        }
+    
+        var error: NSError?
+        if !managedObjectContext.save(&error) {
+            println("Could not save \(error), \(error?.userInfo)")
         }
     }
     
-    func makeGraphVisibleWithWoundUpLoan() {
-        //set global loan so that it can be deleted
+    
+    func scenario_makeGraphVisibleWithWoundUpScenario() {
+        //graph loan name to set here
+        nameLabelOutlet.text = currentScenario.name
+        
+        //set the Scenario
+        graphOfScenario.graphedScenario = currentScenario
+        graphOfScenario.setNeedsDisplay()
         
         //tee up the slider
-        loanDateSliderOutlet.maximumValue = Float(firstLoan.defaultTotalLoanMonths) - 1
-        loanDateSliderOutlet.setValue(0, animated: true)
-        let mpForWorkingLoan = firstLoan.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
+        let concatPayment = currentScenario.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
+        let totalMonths = concatPayment.count - 1
         
-        var currentPayment = mpForWorkingLoan[0] as! MonthlyPayment
+        loanDateSliderOutlet.maximumValue = Float(totalMonths)
+        loanDateSliderOutlet.setValue(0, animated: true)
+        
+        var currentPayment = concatPayment[0] as! MonthlyPayment
         
         let mpInterest = round(currentPayment.interest.floatValue * 100) / 100
         let mpPrincipal = round(currentPayment.principal.floatValue * 100) / 100
@@ -156,27 +182,20 @@ class GraphViewController: UIViewController {
         interestLabel.text = "$\(mpInterest)"
         totalLabel.text = "$\(mpTotal)"
         
-        var monthAndYear = firstLoan.getStringOfYearAndMonthForPaymentNumber(0)
+        var monthAndYear = currentScenario.getStringOfYearAndMonthForPaymentNumber(0)
         paymentDateLabel.text = "Payment for \(monthAndYear)"
-        
-        
-        //Step 2: Make a graph of the loan
-        //START HERE -- SET UP STORYBOARD OF THE GRAPH CONTAINER
-        
-        
-        graphOfEnteredLoan.enteredLoan = firstLoan
-        graphOfEnteredLoan.setNeedsDisplay()    
-        //graphOfEnteredLoan.CAWhiteLine.duration = NSTimeInterval(firstLoan.monthsInRepaymentTerm.floatValue - firstLoan.monthsUntilRepayment.floatValue)
 
     }
     
-    func graphFlippedAroundNotVisible(){
+    func scenario_UserWantsToEditAgain(){
+        //we've got to delete the scenario from the list
+        currentScenario.scenario_DeleteAssociatedObjectsFromManagedObjectContext(managedObjectContext)
+        managedObjectContext.deleteObject(currentScenario as NSManagedObject)
         var error: NSError?
-        firstLoan.deleteLoanFromDefaultScenario(managedObjectContext)
-        managedObjectContext.deleteObject(firstLoan as NSManagedObject)
         if !managedObjectContext.save(&error) {
             println("could not save: \(error)")
         }
+        
     }
     
 

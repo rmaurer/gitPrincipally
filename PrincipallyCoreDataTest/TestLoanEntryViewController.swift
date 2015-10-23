@@ -13,39 +13,48 @@ protocol TypeViewDelegate{
     func chooseTypeDidFinish(type:String)
 }
 
+protocol SaveButtonDelegate{
+    func didPressSaveOrEditButton()
+}
 
-class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeViewDelegate  {
+protocol EditButtonDelegate {
+    func didPressSaveOrEditButton()
+}
+
+
+class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeViewDelegate, SaveButtonDelegate,EditButtonDelegate  {
     //BalanceInterestDelgate
     
     //Flipping view when loan is entered
     
     var loanIsEnteredGraphIsShowing : Bool = false
-
+    var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
     var BIView = BalanceInterestTableViewController()
     var paymentView = PaymentContainerTableViewController()
     var graphView = GraphViewController()
+    var editAddanotherView = EditAddAnotherScreenViewController()
     var selectedLoan: Loan?
+    var firstLoan : Loan!
     
     @IBOutlet weak var graphContainer: UIView!
     @IBOutlet weak var entryContainer: UIView!
     
-    @IBAction func doneButton(sender: UIBarButtonItem) {
+    func didPressSaveOrEditButton() {
 
         loadChildViews()
         self.loanNameOutlet.resignFirstResponder()
         BIView.interest.resignFirstResponder()
         BIView.balance.resignFirstResponder()
-        paymentView.monthlyAmountTextField.resignFirstResponder()
-        paymentView.monthsAlreadyPaidTextField.resignFirstResponder()
+
         
         if loanIsEnteredGraphIsShowing {
-            graphView.graphFlippedAroundNotVisible()    
+            graphFlippedAroundNotVisibleDeleteLoan()
             UIView.transitionFromView(graphContainer,
                 toView: entryContainer,
                 duration: 1.0,
                 options: UIViewAnimationOptions.TransitionFlipFromRight
                 | UIViewAnimationOptions.ShowHideTransitionViews, completion: nil)
-            sender.title = "Save Loan"
+            //sender.title = "Save Loan"
             selectLoantype.enabled = true
             BIView.interest.userInteractionEnabled = true
             BIView.balance.userInteractionEnabled = true
@@ -55,34 +64,20 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
             loanIsEnteredGraphIsShowing = !loanIsEnteredGraphIsShowing
         }
         else {
-        //the person is entering the loan, so switch the button to editing
-        //first, we load up the graph container view with the information we need
-            graphView.interest = getNSNumberFromString(BIView.interest.text)
-            graphView.balance = getNSNumberFromString(BIView.balance.text)
-            graphView.name = getLoanName()
-            graphView.type = getLoanType()
-            graphView.segmentedEntryType = paymentView.segmentedOutlet.selectedSegmentIndex
-            graphView.pickerMonth = paymentView.pickerData[0][paymentView.pickerOutlet.selectedRowInComponent(0)]
-            graphView.pickerYear = paymentView.pickerData[1][paymentView.pickerOutlet.selectedRowInComponent(1)]
-            graphView.sliderTerm = Int(paymentView.termSlider.value) * 12
-            graphView.monthlyAmount = getNSNumberFromString(paymentView.monthlyAmountTextField.text)
-            graphView.numberOfMonthsPaid = getNSNumberFromString(paymentView.monthsAlreadyPaidTextField.text)
-            
+         let testinterest = getNSNumberFromString(BIView.interest.text)
+         let testbalance = getNSNumberFromString(BIView.balance.text)
+         let testname = getLoanName()
+         let testtype = getLoanType()
             
             //Just making sure there isn't an error in the interest/balance inputs.  Granted, this is super messy, but it works for now
-            if graphView.interest != -1 && graphView.balance != -1 && graphView.type != "Select Loan Type" && graphView.name != "Loan Name"{
-                
-                
-            //load up the new information in the graph View
-                graphView.windUpLoanForGraph()
-                graphView.makeGraphVisibleWithWoundUpLoan()
-            
+         if testinterest != -1 && testbalance != -1 && testtype != "Select Loan Type" && testname != "Loan Name"{
+                addSimpleLoan()
                 UIView.transitionFromView(entryContainer,
                     toView: graphContainer,
                     duration: 1.0,
                     options: UIViewAnimationOptions.TransitionFlipFromRight
                         | UIViewAnimationOptions.ShowHideTransitionViews, completion: nil)
-                sender.title = "Edit"
+                //sender.title = ""
                 selectLoantype.enabled = false
                 BIView.interest.userInteractionEnabled = false
                 BIView.balance.userInteractionEnabled = false
@@ -104,13 +99,22 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
         BIView.interest.text = "\(selectedLoan!.interest)%"
         BIView.interest.userInteractionEnabled = false
         BIView.balance.userInteractionEnabled = false
-        doneButtonOutlet.title = "Edit"
         selectLoantype.setTitle(selectedLoan!.loanType, forState: .Normal)
         selectLoantype.enabled = false
         loanNameOutlet.userInteractionEnabled = false
-        editingPen.hidden = true 
-        graphView.firstLoan = selectedLoan
-        graphView.makeGraphVisibleWithWoundUpLoan()
+        editingPen.hidden = true
+        if selectedLoan!.monthsUntilRepayment.integerValue < 0 {
+            editAddanotherView.descriptionLabel.text = "This loan has already entered repayment so far \(selectedLoan!.monthsUntilRepayment.integerValue * -1) payments have been made so far"
+        }
+        else if selectedLoan!.monthsUntilRepayment.integerValue == 0 {
+            editAddanotherView.descriptionLabel.text = "This loan has just entered repayments.  No payments have been made yet."}
+        else if selectedLoan!.monthsUntilRepayment.integerValue == 1 {
+            editAddanotherView.descriptionLabel.text = "This loan has just entered repayments.  One payment has been made so far"}
+        else {
+            editAddanotherView.descriptionLabel.text = "This loan will enter payment in \(selectedLoan!.getStringOfYearAndMonthForPaymentNumber(selectedLoan!.monthsUntilRepayment.doubleValue))"
+        }
+        
+        
         
         UIView.transitionFromView(entryContainer,
             toView: graphContainer,
@@ -168,19 +172,24 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
         super.viewDidLoad()
         loanNameOutlet.delegate = self
         editingPen.hidden = false
-        //loadChildViews()
+        loadChildViews()
+        paymentView.delegate = self
+        editAddanotherView.delegate = self
         if selectedLoan != nil {
             println("selectedLoan did not equal nil")
             flipAroundWithoutLoadingLoan()
         }
     }
     
+
+    
     func loadChildViews() {
         println("loadchildViews was run")
         //grab each of the views that we're going to need
         BIView = self.childViewControllers[0] as! BalanceInterestTableViewController
         paymentView = self.childViewControllers[2] as! PaymentContainerTableViewController
-        graphView = self.childViewControllers[1] as! GraphViewController
+        editAddanotherView = self.childViewControllers[1] as! EditAddAnotherScreenViewController
+
         
 
         //balanceInterestVC.delegate = self
@@ -248,6 +257,62 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
         self.loanNameOutlet.resignFirstResponder()
         BIView.interest.resignFirstResponder()
         BIView.balance.resignFirstResponder()
-        paymentView.monthlyAmountTextField.resignFirstResponder()
+    }
+    
+    
+    
+    func addSimpleLoan(){
+        //Step 1: Wind up the loan, save it
+        //pull entity within the managedObjectContext of "loan"
+        let entity = NSEntityDescription.entityForName("Loan", inManagedObjectContext: managedObjectContext)
+        //set variable of what will be inserted into the entity "Loan"
+        firstLoan = Loan(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+
+        
+
+        //Set the characteristics of what will be added
+        firstLoan.name = getLoanName() as String
+        firstLoan.balance = getNSNumberFromString(BIView.balance.text)
+        firstLoan.interest = getNSNumberFromString(BIView.interest.text)
+        firstLoan.loanType = getLoanType() as String
+        var defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
+        firstLoan.thisLoansScenario = defaultScenario
+        
+        switch paymentView.segmentedOutlet.selectedSegmentIndex {
+        case 0:
+            firstLoan.monthsUntilRepayment = NSNumber(double: floor(paymentView.alreadyPaidStepper.value) * -1)
+            if floor(paymentView.alreadyPaidStepper.value) == 0 {
+                editAddanotherView.descriptionLabel.text = "This loan has just entered repayments.  No payments have been made yet."}
+            else if floor(paymentView.alreadyPaidStepper.value) == 0 {
+                editAddanotherView.descriptionLabel.text = "This loan has just entered repayments.  One payment has been made so far"}
+            else {
+                  editAddanotherView.descriptionLabel.text = "This loan is already in repayment. So far \(Int(paymentView.alreadyPaidStepper.value)) payments have been made so far"
+            }
+        case 1:
+           let pickerMonth = paymentView.pickerData[0][paymentView.pickerOutlet.selectedRowInComponent(0)]
+           let pickerYear = paymentView.pickerData[1][paymentView.pickerOutlet.selectedRowInComponent(1)]
+            firstLoan.monthsUntilRepayment = firstLoan.getMonthsUntilRepayment(pickerMonth, year:pickerYear)
+            editAddanotherView.descriptionLabel.text = "This loan will enter repayment in \(pickerMonth) \(pickerYear)"
+        default:
+            break;}
+        var error: NSError?
+            if !managedObjectContext.save(&error) {
+                println("Could not save \(error), \(error?.userInfo)")
+        }
+    }
+    
+    func graphFlippedAroundNotVisibleDeleteLoan(){
+        var error: NSError?
+        //firstLoan.deleteLoanFromDefaultScenario(managedObjectContext)
+        if selectedLoan != nil {
+            managedObjectContext.deleteObject(selectedLoan! as NSManagedObject)
+        }
+        
+        else {
+            managedObjectContext.deleteObject(firstLoan as NSManagedObject)
+        }
+        if !managedObjectContext.save(&error) {
+            println("could not save: \(error)")
+        }
     }
 }

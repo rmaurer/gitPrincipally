@@ -10,8 +10,10 @@ import UIKit
 import Foundation
 import CoreData
 
-class PayExtraEachMonthViewController: UIViewController {
 
+//toDelete: this view controller is no longer in use. 
+class PayExtraEachMonthViewController: UIViewController {
+ /*
     var oArray = NSOrderedSet()
     var test = NSNumber()
     var sliderExtraNum : Int = 0
@@ -219,5 +221,5 @@ class PayExtraEachMonthViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+ */
 }

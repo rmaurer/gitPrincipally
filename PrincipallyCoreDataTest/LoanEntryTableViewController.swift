@@ -28,7 +28,7 @@ class LoanEntryTableViewController: UITableViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-         defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
+        defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         myLoans = defaultScenario.allLoans
     
         self.tableView.reloadData()
@@ -50,6 +50,7 @@ class LoanEntryTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        println("got into cell for Row at Index Path")
         var cell = tableView.dequeueReusableCellWithIdentifier("loanCellRedux") as? UITableViewCell
         if cell == nil {
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "loanCellRedux")}
@@ -88,7 +89,7 @@ class LoanEntryTableViewController: UITableViewController {
         if editingStyle == UITableViewCellEditingStyle.Delete {
             //1
             let loanToRemove = myLoans[indexPath.row] as! Loan
-            loanToRemove.deleteLoanFromDefaultScenario(managedObjectContext)
+            //loanToRemove.deleteLoanFromDefaultScenario(managedObjectContext)
             //2
             managedObjectContext.deleteObject(loanToRemove as NSManagedObject)
             //3

@@ -24,7 +24,7 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
     let typeXIBVC = PlanTypeViewController(nibName: "PlanTypeViewController", bundle: nil)
     
     var planOptionsView = PlanOptionsTableViewController()
-    var graphedScenarioView = GraphedScenarioViewController()
+    var graphedScenarioView = GraphViewController()
 
     var selectedScenario: Scenario?
 
@@ -146,7 +146,7 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
     
     func loadChildViews(){
         planOptionsView = self.childViewControllers[1] as! PlanOptionsTableViewController
-        graphedScenarioView = self.childViewControllers[0] as! GraphedScenarioViewController
+        graphedScenarioView = self.childViewControllers[0] as! GraphViewController
     }
     
     func frequencySliderValueToMonthNumber(ssender:Float) -> Int {

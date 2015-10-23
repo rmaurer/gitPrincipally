@@ -158,6 +158,7 @@ class CoreDataStack {
     }
     
     func getAllScenarios() -> [NSManagedObject] {
+        //todo:have this not return Default
         var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
         //2 - Create the Fetch Request
         let fetchRequest = NSFetchRequest(entityName:"Scenario")

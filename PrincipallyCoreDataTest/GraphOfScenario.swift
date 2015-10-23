@@ -32,9 +32,11 @@ class GraphOfScenario: UIView {
         if graphedScenario != nil {
             
             
+            
             var interestGraphPoints : [Double] = graphedScenario!.makeArrayOfAllInterestPayments()
             var totalGraphPoints : [Double] = graphedScenario!.makeArrayOfTotalPayments()
-            
+            maxWidth = totalGraphPoints.count
+            maxHeight = 1.2*(maxElement(totalGraphPoints))
             //var app = principallyApp()
             //app.printAllScenariosAndLoans()
             //var currentScenarioInterestGraphPoints : [Double] = currentScenario!.makeArrayOfAllInterestPayments()
@@ -115,7 +117,7 @@ class GraphOfScenario: UIView {
             }
             
             UIColor.whiteColor().setFill()
-            UIColor.whiteColor().setStroke()
+            UIColor.darkGrayColor().setStroke()//whiteColor().setStroke()
             
             var totalGraphPath = UIBezierPath()
             println(graphedScenario!.name)
@@ -168,14 +170,14 @@ class GraphOfScenario: UIView {
             CGContextRestoreGState(context)
             
             //draw the line on top of the clipped gradient
-            totalGraphPath.lineWidth = 2.0
+            totalGraphPath.lineWidth = 8.0
             totalGraphPath.stroke()
             
             ////start other line
             ////
             
             UIColor.whiteColor().setFill()
-            UIColor.whiteColor().setStroke()
+            UIColor.darkGrayColor().setStroke()//UIColor.whiteColor().setStroke()
             
             //set up the points line
             var graphPath = UIBezierPath()
@@ -228,7 +230,7 @@ class GraphOfScenario: UIView {
             CGContextRestoreGState(context)
             
             //draw the line on top of the clipped gradient
-            graphPath.lineWidth = 2.0
+            graphPath.lineWidth = 8.0
             graphPath.stroke()
             
             

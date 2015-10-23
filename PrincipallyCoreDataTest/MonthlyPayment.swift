@@ -41,4 +41,10 @@ class MonthlyPayment: NSManagedObject {
         self.interest = self.interest.doubleValue + (balance * rate)
         self.totalPayment = self.totalPayment.doubleValue + balance + (balance * rate)
     }
+    
+    func addNonCoreDataPaymentToMP(nonCoreDataPayment:Payment_NotCoreData){
+        self.principal = self.principal.doubleValue + nonCoreDataPayment.principal
+        self.interest = self.interest.doubleValue + nonCoreDataPayment.interest
+        self.totalPayment = self.totalPayment.doubleValue + nonCoreDataPayment.total
+    }
 }

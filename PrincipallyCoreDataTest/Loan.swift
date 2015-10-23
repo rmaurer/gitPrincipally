@@ -59,25 +59,59 @@ class Loan: NSManagedObject {
         var error: NSError?
         if !managedObjectContext.save(&error) {
             println("Could not save: \(error)") }
-        
-        
     }
+    
+    func standardFlat_WindUpLoan() -> [Payment_NotCoreData] {
+        var totalMonths = 120 + self.monthsUntilRepayment.integerValue
+        self.defaultMonthlyPayment = self.getStandardMonthlyPayment(minElement([totalMonths,120]))
+        var monthlyPayment = self.defaultMonthlyPayment.doubleValue
+        var balance = self.balance.doubleValue + self.capitalizedInterest()
+        var rate = (self.interest.doubleValue / 12) / 100
+        var paymentArrayToReturn = [Payment_NotCoreData]()
+        var monthsUntilRepayment = self.monthsUntilRepayment.integerValue
+        
+        while monthsUntilRepayment > 0 {
+            var paymentToAdd = Payment_NotCoreData()
+            paymentArrayToReturn.append(paymentToAdd)
+            monthsUntilRepayment -= 1
+        }
+        
+        while balance > monthlyPayment {
+            var paymentToAdd = Payment_NotCoreData()
+            paymentToAdd.interest = balance * rate
+            paymentToAdd.principal = monthlyPayment - (balance * rate)
+            paymentToAdd.total = monthlyPayment
+            balance = balance - monthlyPayment
+            paymentArrayToReturn.append(paymentToAdd)
+        }
+        
+        var lastPaymentToAdd = Payment_NotCoreData()
+        lastPaymentToAdd.interest = balance * rate
+        lastPaymentToAdd.principal = balance
+        lastPaymentToAdd.total = balance + (balance * rate)
+        paymentArrayToReturn.append(lastPaymentToAdd)
+        
+        return paymentArrayToReturn
+    }
+    
+    
+    
 
-    func getDefaultMonthlyPayment (monthsUntilRepayment: Int) -> Double {
+    func getStandardMonthlyPayment (term:Int) -> Double {
         let r = (self.interest.doubleValue / 100) / 12 //monthly repayment -- divide by 100 to convert from percent to decimal.  divide by 12 to get monthly from annual rate.
         let PV = self.balance.doubleValue
         
         //Check if payment has already started.  In which case, calculate the repayment amount based on the total number of months on the loan 
         
-        if monthsUntilRepayment <= 0 {
-            let n = Double(self.monthsInRepaymentTerm.integerValue + self.monthsUntilRepayment.integerValue) * -1 //Make it negative for purposes of the formula
+        if self.monthsUntilRepayment.integerValue <= 0 {
+            let n = Double(term + self.monthsUntilRepayment.integerValue) * -1 //we add the months until repayment because it's a negative number if the loan has already entered repayment.  we only make it negative again for the purposes of the forumula
             let defaultMonthlyPayment = (r * PV) / (1 - pow((1+r),n))
             return defaultMonthlyPayment
         }
         
         //otherwise payment hasn't started and we need to check if interest is accruing
         else{
-            let n = self.monthsInRepaymentTerm.doubleValue * -1
+            let n = Double(term * -1)
             if self.loanType == "Direct Stafford - Subsidized" || self.loanType ==  "Perkins" { //interest doesn't accrue. You can just calculate the repayment amount straight away
                 let defaultMonthlyPayment = (r * PV) / (1 - pow((1+r),n))
                 return defaultMonthlyPayment
@@ -252,74 +286,6 @@ class Loan: NSManagedObject {
     
     //this function pulls out the information on the loan, finds if there's a Scenario already called "Default", adds any MPs necessary based on the length of hte repayment of the loan.  Then it loads up the MPs with the new payments.  Extra here is deprecated, so just always set to 0 when calling this.
     func enterLoanByDate (managedObjectContext : NSManagedObjectContext) {
-        //set default monthly payment, which accounts for whether payment has already started or not
-        self.defaultMonthlyPayment = NSNumber(double:self.getDefaultMonthlyPayment(self.monthsUntilRepayment.integerValue))
-        var monthlyPayment = self.defaultMonthlyPayment.doubleValue
-        var balance = self.balance.doubleValue + self.capitalizedInterest()
-        var rate = (self.interest.doubleValue / 12) / 100
-        var totalMonths = self.monthsUntilRepayment.integerValue + self.monthsInRepaymentTerm.integerValue
-        
-        //Pull up Monthly Payment Entity
-        let entity = NSEntityDescription.entityForName("MonthlyPayment", inManagedObjectContext: managedObjectContext)
-        
-        //Get defaultScenario and set this loan's scenario
-        var defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
-        self.thisLoansScenario = defaultScenario
-
-        //build the set of monthly payments for this loan
-        let mpForThisLoan = self.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
-       
-        //add blank Monthly Payments for the total length.
-        while mpForThisLoan.count < totalMonths {
-            var monthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
-                monthlyPaymentToBeAdded.interest = 0//balance * rate
-                monthlyPaymentToBeAdded.principal = 0//monthlyPayment - (balance * rate)
-                monthlyPaymentToBeAdded.totalPayment = 0//monthlyPayment
-                mpForThisLoan.addObject(monthlyPaymentToBeAdded)
-            }
-
-        //make monthly payment array
-        var index = self.monthsUntilRepayment.integerValue
-        for mpPayment in mpForThisLoan {
-                if index > 0 { //we have months to wait until repayment begins
-                    index = index - 1}
-                else { //index is less than or equal to zero, meaninag it is already in repayment or just starting
-                    let mpPayment = mpPayment as! MonthlyPayment
-                    if balance > monthlyPayment {
-                        //and if it's not the last payment, add relevant values to the concatenated MP
-                        mpPayment.addPayment(monthlyPayment,balance:balance, rate:rate)
-                        balance = balance + (balance * rate) - monthlyPayment
-                    }else if balance > 0 {//last payment
-                        mpPayment.addFinalPayment(balance, rate:rate)
-                        balance = 0
-                    }
-                }
-              
-            }
-        //save
-        var error: NSError?
-        self.mpForOneLoan = mpForThisLoan.copy() as! NSOrderedSet
-        if !managedObjectContext.save(&error) {
-            println("Could not save: \(error)") }
-        
-        //add in a few more features
-        self.defaultTotalLoanInterest = self.getTotalInterestForLoansMP()
-        self.defaultTotalLoanMonths = self.mpForOneLoan.count
-        defaultScenario.defaultTotalScenarioMonths = maxElement([defaultScenario.defaultTotalScenarioMonths.integerValue,self.mpForOneLoan.count])
-        
-        //save
-        if !managedObjectContext.save(&error) {
-            println("Could not save: \(error)") }
-        
-        //
-        defaultScenario.addLoanToDefaultScenario(self, managedObjectContext: managedObjectContext)
-        let app = principallyApp()
-        app.printAllScenariosAndLoans()
-        defaultScenario.defaultScenarioMaxPayment = defaultScenario.getScenarioMaxPayment()
-        
-        if !managedObjectContext.save(&error) {
-            println("Could not save: \(error)") }
-
     }
     
     func getTotalInterestForLoansMP()-> Double {
@@ -331,6 +297,7 @@ class Loan: NSManagedObject {
         return totalInterest
     }
     
+    //toDelete
     func enteredLoanByPayment(managedObjectContext:NSManagedObjectContext){
         var monthlyPayment = self.defaultMonthlyPayment.doubleValue
         var balance = self.balance.doubleValue + self.capitalizedInterest()
@@ -379,6 +346,8 @@ class Loan: NSManagedObject {
             println("Could not save: \(error)") }
     }
     
+    
+//    TODO: this can be moved to scrap -- we are doing simple wind-up loans now, so need to delete from the scenario like this.  Why didn't I think of this sooner?? 
     func deleteLoanFromDefaultScenario(managedObjectContext:NSManagedObjectContext) {
         //TODO: when you subtract the MP and it goes down to 0, you need to delete the mpEntirely. 
         var defaultScenario: Scenario! = getDefault(managedObjectContext)
@@ -415,70 +384,70 @@ class Loan: NSManagedObject {
         return totalInterest
     }
 
-    func enteredLoanWithExtraPayment(managedObjectContext:NSManagedObjectContext,extraAmount:Double,currentScenario:Scenario,extraStart:Int, extraEnd:Int) -> Int {
-        
-        var mpForThisLoan = self.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
+    func enteredLoanWithExtraPayment(managedObjectContext:NSManagedObjectContext,extraAmount:Double,currentScenario:Scenario,extraStart:Int, extraEnd:Int) -> (parray: [Payment_NotCoreData], monthNumber: Int, description:String) {
+        self.defaultMonthlyPayment = self.getStandardMonthlyPayment(120)
+        //var mpForThisLoan = self.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
         var balance = self.balance.doubleValue
         var rate = (self.interest.doubleValue / 12) / 100
         var monthlyPayment = self.defaultMonthlyPayment.doubleValue
         var error: NSError?
-        var newMonthNumber : Int = self.defaultTotalLoanMonths.integerValue
-        
+        var newMonthNumber : Int = extraEnd
+        var standardPayments = self.standardFlat_WindUpLoan()
+        var newPaymentsArray = [Payment_NotCoreData]()
+    
+        //START HERE -- next thing you need to do is wind up the standard, no extra payment array because of the "extra start" possibility.
         for index in 0...extraStart {
-            var mpForThisMonth = mpForThisLoan[index] as! MonthlyPayment
-            balance = balance - mpForThisMonth.totalPayment.doubleValue + (balance * rate)
+            newPaymentsArray.append(standardPayments[index])
         }
         
         for index in extraStart...extraEnd{
-            var mpForThisMonth = mpForThisLoan[index] as! MonthlyPayment
+            var mpForThisMonth = Payment_NotCoreData()
             if balance > (monthlyPayment + extraAmount) {
-                mpForThisMonth.totalPayment = mpForThisMonth.totalPayment.doubleValue + extraAmount
+                mpForThisMonth.total = monthlyPayment + extraAmount
                 mpForThisMonth.interest = balance * rate
-                mpForThisMonth.principal = mpForThisMonth.totalPayment.doubleValue - mpForThisMonth.interest.doubleValue
-                balance = balance + mpForThisMonth.interest.doubleValue - mpForThisMonth.totalPayment.doubleValue
+                mpForThisMonth.principal = mpForThisMonth.total - mpForThisMonth.interest
+                balance = balance + mpForThisMonth.principal
+                newPaymentsArray.append(mpForThisMonth)
             } else if balance > 0 {
-                //finalpayment
+                //finalpayment -- newMonthNumber is different
                 mpForThisMonth.interest = balance * rate
                 mpForThisMonth.principal = balance
-                mpForThisMonth.totalPayment = balance + (balance * rate)
+                mpForThisMonth.total = balance + (balance * rate)
                 balance = 0
                 newMonthNumber = index
+                newPaymentsArray.append(mpForThisMonth)
             } else {//balance = 0
-                mpForThisMonth.interest = 0
-                mpForThisMonth.principal = 0
-                mpForThisMonth.totalPayment = 0
                 balance = 0 // probably redundant
+                //nothing to do here
             }
+            
         }
         
-        for index in extraEnd...(mpForThisLoan.count - 1) {
-            var mpForThisMonth = mpForThisLoan[index] as! MonthlyPayment
-            if balance > monthlyPayment {
-                mpForThisMonth.totalPayment = mpForThisMonth.totalPayment.doubleValue
-                mpForThisMonth.interest = balance * rate
-                mpForThisMonth.principal = mpForThisMonth.totalPayment.doubleValue - mpForThisMonth.interest.doubleValue
-                balance = balance + mpForThisMonth.interest.doubleValue - mpForThisMonth.totalPayment.doubleValue
-            }
-            else if balance > 0 {
-                mpForThisMonth.interest = balance * rate
-                mpForThisMonth.principal = balance
-                mpForThisMonth.totalPayment = balance + (balance * rate)
-                balance = 0
-                newMonthNumber = index
-            } else {//balance = 0
-                mpForThisMonth.interest = 0
-                mpForThisMonth.principal = 0
-                mpForThisMonth.totalPayment = 0
-                balance = 0 // probably redundant
-            }
+        //in case extra payments do not go to the end of the loan
+        
+        while balance > monthlyPayment {
+            var paymentToAdd = Payment_NotCoreData()
+            paymentToAdd.interest = balance * rate
+            paymentToAdd.principal = monthlyPayment - (balance * rate)
+            paymentToAdd.total = monthlyPayment
+            balance = balance - monthlyPayment
+            newPaymentsArray.append(paymentToAdd)
         }
-
-        self.mpForOneLoan = mpForThisLoan.copy() as! NSOrderedSet
-        self.nnewTotalLoanMonths = newMonthNumber
-        self.nnewTotalLoanInterest = self.getTotalInterest(mpForThisLoan)
+        
+        var lastPaymentToAdd = Payment_NotCoreData()
+        lastPaymentToAdd.interest = balance * rate
+        lastPaymentToAdd.principal = balance
+        lastPaymentToAdd.total = balance + (balance * rate)
+        newPaymentsArray.append(lastPaymentToAdd)
+    
         if !managedObjectContext.save(&error) {
             println("Could not save: \(error)") }
-        return newMonthNumber
+        
+        let numberOfExtraPaymentMonths = newMonthNumber - extraStart
+        
+        let description : String! = "\(numberOfExtraPaymentMonths) suppelemental payments were made on \(self.name), which has an interest rate of %\(self.interest)"
+    
+        return (newPaymentsArray, newMonthNumber, description)
     }
     
     

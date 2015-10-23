@@ -820,4 +820,93 @@ startPoint,
 endPoint,
 0)
 
+/*   graphView.interest = getNSNumberFromString(BIView.interest.text)
+graphView.balance = getNSNumberFromString(BIView.balance.text)
+graphView.name = getLoanName()
+graphView.type = getLoanType()
+graphView.segmentedEntryType = paymentView.segmentedOutlet.selectedSegmentIndex
+graphView.pickerMonth = paymentView.pickerData[0][paymentView.pickerOutlet.selectedRowInComponent(0)]
+graphView.pickerYear = paymentView.pickerData[1][paymentView.pickerOutlet.selectedRowInComponent(1)]
+graphView.numberOfMonthsPaid = NSNumber(double: paymentView.alreadyPaidStepper.value)
+if firstLoan.monthsUntilRepayment.integerValue + firstLoan.monthsInRepaymentTerm.integerValue < 1 {
+let alert = UIAlertView()
+alert.title = "Alert"
+alert.message = "Your loan should be paid off already based on the dates you entered"
+alert.addButtonWithTitle("Understood")
+alert.show()
+}else{
+//firstLoan.enteredLoanByPayment(managedObjectContext)
+//firstLoan.enterLoanByDate(managedObjectContext)
+firstLoan.monthsInRepaymentTerm = 0 // now obsolete because term will always be determined in Scenario
+*/
+//set default monthly payment, which accounts for whether payment has already started or not
+self.defaultMonthlyPayment = NSNumber(double:self.getStandardMonthlyPayment(self.monthsUntilRepayment.integerValue))
+var monthlyPayment = self.defaultMonthlyPayment.doubleValue
+var balance = self.balance.doubleValue + self.capitalizedInterest()
+var rate = (self.interest.doubleValue / 12) / 100
+var totalMonths = self.monthsUntilRepayment.integerValue + self.monthsInRepaymentTerm.integerValue
+
+//Pull up Monthly Payment Entity
+let entity = NSEntityDescription.entityForName("MonthlyPayment", inManagedObjectContext: managedObjectContext)
+
+//Get defaultScenario and set this loan's scenario
+var defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
+self.thisLoansScenario = defaultScenario
+
+//build the set of monthly payments for this loan
+let mpForThisLoan = self.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
+
+//add blank Monthly Payments for the total length.
+while mpForThisLoan.count < totalMonths {
+var monthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+monthlyPaymentToBeAdded.interest = 0//balance * rate
+monthlyPaymentToBeAdded.principal = 0//monthlyPayment - (balance * rate)
+monthlyPaymentToBeAdded.totalPayment = 0//monthlyPayment
+mpForThisLoan.addObject(monthlyPaymentToBeAdded)
+}
+
+//make monthly payment array
+var index = self.monthsUntilRepayment.integerValue
+for mpPayment in mpForThisLoan {
+if index > 0 { //we have months to wait until repayment begins
+index = index - 1}
+else { //index is less than or equal to zero, meaninag it is already in repayment or just starting
+let mpPayment = mpPayment as! MonthlyPayment
+if balance > monthlyPayment {
+//and if it's not the last payment, add relevant values to the concatenated MP
+mpPayment.addPayment(monthlyPayment,balance:balance, rate:rate)
+balance = balance + (balance * rate) - monthlyPayment
+}else if balance > 0 {//last payment
+mpPayment.addFinalPayment(balance, rate:rate)
+balance = 0
+}
+}
+
+}
+//save
+var error: NSError?
+self.mpForOneLoan = mpForThisLoan.copy() as! NSOrderedSet
+if !managedObjectContext.save(&error) {
+println("Could not save: \(error)") }
+
+//add in a few more features
+self.defaultTotalLoanInterest = self.getTotalInterestForLoansMP()
+self.defaultTotalLoanMonths = self.mpForOneLoan.count
+defaultScenario.defaultTotalScenarioMonths = maxElement([defaultScenario.defaultTotalScenarioMonths.integerValue,self.mpForOneLoan.count])
+
+//save
+if !managedObjectContext.save(&error) {
+println("Could not save: \(error)") }
+
+//
+defaultScenario.addLoanToDefaultScenario(self, managedObjectContext: managedObjectContext)
+let app = principallyApp()
+app.printAllScenariosAndLoans()
+defaultScenario.defaultScenarioMaxPayment = defaultScenario.getScenarioMaxPayment()
+
+if !managedObjectContext.save(&error) {
+println("Could not save: \(error)") }
+
+
+
 */

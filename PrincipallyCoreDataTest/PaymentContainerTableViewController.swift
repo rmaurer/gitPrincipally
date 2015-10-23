@@ -10,6 +10,14 @@ import UIKit
 
 class PaymentContainerTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate{
 
+    var delegate:SaveButtonDelegate? = nil
+    
+    @IBOutlet weak var saveLoanButtonOutlet: UIButton!
+    
+    @IBAction func saveLoanButtonAction(sender: UIButton) {
+        delegate!.didPressSaveOrEditButton()
+    }
+    
     @IBOutlet weak var segmentedOutlet: UISegmentedControl!
     
     @IBAction func segmentedAction(sender: UISegmentedControl) {
@@ -75,10 +83,12 @@ class PaymentContainerTableViewController: UITableViewController, UIPickerViewDa
         return 1
     }
 
+    @IBAction func saveButton(sender: AnyObject) {
+    }
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return 4
+        return 5
     }
     
     
@@ -95,7 +105,7 @@ class PaymentContainerTableViewController: UITableViewController, UIPickerViewDa
                 dateLabel.hidden = true
                 pickerOutlet.hidden = true
               
-                return 90
+                return 120
             }
             else{
                 return 0}
@@ -111,7 +121,9 @@ class PaymentContainerTableViewController: UITableViewController, UIPickerViewDa
                 pickerOutlet.hidden = false
                 return tableView.frame.size.height - 120}
         case 3:
-            return tableView.frame.size.height - 90
+            return 60
+        case 4:
+            return tableView.frame.size.height - 120
         default:
             return 0
         }

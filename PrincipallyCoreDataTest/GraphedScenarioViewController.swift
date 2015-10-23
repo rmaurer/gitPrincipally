@@ -9,8 +9,9 @@
 import UIKit
 import CoreData
 
+//toDelete: superceded by graphViewController 
 class GraphedScenarioViewController: UIViewController {
-
+/*
     @IBOutlet weak var graphOfScenario: GraphOfScenario!
     
     @IBOutlet weak var nameLabelOutlet: UILabel!
@@ -56,10 +57,19 @@ class GraphedScenarioViewController: UIViewController {
         
         switch currentScenario.repaymentType  {
         case "Default":
-            currentScenario.makeNewExtraPaymentScenario(managedObjectContext, extra:amountOfExtraPayments, MWEPTotal: frequencyOfExtraPayments)
+            //Todo: This should be deleted.  Will no longer have default entry
+            //currentScenario.makeNewExtraPaymentScenario(managedObjectContext, extra:amountOfExtraPayments, MWEPTotal: frequencyOfExtraPayments)
+            var test  = 0
         case "Standard Flat":
-            //start here: make these into payments :) 
-            var test = 0
+            
+            if frequencyOfExtraPayments == 0 {
+                currentScenario.standardFlat_WindUp(managedObjectContext)
+            }
+            else {
+                currentScenario.standardFlatExtraPayment_WindUp(managedObjectContext, extra:amountOfExtraPayments, MWEPTotal: frequencyOfExtraPayments)
+                
+            }
+            
         case "Standard Graduated":
             var test = 0
             //no longer doing this
@@ -110,6 +120,6 @@ class GraphedScenarioViewController: UIViewController {
         nameLabelOutlet.text = currentScenario.name
         graphOfScenario.graphedScenario = currentScenario
     }
-    
+    */
 
 }

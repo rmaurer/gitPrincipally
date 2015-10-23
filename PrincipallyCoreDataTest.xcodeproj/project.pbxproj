@@ -13,6 +13,7 @@
 		B32344F91B3E041900B1709C /* LoanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32344F81B3E041900B1709C /* LoanTableViewCell.swift */; };
 		B32344FF1B3F6A4900B1709C /* PayExtraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32344FE1B3F6A4900B1709C /* PayExtraViewController.swift */; };
 		B336CF721BB224C5005B59AD /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B336CF711BB224C5005B59AD /* GraphViewController.swift */; };
+		B354A45E1BD6F0F90051C1C0 /* EditAddAnotherScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B354A45D1BD6F0F90051C1C0 /* EditAddAnotherScreenViewController.swift */; };
 		B3713F1A1B48500C00C1ABEF /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3713F191B48500C00C1ABEF /* Media.xcassets */; };
 		B3713F1E1B4864B500C1ABEF /* NavController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3713F1D1B4864B500C1ABEF /* NavController.swift */; };
 		B3713F201B48A0E600C1ABEF /* EntryFormController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3713F1F1B48A0E600C1ABEF /* EntryFormController.swift */; };
@@ -78,6 +79,7 @@
 		B32344F81B3E041900B1709C /* LoanTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoanTableViewCell.swift; sourceTree = "<group>"; };
 		B32344FE1B3F6A4900B1709C /* PayExtraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayExtraViewController.swift; sourceTree = "<group>"; };
 		B336CF711BB224C5005B59AD /* GraphViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
+		B354A45D1BD6F0F90051C1C0 /* EditAddAnotherScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditAddAnotherScreenViewController.swift; sourceTree = "<group>"; };
 		B3713F191B48500C00C1ABEF /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		B3713F1D1B4864B500C1ABEF /* NavController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavController.swift; sourceTree = "<group>"; };
 		B3713F1F1B48A0E600C1ABEF /* EntryFormController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryFormController.swift; sourceTree = "<group>"; };
@@ -155,6 +157,14 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
+		B354A45C1BD6F0D40051C1C0 /* Again */ = {
+			isa = PBXGroup;
+			children = (
+				B354A45D1BD6F0F90051C1C0 /* EditAddAnotherScreenViewController.swift */,
+			);
+			name = Again;
+			sourceTree = "<group>";
+		};
 		B39A494C1B17F33F00707C56 /* DataStructures */ = {
 			isa = PBXGroup;
 			children = (
@@ -189,7 +199,7 @@
 			children = (
 				B3C123E71BCC97F500C6FBDA /* ReDoneRepaymentViewController.swift */,
 				B3C123E91BCC98E300C6FBDA /* PlanOptionsTableViewController.swift */,
-				B3C123EB1BCC990300C6FBDA /* GraphedScenarioViewController.swift */,
+				B336CF711BB224C5005B59AD /* GraphViewController.swift */,
 			);
 			name = "ReDone Repayment";
 			sourceTree = "<group>";
@@ -305,7 +315,7 @@
 				B378D1B61B65268E00AD66F5 /* TestLoanEntryViewController.swift */,
 				B3DEF8FD1B7C090F0033837C /* BalanceInterestTableViewController.swift */,
 				B3DEF9001B7D872F0033837C /* PaymentContainerTableViewController.swift */,
-				B336CF711BB224C5005B59AD /* GraphViewController.swift */,
+				B354A45C1BD6F0D40051C1C0 /* Again */,
 			);
 			name = ReDoneEntry;
 			sourceTree = "<group>";
@@ -313,6 +323,7 @@
 		B3E65F5C1BBCA51E00EC0AF1 /* Scraps */ = {
 			isa = PBXGroup;
 			children = (
+				B3C123EB1BCC990300C6FBDA /* GraphedScenarioViewController.swift */,
 				B39A494D1B17F35F00707C56 /* Compare */,
 				B39A494E1B17F37400707C56 /* Scenario */,
 				B3F1C1F51B3CCFA3009283B0 /* EnteredViewController.swift */,
@@ -525,6 +536,7 @@
 				B3D3A8491B51728C00B89D67 /* FlatLabel.swift in Sources */,
 				B3942D661B531DA0005BCD2C /* GraphOfScenario.swift in Sources */,
 				B378D1BB1B65AB5500AD66F5 /* ParkedTextField.swift in Sources */,
+				B354A45E1BD6F0F90051C1C0 /* EditAddAnotherScreenViewController.swift in Sources */,
 				B3D0D18D1B09311500BD0C0C /* PaymentViewController.swift in Sources */,
 				B3713F1E1B4864B500C1ABEF /* NavController.swift in Sources */,
 				B39A494B1B1121C600707C56 /* CompareViewController.swift in Sources */,
