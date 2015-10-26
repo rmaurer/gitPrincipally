@@ -69,6 +69,23 @@ class PlanOptionsTableViewController: UITableViewController {
     @IBOutlet weak var changeInRateSliderOutlet: UISlider! //5
     
     @IBAction func changeInRateSliderAction(sender: UISlider) {
+        sender.value = Float(Int(sender.value))
+        switch sender.value {
+        case 0:
+            return changeInRateAmountLabel.text = "No Change"
+        case 1:
+            return changeInRateAmountLabel.text = "1% Increase"
+        case 2:
+            return changeInRateAmountLabel.text = "2% Increase"
+        case 3:
+            return changeInRateAmountLabel.text = "4% Increase"
+        case 4:
+            return changeInRateAmountLabel.text = "6% Increase"
+        case 5:
+            return changeInRateAmountLabel.text = "8% Increase"
+        default:
+            return changeInRateAmountLabel.text = "No Change"
+        }
     }
     
     @IBOutlet weak var changeInRateAmountLabel: UILabel! //5
@@ -103,12 +120,82 @@ class PlanOptionsTableViewController: UITableViewController {
     
     @IBOutlet weak var PAYEDatesSwtich12: UISwitch!
     
-    @IBOutlet weak var instructionsLabel: UILabel!
+    @IBOutlet weak var instructionsLabel: UILabel! //13
+    
+    @IBOutlet weak var repaymentTermLabel: UILabel! //14
+    
+    @IBOutlet weak var repaymentTermSlider: UISlider!
+    
+    @IBAction func repaymentTermSliderAction(sender: UISlider) {
+        sender.value = Float(Int(sender.value))
+        switch sender.value {
+        case 0:
+            return RepaymentTermYearLabel.text = "5 years"
+        case 1:
+            return RepaymentTermYearLabel.text = "7 years"
+        case 2:
+            return RepaymentTermYearLabel.text = "10 years"
+        case 3:
+            return RepaymentTermYearLabel.text = "15 years"
+        case 4:
+            return RepaymentTermYearLabel.text = "20 years"
+        default:
+            return changeinRateLabel.text = "10 years"
+        }
+
+        
+    }
+    
+    @IBOutlet weak var RepaymentTermYearLabel: UILabel!
+
+    
+    @IBOutlet weak var yearsInProgramLabel: UILabel!
+
+    @IBOutlet weak var stepperOutlet: UIStepper!
+    
+    
+    @IBAction func stepperAction(sender: UIStepper) {
+        switch sender.value {
+        case 1:
+            stepperYearsOutlet.text = "1 year"
+        case 2:
+            stepperYearsOutlet.text = "2 years"
+        case 3:
+            stepperYearsOutlet.text = "3 years"
+        case 4:
+            stepperYearsOutlet.text = "4 years"
+        case 5:
+            stepperYearsOutlet.text = "5 years"
+        case 6:
+            stepperYearsOutlet.text = "6 years"
+        case 7:
+            stepperYearsOutlet.text = "7 years"
+        case 8:
+            stepperYearsOutlet.text = "8 years"
+        case 9:
+            stepperYearsOutlet.text = "9 years"
+        default:
+            stepperYearsOutlet.text = "1 year"
+        }
+    }
+    
+    @IBOutlet weak var stepperYearsOutlet: UILabel!
+    
+    
+    @IBOutlet weak var oneTimePayoffLabel: UILabel!
+    
+    @IBOutlet weak var oneTimePayoffTextFieldOutlet: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         extraPaymentAmountLabel.text = "Never"
         extraPaymentSliderOutlet.maximumValue = Float(19)
+        changeInRateSliderOutlet.maximumValue = Float(5)
+        changeInRateAmountLabel.text = "No Change"
+        repaymentTermSlider.maximumValue = Float(4)
+        repaymentTermSlider.value = 2
+        RepaymentTermYearLabel.text = "10 years"
+        stepperYearsOutlet.text = "1 year"
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -132,7 +219,7 @@ class PlanOptionsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return 15
+        return 17
     }
 
     
@@ -180,7 +267,7 @@ class PlanOptionsTableViewController: UITableViewController {
                 return 0
             }
         case 5:
-            if selectedRepaymentPlan == "Refi" && variableInterestRateSwitchOutlet != false{
+            if selectedRepaymentPlan == "Refi" && variableInterestRateSwitchOutlet.on {
                 changeinRateLabel.hidden = false
                 changeInRateSliderOutlet.hidden = false
                 changeInRateAmountLabel.hidden = false
@@ -267,6 +354,43 @@ class PlanOptionsTableViewController: UITableViewController {
                 return 0
             }
         case 14:
+            if selectedRepaymentPlan == "Refi" {
+                repaymentTermSlider.hidden = false
+                repaymentTermLabel.hidden = false
+                RepaymentTermYearLabel.hidden = false
+                return 45
+            }
+            else {
+                repaymentTermSlider.hidden = true
+                repaymentTermLabel.hidden = true
+                RepaymentTermYearLabel.hidden = true
+                return 0
+            }
+        case 15:
+            if selectedRepaymentPlan == "" {
+                yearsInProgramLabel.hidden = false
+                stepperOutlet.hidden = false
+                stepperYearsOutlet.hidden = false
+                return 45
+            }
+            else{
+                yearsInProgramLabel.hidden = true
+                stepperOutlet.hidden = true
+                stepperYearsOutlet.hidden = true
+                return 0
+            }
+        case 16:
+            if selectedRepaymentPlan == "Refi"{
+                oneTimePayoffLabel.hidden = false
+                oneTimePayoffTextFieldOutlet.hidden = false
+                return 45
+            }
+            else{
+                oneTimePayoffLabel.hidden = true
+                oneTimePayoffTextFieldOutlet.hidden = true
+                return 0 
+            }
+        case 17:
             return self.tableView.frame.size.height
         default:
             return 45

@@ -97,6 +97,7 @@ class LoanEntryTableViewController: UITableViewController {
                 println("Could not save: \(error)") }
             //4
                 //TODO:Fix this so that the loans properly re-allign.  This is throwing off the deleting process right now 
+            myLoans = defaultScenario.allLoans
             self.tableView.reloadData()
         }
     }

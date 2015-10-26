@@ -75,17 +75,22 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
             graphedScenarioView.IBRDateOptions = planOptionsView.IBRDatesSwitch10.on
             graphedScenarioView.ICRReqs = planOptionsView.ICRDatesSwitch10.on
             graphedScenarioView.PAYEReqs = planOptionsView.PAYEDatesSwtich12.on
+            graphedScenarioView.refiTerm = getRefiTermYears(planOptionsView.repaymentTermSlider.value)
+            graphedScenarioView.yearsInProgram = planOptionsView.stepperOutlet.value
+            graphedScenarioView.oneTimePayoff = getNSNumberFromOneTimePayoffString(planOptionsView.oneTimePayoffTextFieldOutlet.text).doubleValue
             
             
-            graphedScenarioView.scenario_WindUpForGraph()
-            graphedScenarioView.scenario_makeGraphVisibleWithWoundUpScenario()
-            UIView.transitionFromView(tableContainer,
+            if graphedScenarioView.scenario_WindUpForGraph() {
+                graphedScenarioView.scenario_makeGraphVisibleWithWoundUpScenario()
+            
+                UIView.transitionFromView(tableContainer,
                 toView: graphedScenarioContainer,
                 duration: 1.0,
                 options: UIViewAnimationOptions.TransitionFlipFromRight
                     | UIViewAnimationOptions.ShowHideTransitionViews, completion: nil)
-            sender.title = "Edit"
-            scenarioWasEnteredGraphIsShowing = !scenarioWasEnteredGraphIsShowing
+                sender.title = "Edit"
+                scenarioWasEnteredGraphIsShowing = !scenarioWasEnteredGraphIsShowing
+            }
         }
         
     }
@@ -125,7 +130,7 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    self.navigationController!.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+        self.navigationController!.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
         whiteBackgroundView.layer.borderWidth = 4
         whiteBackgroundView.layer.borderColor = greenPrincipallyColor.CGColor
         if selectedScenario != nil {
@@ -135,6 +140,10 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
         // Do any additional setup after loading the view.
     }
     
+    override func viewDidAppear(animated: Bool) {
+        self.navigationController!.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+    }
+    
     override func viewWillDisappear(animated: Bool) {
         self.navigationController!.navigationBar.setBackgroundImage(nil, forBarMetrics: UIBarMetrics.Default)
     }
@@ -142,6 +151,26 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    func getRefiTermYears(ssender:Float) -> Int {
+        let intSender = Int(floor(ssender))
+        switch intSender {
+        case 0:
+            return 5
+        case 1:
+            return 7
+        case 2:
+            return 10
+        case 3:
+            return 15
+        case 4:
+            return 20
+        default:
+            return 10
+
+    }
     }
     
     func loadChildViews(){
@@ -179,12 +208,13 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
     
     func interestRateSliderToLIBORNumber(ssender:Float) -> Double {
         switch floor(ssender){
-        case 0: return 0.19
-        case 1: return 0.4
+        case 0: return 0
+        case 1: return 1
         case 2: return 2
-        case 3: return 5
-        case 4: return 11
-        default: return 0.19
+        case 3: return 4
+        case 4: return 6
+        case 5: return 8
+        default: return 0
         }
     }
 
@@ -283,6 +313,27 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
             let alert = UIAlertView()
             alert.title = "Alert"
             alert.message = "Please make sure your annual salary increase is entered correctly"
+            alert.addButtonWithTitle("Understood")
+            alert.show()
+            return -1
+        }
+    }
+    
+    
+    func getNSNumberFromOneTimePayoffString(input:String) -> NSNumber {
+        var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
+        println(cleaninput)
+        if NSString(string: cleaninput).length == 0 {
+            return 0
+        }
+        else if let number = NSNumberFormatter().numberFromString(cleaninput){
+            return number
+        }
+        else {
+            let alert = UIAlertView()
+            alert.title = "Alert"
+            alert.message = "Please make sure your one time payoff is entered correct"
             alert.addButtonWithTitle("Understood")
             alert.show()
             return -1

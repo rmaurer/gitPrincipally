@@ -25,6 +25,9 @@ class GraphViewController: UIViewController {
     var IBRDateOptions : Bool = false
     var ICRReqs:Bool = false
     var PAYEReqs:Bool = false
+    var refiTerm:Int!
+    var yearsInProgram: Double!
+    var oneTimePayoff: Double!
     var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
    // var selectedScenario: Scenario!
     var currentScenario: Scenario!
@@ -96,64 +99,108 @@ class GraphViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    func scenario_WindUpForGraph() {
+    func scenario_WindUpForGraph() -> Bool {
         let entity = NSEntityDescription.entityForName("Scenario", inManagedObjectContext: managedObjectContext)
         //set variable of what will be inserted into the entity "Loan"
         currentScenario = Scenario(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
         currentScenario.name = name
         currentScenario.repaymentType = repaymentType
+        var error: NSError?
+        var wasTheScenarioCreated: Bool = false
         //currentScenario.description as String = "You are repaying your loans under the \(repaymentType) plan"
-        
+        //have it return whehter it successfully wound up the scenario
         
         switch currentScenario.repaymentType  {
-        case "Default":
-            //Todo: This should be deleted.  Will no longer have default entry
-            //currentScenario.makeNewExtraPaymentScenario(managedObjectContext, extra:amountOfExtraPayments, MWEPTotal: frequencyOfExtraPayments)
-            var test  = 0
         case "Standard":
-            
-            if frequencyOfExtraPayments == 0 {
+            if amountOfExtraPayments == -1 {
+                println("there was an error and nothing should be run")
+                wasTheScenarioCreated = false
+            }
+            else if frequencyOfExtraPayments == 0 {
                 println("no extra payments")
-                currentScenario.standardFlat_WindUp(managedObjectContext)
+                currentScenario.standardFlat_WindUp(managedObjectContext, paymentTerm:120)
+                wasTheScenarioCreated = true
             }
             else {
                 println("yes, extra payments")
-                currentScenario.standardFlatExtraPayment_WindUp(managedObjectContext, extra:amountOfExtraPayments, MWEPTotal: frequencyOfExtraPayments)
+                currentScenario.standardFlatExtraPayment_WindUp(managedObjectContext, extra:amountOfExtraPayments, MWEPTotal: frequencyOfExtraPayments, paymentTerm:120)
                 println(currentScenario.scenarioDescription)
-                
+                wasTheScenarioCreated = true
             }
 
-        case "Standard Graduated":
-            var test = 0
-            //no longer doing this
         case "Extended":
-            var test = 0
+            if amountOfExtraPayments == -1 {
+                println("there was an error and nothing should be run")
+                        return false
+                    }
+            else if frequencyOfExtraPayments == 0 {
+                println("no extra payments")
+                currentScenario.standardFlat_WindUp(managedObjectContext, paymentTerm:300)
+                    wasTheScenarioCreated = true
+            }
+            else {
+                println("yes, extra payments")
+                currentScenario.standardFlatExtraPayment_WindUp(managedObjectContext, extra:amountOfExtraPayments, MWEPTotal: frequencyOfExtraPayments, paymentTerm:300)
+                println(currentScenario.scenarioDescription)
+                wasTheScenarioCreated = true
+
+            }
         case "Extended Graduated":
-            var test = 0
-        case "Default":
-            var test = 0
+            wasTheScenarioCreated = false
+            //no longer doing this 
+        case "Standard Graduated":
+            wasTheScenarioCreated = false
+            //no longer doing this
         case "Refi":
-            var test = 0
+            println("refi")
+            if interestRateOnRefi == -1 || oneTimePayoff == -1 {
+                println("there was an error in loading interest and nothing should be fun. Variable bool, increase in interest, and refinance term are switch calculations so should not through an error")
+                wasTheScenarioCreated = false
+            }
+            
+            else{
+                currentScenario.refinance_WindUp(managedObjectContext, interest:interestRateOnRefi, variableBool:variableInterestRate, increaseInInterest:changeInInterestRate, refinanceTerm: refiTerm, oneTimePayoff: oneTimePayoff)
+                wasTheScenarioCreated = true
+            }
         case "IBR":
-            var test = 0
+            wasTheScenarioCreated = false
         case "ICR":
-            var test = 0
+            wasTheScenarioCreated = false
         case "PAYE":
-            var test = 0
+            if PAYEReqs == false {
+                wasTheScenarioCreated = false
+                let alert = UIAlertView()
+                alert.title = "Alert"
+                alert.message = "Unfortunately, you only qualify for PAYE if you meet the date eligibility requirements.  However, see if you qualify for other income-driven repayment plans"
+                alert.addButtonWithTitle("Understood")
+                alert.show()
+            }
+            else if currentScenario.getAllPAYEEligibleLoansPayment() < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                wasTheScenarioCreated = false
+                let alert = UIAlertView()
+                alert.title = "Alert"
+                alert.message = "The payments on your PAYE-eligible loans do not exceed 10% of your discretionary income, as required to enter the PAYE plan.  However, some non-eligible loans can be consolidated into loans that would qualify.  Currently this estimator does not handle consolidated loans, but you can talk to your servicer about options, or read more online at the Department of Education's website"
+                alert.addButtonWithTitle("Understood")
+                alert.show()
+            }
+            else {
+                currentScenario.PAYE_WindUp(managedObjectContext, AGI:AGI, familySize:familySize, percentageincrease:annualSalaryIncrease)
+             wasTheScenarioCreated = true
+            }
+            
+            //if yes, wind up PAYE
         case "IBR with PILF":
-            var test = 0
+            wasTheScenarioCreated = false
         case "ICR with PILF":
-            var test = 0
+            wasTheScenarioCreated = false
         case "PAYE with PILF":
-            var test = 0
+            wasTheScenarioCreated = false
         default:
-            var test = 0
+            wasTheScenarioCreated = false
         }
-    
-        var error: NSError?
         if !managedObjectContext.save(&error) {
-            println("Could not save \(error), \(error?.userInfo)")
-        }
+            println("Could not save \(error), \(error?.userInfo)")}
+        return wasTheScenarioCreated
     }
     
     

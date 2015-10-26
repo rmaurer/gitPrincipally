@@ -9,7 +9,8 @@
 import UIKit
 import CoreData
 
-class RepaymentViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, ChildViewControllerDelegate {
+class RepaymentViewController: UIViewController {}
+/*UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, ChildViewControllerDelegate {
 
     var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
     
@@ -318,4 +319,4 @@ class RepaymentViewController: UIViewController, UIPickerViewDataSource, UIPicke
     }
 
 
-}
+} */

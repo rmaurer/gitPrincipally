@@ -30,6 +30,7 @@ class Loan: NSManagedObject {
     @NSManaged var nnewTotalLoanInterest: NSNumber
     @NSManaged var nnewTotalLoanMonths: NSNumber
     
+    //can be deleted
     func copySelfToNewLoan(nnewLoan:Loan, managedObjectContext:NSManagedObjectContext) {
         let oldLoan = self
         nnewLoan.name = oldLoan.name
@@ -61,10 +62,79 @@ class Loan: NSManagedObject {
             println("Could not save: \(error)") }
     }
     
-    func standardFlat_WindUpLoan() -> [Payment_NotCoreData] {
-        var totalMonths = 120 + self.monthsUntilRepayment.integerValue
-        self.defaultMonthlyPayment = self.getStandardMonthlyPayment(minElement([totalMonths,120]))
-        var monthlyPayment = self.defaultMonthlyPayment.doubleValue
+    func refi_WindUpLoan(interest:Double, increaseInInterest:Double, refinanceTerm:Int) -> [Payment_NotCoreData]{
+        var paymentArrayToReturn = [Payment_NotCoreData]()
+        var numberOfInterestIncreases = Int(increaseInInterest)
+        var totalMonths = refinanceTerm * 12
+        var balance = self.balance.doubleValue
+        var rate = (self.interest.doubleValue / 12 ) / 100
+        var monthlyPayment = self.getStandardMonthlyPayment(totalMonths, balance: self.balance.doubleValue)
+        var monthsLeftInTerm :Int = totalMonths
+        
+        if refinanceTerm > numberOfInterestIncreases {
+            println("refinance term is greater than the number of interest increases")
+            while numberOfInterestIncreases > 0 {
+                for month in 1...12{
+                    println(monthsLeftInTerm)
+                    var paymentToAdd = Payment_NotCoreData()
+                    paymentToAdd.interest = balance * rate
+                    paymentToAdd.principal = monthlyPayment - (balance * rate)
+                    paymentToAdd.total = monthlyPayment
+                    balance = balance - paymentToAdd.principal
+                    paymentArrayToReturn.append(paymentToAdd)
+                    monthsLeftInTerm = monthsLeftInTerm - 1
+            }
+                self.interest = self.interest.doubleValue + 1
+                println(self.interest)
+                rate = (self.interest.doubleValue / 12 ) / 100
+                numberOfInterestIncreases -= 1
+                monthlyPayment = self.getStandardMonthlyPayment(monthsLeftInTerm, balance: balance)
+            }
+        }
+        else {
+            //handling where the increase is greater than the repayment term
+            while numberOfInterestIncreases > 0 {
+                for month in 1...12{
+                    var paymentToAdd = Payment_NotCoreData()
+                    paymentToAdd.interest = balance * rate
+                    paymentToAdd.principal = monthlyPayment - (balance * rate)
+                    paymentToAdd.total = monthlyPayment
+                    balance = balance - paymentToAdd.principal
+                    paymentArrayToReturn.append(paymentToAdd)
+                    monthsLeftInTerm = monthsLeftInTerm - 1
+                }
+                self.interest = self.interest.doubleValue + 2
+                rate = (self.interest.doubleValue / 12 ) / 100
+                numberOfInterestIncreases -= 2
+                monthlyPayment = self.getStandardMonthlyPayment(monthsLeftInTerm, balance: balance)
+
+        }
+        }
+        //now we are out of the increases and can
+        while balance > monthlyPayment {
+            var paymentToAdd = Payment_NotCoreData()
+            paymentToAdd.interest = balance * rate
+            paymentToAdd.principal = monthlyPayment - (balance * rate)
+            paymentToAdd.total = monthlyPayment
+            balance = balance - paymentToAdd.principal
+            paymentArrayToReturn.append(paymentToAdd)
+            println(self.interest)
+        }
+        
+        var lastPaymentToAdd = Payment_NotCoreData()
+        lastPaymentToAdd.interest = balance * rate
+        lastPaymentToAdd.principal = balance
+        lastPaymentToAdd.total = balance + (balance * rate)
+        paymentArrayToReturn.append(lastPaymentToAdd)
+        
+        return paymentArrayToReturn
+        
+    }
+        
+    
+    func standardFlat_WindUpLoan(paymentTerm:Int) -> [Payment_NotCoreData] {
+        var totalMonths = paymentTerm + self.monthsUntilRepayment.integerValue
+        var monthlyPayment = self.getStandardMonthlyPayment(minElement([totalMonths,paymentTerm]), balance: self.balance.doubleValue)
         var balance = self.balance.doubleValue + self.capitalizedInterest()
         var rate = (self.interest.doubleValue / 12) / 100
         var paymentArrayToReturn = [Payment_NotCoreData]()
@@ -81,7 +151,7 @@ class Loan: NSManagedObject {
             paymentToAdd.interest = balance * rate
             paymentToAdd.principal = monthlyPayment - (balance * rate)
             paymentToAdd.total = monthlyPayment
-            balance = balance - monthlyPayment
+            balance = balance - paymentToAdd.principal
             paymentArrayToReturn.append(paymentToAdd)
         }
         
@@ -97,9 +167,9 @@ class Loan: NSManagedObject {
     
     
 
-    func getStandardMonthlyPayment (term:Int) -> Double {
+    func getStandardMonthlyPayment (term:Int, balance:Double) -> Double {
         let r = (self.interest.doubleValue / 100) / 12 //monthly repayment -- divide by 100 to convert from percent to decimal.  divide by 12 to get monthly from annual rate.
-        let PV = self.balance.doubleValue
+        let PV = balance
         
         //Check if payment has already started.  In which case, calculate the repayment amount based on the total number of months on the loan 
         
@@ -139,6 +209,17 @@ class Loan: NSManagedObject {
                 return 0
             }
         }
+    }
+    
+    func capitalizedOneMonthOfInterest(balance:Double) -> Double {
+        if self.loanType == "Direct Stafford - Subsidized" || self.loanType ==  "Perkins" { //interest doesn't accrue. You can just return nothing
+            return 0
+        }else{
+            var rate = (self.interest.doubleValue / 12) / 100
+            let extraInterest = balance * rate
+            return extraInterest
+        }
+        
     }
     
     class OnTheFlyMonthlyPayment {
@@ -284,10 +365,10 @@ class Loan: NSManagedObject {
         return defaultScenario
     }
     
-    //this function pulls out the information on the loan, finds if there's a Scenario already called "Default", adds any MPs necessary based on the length of hte repayment of the loan.  Then it loads up the MPs with the new payments.  Extra here is deprecated, so just always set to 0 when calling this.
     func enterLoanByDate (managedObjectContext : NSManagedObjectContext) {
     }
     
+    //can be deleted -- but should be moved over to Scenario, perhaps
     func getTotalInterestForLoansMP()-> Double {
         var totalInterest : Double = 0
         for payment in self.mpForOneLoan {
@@ -299,55 +380,10 @@ class Loan: NSManagedObject {
     
     //toDelete
     func enteredLoanByPayment(managedObjectContext:NSManagedObjectContext){
-        var monthlyPayment = self.defaultMonthlyPayment.doubleValue
-        var balance = self.balance.doubleValue + self.capitalizedInterest()
-        var rate = (self.interest.doubleValue / 12) / 100
-        var defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
-        self.thisLoansScenario = defaultScenario
-        
-        var months: Int = 0
-        
-        let mpForThisLoan = self.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
-        
-        let entity = NSEntityDescription.entityForName("MonthlyPayment", inManagedObjectContext: managedObjectContext)
-
-        while balance >= monthlyPayment {
-            //create MP entity
-            var monthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
-            
-            monthlyPaymentToBeAdded.addPayment(monthlyPayment,balance:balance, rate:rate)
-            mpForThisLoan.addObject(monthlyPaymentToBeAdded)
-            //change balance
-            balance = balance + (balance * rate) - monthlyPayment
-            months = months + 1
-        }
-        var lastMonthlyPaymentToBeAdded = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
-        lastMonthlyPaymentToBeAdded.addFinalPayment(balance, rate:rate)
-        mpForThisLoan.addObject(lastMonthlyPaymentToBeAdded)
-        months = months + 1
-    
-        var error: NSError?
-        self.mpForOneLoan = mpForThisLoan.copy() as! NSOrderedSet
-        self.defaultTotalLoanInterest = self.getTotalInterestForLoansMP()
-        self.defaultTotalLoanMonths = self.mpForOneLoan.count
-        defaultScenario.defaultTotalScenarioMonths = maxElement([defaultScenario.defaultTotalScenarioMonths.integerValue,self.mpForOneLoan.count])
-        
-        //save
-        if !managedObjectContext.save(&error) {
-            println("Could not save: \(error)") }
-        
-        //
-        defaultScenario.addLoanToDefaultScenario(self, managedObjectContext: managedObjectContext)
-        let app = principallyApp()
-        app.printAllScenariosAndLoans()
-        defaultScenario.defaultScenarioMaxPayment = defaultScenario.getScenarioMaxPayment()
-        
-        if !managedObjectContext.save(&error) {
-            println("Could not save: \(error)") }
-    }
+            }
     
     
-//    TODO: this can be moved to scrap -- we are doing simple wind-up loans now, so need to delete from the scenario like this.  Why didn't I think of this sooner?? 
+    //toDelete
     func deleteLoanFromDefaultScenario(managedObjectContext:NSManagedObjectContext) {
         //TODO: when you subtract the MP and it goes down to 0, you need to delete the mpEntirely. 
         var defaultScenario: Scenario! = getDefault(managedObjectContext)
@@ -375,6 +411,7 @@ class Loan: NSManagedObject {
         //ToDo: is this deleting correctly?  What about making a a funcion that updates all the other scenarios with the new defaults? No -- should probably just warn that the 
     }
     
+    //toDelete
     func getTotalInterest(mpForThisLoan : NSMutableOrderedSet) -> Double {
         var totalInterest :Double = 0
         for month in mpForThisLoan {
@@ -384,70 +421,262 @@ class Loan: NSManagedObject {
         return totalInterest
     }
 
-    func enteredLoanWithExtraPayment(managedObjectContext:NSManagedObjectContext,extraAmount:Double,currentScenario:Scenario,extraStart:Int, extraEnd:Int) -> (parray: [Payment_NotCoreData], monthNumber: Int, description:String) {
-        self.defaultMonthlyPayment = self.getStandardMonthlyPayment(120)
-        //var mpForThisLoan = self.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
-        var balance = self.balance.doubleValue
-        var rate = (self.interest.doubleValue / 12) / 100
-        var monthlyPayment = self.defaultMonthlyPayment.doubleValue
-        var error: NSError?
-        var newMonthNumber : Int = extraEnd
-        var standardPayments = self.standardFlat_WindUpLoan()
-        var newPaymentsArray = [Payment_NotCoreData]()
-    
-        //START HERE -- next thing you need to do is wind up the standard, no extra payment array because of the "extra start" possibility.
-        for index in 0...extraStart {
-            newPaymentsArray.append(standardPayments[index])
-        }
+    func standardFlat_ExtraPayment_WindUpLoan(managedObjectContext:NSManagedObjectContext,extraAmount:Double, extraStart:Int, extraEnd:Int, paymentTerm:Int) -> (parray: [Payment_NotCoreData], monthNumber: Int, description:String) {
+        println("extrapayment was called")
+        println(self.name)
+        println(self.monthsUntilRepayment.integerValue)
+        println(extraAmount)
+        println(extraStart)
+        println(extraEnd)
         
-        for index in extraStart...extraEnd{
-            var mpForThisMonth = Payment_NotCoreData()
-            if balance > (monthlyPayment + extraAmount) {
-                mpForThisMonth.total = monthlyPayment + extraAmount
-                mpForThisMonth.interest = balance * rate
-                mpForThisMonth.principal = mpForThisMonth.total - mpForThisMonth.interest
-                balance = balance + mpForThisMonth.principal
-                newPaymentsArray.append(mpForThisMonth)
-            } else if balance > 0 {
-                //finalpayment -- newMonthNumber is different
-                mpForThisMonth.interest = balance * rate
-                mpForThisMonth.principal = balance
-                mpForThisMonth.total = balance + (balance * rate)
-                balance = 0
-                newMonthNumber = index
-                newPaymentsArray.append(mpForThisMonth)
-            } else {//balance = 0
-                balance = 0 // probably redundant
-                //nothing to do here
+        
+        var monthlyPayment = self.getStandardMonthlyPayment(paymentTerm, balance: self.balance.doubleValue)
+        //var mpForThisLoan = self.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
+        //var balance = self.balance.doubleValue + self.capitalizedInterest()
+        //we add on the capitalized interest (if any) from the beginning.  note that this will have to be changed in secnarios 2 and 3
+        var rate = (self.interest.doubleValue / 12) / 100
+        var error: NSError?
+        var newExtraEnd : Int = extraEnd
+        var standardPayments = self.standardFlat_WindUpLoan(paymentTerm)
+        var newPaymentsArray = [Payment_NotCoreData]()
+     
+        //Scenario 1 loan enters repayment before hte extra payments are added
+        if self.monthsUntilRepayment.integerValue <= extraStart {
+            var balance = self.balance.doubleValue + self.capitalizedInterest()
+            //Step 1: copy over old payments until the extras start
+            if extraStart > 0 {
+                for index in 0...extraStart-1 {
+                    newPaymentsArray.append(standardPayments[index])
+                    balance = balance - standardPayments[index].principal
+                }
             }
             
+            //Step 2: handle the range of extraStart to extraEnd, keeping in mind that the entire loan may potentially be paid off during this window, in which case we need to change the
+            for index in extraStart...extraEnd{
+                var mpForThisMonth = Payment_NotCoreData()
+                //2.1: make sure there's enough balance left for the full payment
+                if balance > (monthlyPayment + extraAmount) {
+                    mpForThisMonth.total = monthlyPayment + extraAmount
+                    mpForThisMonth.interest = balance * rate
+                    mpForThisMonth.principal = mpForThisMonth.total - mpForThisMonth.interest
+                    balance = balance - mpForThisMonth.principal
+                    newPaymentsArray.append(mpForThisMonth)
+                } else {
+                    //there's still extra payments to be made, so we adjust the ExtraEnd
+                    newExtraEnd = index
+                    break
+                }
+                
+            }
+            
+            //Step 3: deal with the remaining loan balance
+            while balance > monthlyPayment {
+                var paymentToAdd = Payment_NotCoreData()
+                paymentToAdd.interest = balance * rate
+                paymentToAdd.principal = monthlyPayment - (balance * rate)
+                paymentToAdd.total = monthlyPayment
+                balance = balance - paymentToAdd.principal
+                newPaymentsArray.append(paymentToAdd)
+            }
+            
+            var lastPaymentToAdd = Payment_NotCoreData()
+            lastPaymentToAdd.interest = balance * rate
+            lastPaymentToAdd.principal = balance
+            lastPaymentToAdd.total = balance + (balance * rate)
+            newPaymentsArray.append(lastPaymentToAdd)
         }
-        
-        //in case extra payments do not go to the end of the loan
-        
-        while balance > monthlyPayment {
-            var paymentToAdd = Payment_NotCoreData()
-            paymentToAdd.interest = balance * rate
-            paymentToAdd.principal = monthlyPayment - (balance * rate)
-            paymentToAdd.total = monthlyPayment
-            balance = balance - monthlyPayment
-            newPaymentsArray.append(paymentToAdd)
+        //Scenario 2 all extra payments are made before loan enters repayent
+        else if self.monthsUntilRepayment.integerValue > extraEnd {
+            //start with original balance with no added interest
+            var balance = self.balance.doubleValue
+            var interestThatWillBeCapitalized :Double = 0
+            //these are all going to be 0 payments.  add any interes tif needed
+            if extraStart > 0 {
+                for index in 0...extraStart-1 {
+                    newPaymentsArray.append(standardPayments[index])
+                    interestThatWillBeCapitalized += self.capitalizedOneMonthOfInterest(balance)
+                    //balance = balance
+                }
+            }
+            //these are all going to be Extra_Amount_Only
+            for index in extraStart...extraEnd{
+                var mpForThisMonth = Payment_NotCoreData()
+                //2.1: make sure there's enough balance left for the full payment
+                if (balance + interestThatWillBeCapitalized) > extraAmount {
+                    //starthere: you need to have it pay off accrued interest first. 
+                    if interestThatWillBeCapitalized > extraAmount {
+                         mpForThisMonth.total = extraAmount
+                         mpForThisMonth.interest = extraAmount
+                         mpForThisMonth.principal = 0
+                         interestThatWillBeCapitalized = interestThatWillBeCapitalized - extraAmount + self.capitalizedOneMonthOfInterest(balance)
+                        newPaymentsArray.append(mpForThisMonth)
+                    }
+                    else if interestThatWillBeCapitalized < extraAmount && interestThatWillBeCapitalized > 0 {//this is the mixed interest / principal payment.  there will only ever be one of these.
+                    mpForThisMonth.total = extraAmount
+                    mpForThisMonth.interest = interestThatWillBeCapitalized
+                    mpForThisMonth.principal = mpForThisMonth.total - mpForThisMonth.interest
+                    balance = balance - mpForThisMonth.principal
+                    interestThatWillBeCapitalized = 0
+                    newPaymentsArray.append(mpForThisMonth)
+                    }
+                    
+                    else {
+                        //now we are making extra payments that are standard.
+                        mpForThisMonth.total = extraAmount
+                        mpForThisMonth.interest = self.capitalizedOneMonthOfInterest(balance)
+                        mpForThisMonth.principal = mpForThisMonth.total - mpForThisMonth.interest
+                        balance = balance - mpForThisMonth.principal
+                        interestThatWillBeCapitalized = 0
+                        newPaymentsArray.append(mpForThisMonth)
+                    }
+                } else {
+                    //use the extra payment to pay off the loan completely.  Here is an assumption that could lead to un-optimized paybacks.  For instance, if you are paying 1000 extra each month, and have 50 left in the balance, this will have you use the last "extra" payment to pay off the loan.  however, i'm not keeping track of that remaining 950
+                    var lastPaymentToAdd = Payment_NotCoreData()
+                    lastPaymentToAdd.interest = balance * rate
+                    lastPaymentToAdd.principal = balance
+                    lastPaymentToAdd.total = balance + (balance * rate)
+                    balance = 0
+                    interestThatWillBeCapitalized = 0
+                    newPaymentsArray.append(lastPaymentToAdd)
+                    //there's still extra payments to be made, so we adjust the ExtraEnd
+                    newExtraEnd = index + 1
+                    break
+                }
+                
+            }
+            
+            balance += interestThatWillBeCapitalized
+            
+            if balance > 0 {
+                let newMonthlyPayment = self.getStandardMonthlyPayment(paymentTerm, balance:balance)
+                if self.monthsUntilRepayment.integerValue-1 > extraEnd+1 {
+                    for index in extraEnd+1...self.monthsUntilRepayment.integerValue-1 {
+                    //remember, the assumption here is that all payments are pre-repayment, so we can append 0/0/0 blanks
+                        newPaymentsArray.append(Payment_NotCoreData())
+                        balance = balance + self.capitalizedOneMonthOfInterest(balance)
+                    }
+                }
+                
+                while balance > monthlyPayment {
+                    var paymentToAdd = Payment_NotCoreData()
+                    paymentToAdd.interest = balance * rate
+                    paymentToAdd.principal = monthlyPayment - (balance * rate)
+                    paymentToAdd.total = monthlyPayment
+                    balance = balance - paymentToAdd.principal
+                    newPaymentsArray.append(paymentToAdd)
+                }
+                
+                var lastPaymentToAdd = Payment_NotCoreData()
+                lastPaymentToAdd.interest = balance * rate
+                lastPaymentToAdd.principal = balance
+                lastPaymentToAdd.total = balance + (balance * rate)
+                newPaymentsArray.append(lastPaymentToAdd)
+            }
         }
-        
-        var lastPaymentToAdd = Payment_NotCoreData()
-        lastPaymentToAdd.interest = balance * rate
-        lastPaymentToAdd.principal = balance
-        lastPaymentToAdd.total = balance + (balance * rate)
-        newPaymentsArray.append(lastPaymentToAdd)
-    
-        if !managedObjectContext.save(&error) {
-            println("Could not save: \(error)") }
-        
-        let numberOfExtraPaymentMonths = newMonthNumber - extraStart
+        //Scenario 3 MUR is between start and end.
+        else {
+            //Scenario 3 MUR is between start and end.
+            var balance = self.balance.doubleValue
+            var interestThatWillBeCapitalized :Double = 0
+            //Step 1: copy over old payments until the extras start
+            if extraStart > 0 {
+                for index in 0...extraStart-1 {
+                    newPaymentsArray.append(standardPayments[index])
+                    balance = balance - standardPayments[index].principal
+                    interestThatWillBeCapitalized += self.capitalizedOneMonthOfInterest(balance)
+                }
+            }
+            //step 2
+            for index in extraStart...self.monthsUntilRepayment.integerValue-1{
+                var mpForThisMonth = Payment_NotCoreData()
+                //2.1: make sure there's enough balance left for the full payment
+                if (balance + interestThatWillBeCapitalized) > extraAmount {
+                    //starthere: you need to have it pay off accrued interest first.
+                    if interestThatWillBeCapitalized > extraAmount {
+                        mpForThisMonth.total = extraAmount
+                        mpForThisMonth.interest = extraAmount
+                        mpForThisMonth.principal = 0
+                        interestThatWillBeCapitalized = interestThatWillBeCapitalized - extraAmount + self.capitalizedOneMonthOfInterest(balance)
+                        newPaymentsArray.append(mpForThisMonth)
+                    }
+                    else if interestThatWillBeCapitalized < extraAmount && interestThatWillBeCapitalized > 0 {//this is the mixed interest / principal payment
+                        mpForThisMonth.total = extraAmount
+                        mpForThisMonth.interest = interestThatWillBeCapitalized
+                        mpForThisMonth.principal = mpForThisMonth.total - mpForThisMonth.interest
+                        balance = balance - mpForThisMonth.principal
+                        interestThatWillBeCapitalized = 0
+                        newPaymentsArray.append(mpForThisMonth)
+                    }
+                        
+                    else {
+                        //now we are making extra payments that are standard.
+                        mpForThisMonth.total = extraAmount
+                        mpForThisMonth.interest = self.capitalizedOneMonthOfInterest(balance)
+                        mpForThisMonth.principal = mpForThisMonth.total - mpForThisMonth.interest
+                        balance = balance - mpForThisMonth.principal
+                        interestThatWillBeCapitalized = 0
+                        newPaymentsArray.append(mpForThisMonth)
+                    }
+                } else {
+                    var lastPaymentToAdd = Payment_NotCoreData()
+                    lastPaymentToAdd.interest = balance * rate
+                    lastPaymentToAdd.principal = balance
+                    lastPaymentToAdd.total = balance + (balance * rate)
+                    balance = 0
+                    newPaymentsArray.append(lastPaymentToAdd)
+                    //there's still extra payments to be made, so we adjust the ExtraEnd
+                    newExtraEnd = index + 1
+                    break
+                }
+
+            }
+            
+            balance += interestThatWillBeCapitalized
+            
+            for index in self.monthsUntilRepayment.integerValue...extraEnd{
+                let newMonthlyPayment = self.getStandardMonthlyPayment(paymentTerm, balance:balance)
+                if balance > 0 {
+                    var mpForThisMonth = Payment_NotCoreData()
+                    //2.1: make sure there's enough balance left for the full payment
+                    if balance > (newMonthlyPayment + extraAmount) {
+                        mpForThisMonth.total = newMonthlyPayment + extraAmount
+                        mpForThisMonth.interest = balance * rate
+                        mpForThisMonth.principal = mpForThisMonth.total - mpForThisMonth.interest
+                        balance = balance - mpForThisMonth.principal
+                        newPaymentsArray.append(mpForThisMonth)
+                    } else {
+                        //there's still extra payments to be made, so we adjust the ExtraEnd
+                        newExtraEnd = index
+                        break
+                    }
+                    
+                }
+                }
+            
+            if balance > 0 {
+                while balance > monthlyPayment {
+                    var paymentToAdd = Payment_NotCoreData()
+                    paymentToAdd.interest = balance * rate
+                    paymentToAdd.principal = monthlyPayment - (balance * rate)
+                    paymentToAdd.total = monthlyPayment
+                    balance = balance - paymentToAdd.principal
+                    newPaymentsArray.append(paymentToAdd)
+                }
+                
+                var lastPaymentToAdd = Payment_NotCoreData()
+                lastPaymentToAdd.interest = balance * rate
+                lastPaymentToAdd.principal = balance
+                lastPaymentToAdd.total = balance + (balance * rate)
+                newPaymentsArray.append(lastPaymentToAdd)
+
+            }
+        }
+
+        let numberOfExtraPaymentMonths = newExtraEnd //- extraStart
         
         let description : String! = "\(numberOfExtraPaymentMonths) suppelemental payments were made on \(self.name), which has an interest rate of %\(self.interest)"
     
-        return (newPaymentsArray, newMonthNumber, description)
+        return (newPaymentsArray, newExtraEnd, description)
     }
     
     

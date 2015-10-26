@@ -219,9 +219,7 @@
 				B3C123ED1BCC996F00C6FBDA /* Plan XIB */,
 				B3C123E61BCC97BF00C6FBDA /* ReDone Repayment */,
 				B3E65F5D1BBCA57B00EC0AF1 /* ScenarioTableViewController.swift */,
-				B3CD91161BBDECCC007A5EA2 /* RepaymentViewController.swift */,
 				B3CD91181BBDECE6007A5EA2 /* SettingsViewController.swift */,
-				B3CD911C1BBE005C007A5EA2 /* RepaymentExtraTableViewController.swift */,
 				B31DD0031BC1967300F97C30 /* NewScenarioContainerViewController.swift */,
 			);
 			name = "Scenario Repayment";
@@ -313,8 +311,8 @@
 			isa = PBXGroup;
 			children = (
 				B378D1B61B65268E00AD66F5 /* TestLoanEntryViewController.swift */,
-				B3DEF8FD1B7C090F0033837C /* BalanceInterestTableViewController.swift */,
 				B3DEF9001B7D872F0033837C /* PaymentContainerTableViewController.swift */,
+				B3DEF8FD1B7C090F0033837C /* BalanceInterestTableViewController.swift */,
 				B354A45C1BD6F0D40051C1C0 /* Again */,
 			);
 			name = ReDoneEntry;
@@ -323,6 +321,8 @@
 		B3E65F5C1BBCA51E00EC0AF1 /* Scraps */ = {
 			isa = PBXGroup;
 			children = (
+				B3CD911C1BBE005C007A5EA2 /* RepaymentExtraTableViewController.swift */,
+				B3CD91161BBDECCC007A5EA2 /* RepaymentViewController.swift */,
 				B3C123EB1BCC990300C6FBDA /* GraphedScenarioViewController.swift */,
 				B39A494D1B17F35F00707C56 /* Compare */,
 				B39A494E1B17F37400707C56 /* Scenario */,

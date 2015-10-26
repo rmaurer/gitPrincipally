@@ -54,7 +54,7 @@ class Scenario: NSManagedObject {
     @NSManaged var nnewScenarioMaxPayment: NSNumber
     @NSManaged var repaymentType : String
     
-    func standardFlat_WindUp(managedObjectContext:NSManagedObjectContext) {
+    func standardFlat_WindUp(managedObjectContext:NSManagedObjectContext, paymentTerm:Int) {
     
         //initialize things
         self.interestOverLife = 0
@@ -75,11 +75,247 @@ class Scenario: NSManagedObject {
         lArray.sort {$0.interest.doubleValue > $1.interest.doubleValue}
         
         for loan in lArray{
-            self.addPaymentsForOneLoan(managedObjectContext, loansPayments: loan.standardFlat_WindUpLoan())
+            self.addPaymentsForOneLoan(managedObjectContext, loansPayments: loan.standardFlat_WindUpLoan(paymentTerm))
         }
         
         
     }
+    
+    func getAllPAYEEligibleLoansPayment() -> Double {
+        let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
+        let oSet = defaultScenario.allLoans
+        var cumulativePayment : Double = 0
+        
+        var lArray = [Loan]()
+        for object in oSet {
+            var oldLoan = object as! Loan
+            if oldLoan.loanType == "Direct, Subs." || oldLoan.loanType == "Direct, Unsubs."  || oldLoan.loanType == "Grad PLUS" {
+                cumulativePayment += oldLoan.getStandardMonthlyPayment(120, balance: oldLoan.balance.doubleValue)
+            }
+        }
+        return cumulativePayment
+        
+    }
+    
+    func PAYE_WindUp(managedObjectContext: NSManagedObjectContext, AGI:Double, familySize:Int, percentageincrease:Double){
+        let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
+        let oSet = defaultScenario.allLoans
+        var cumulativeBalance_Unsubs : Double = 0
+        var weightedInterest_Unsubs : Double = 0
+        var cumulativeBalance_AllLoans : Double = 0
+        var weightedInterest_AllLoans : Double = 0
+        var cumulativeBalance_Subs : Double = 0
+        var weightedInterest_Subs : Double = 0
+        var subsidizedLoans = [Loan]()
+        var monthsUntilRepayment : Int = 0
+        var PAYeligiblepayment = self.getAllPAYEEligibleLoansPayment()
+        
+        var lArray = [Loan]()
+        for object in oSet {
+            var oldLoan = object as! Loan
+            lArray.append(oldLoan)
+        }
+        
+        for loan in lArray{
+            if loan.loanType == "Direct, Unsubs."  || loan.loanType == "Grad PLUS" {
+                cumulativeBalance_Unsubs += loan.balance.doubleValue
+                weightedInterest_Unsubs += loan.balance.doubleValue * loan.interest.doubleValue
+                cumulativeBalance_AllLoans += loan.balance.doubleValue
+                weightedInterest_AllLoans += loan.balance.doubleValue * loan.interest.doubleValue
+                //we just want to capture one months until repayment.  ASSUMPTION: all of the direct loans will enter repayment at the same time
+                monthsUntilRepayment = loan.monthsUntilRepayment.integerValue
+            }
+            else if loan.loanType == "Direct, Subs." {
+                subsidizedLoans.append(loan)
+                cumulativeBalance_Subs += loan.balance.doubleValue
+                weightedInterest_Subs += loan.balance.doubleValue * loan.interest.doubleValue
+                cumulativeBalance_AllLoans += loan.balance.doubleValue
+                weightedInterest_AllLoans += loan.balance.doubleValue * loan.interest.doubleValue
+                monthsUntilRepayment = loan.monthsUntilRepayment.integerValue
+            }
+            else{
+                
+                //if it's not eligible, just add up the standard 10 year plan
+                //ASSUMPTION: IF the loan's not eligible, you put it on the 10 year plan
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: loan.standardFlat_WindUpLoan(120))
+            }
+        }
+        
+        if cumulativeBalance_Unsubs != 0 {
+            weightedInterest_Unsubs = weightedInterest_Unsubs / cumulativeBalance_Unsubs}
+        else {weightedInterest_Unsubs = 0}
+        
+        if cumulativeBalance_Subs != 0 {
+            weightedInterest_Subs = weightedInterest_Subs / cumulativeBalance_Subs
+        }
+        else {weightedInterest_Subs = 0 }
+
+        weightedInterest_AllLoans = weightedInterest_AllLoans / cumulativeBalance_AllLoans
+        
+       // let entity = NSEntityDescription.entityForName("Loan", inManagedObjectContext: managedObjectContext)
+       // //set variable of what will be inserted into the entity "Loan"
+       // var unsubsidizedLoan = Loan(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+        
+       // unsubsidizedLoan.balance = cumulativeBalance_Unsubs
+       // unsubsidizedLoan.interest = weightedInterest_Unsubs
+       // unsubsidizedLoan.monthsUntilRepayment = monthsUntilRepayment
+      //
+       // var subsidizedLoan = Loan(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+      //
+        //subsidizedLoan.balance = cumulativeBalance_Subs
+        //subsidizedLoan.interest = weightedInterest_Subs
+        //subsidizedLoan.monthsUntilRepayment = monthsUntilRepayment
+        //for each year, we need to test for the payment, and figure out how much interest is accumulating.
+        
+        var paymentArrayToReturn = [Payment_NotCoreData]()
+        
+        while monthsUntilRepayment > 0 {
+            var paymentToAdd = Payment_NotCoreData()
+            paymentArrayToReturn.append(paymentToAdd)
+            monthsUntilRepayment -= 1
+        }
+        
+        let rate_weightedInterest_AllLoans = (weightedInterest_AllLoans / 12 ) / 100
+        let rate_weightedInterest_Subs = (weightedInterest_Subs / 12 ) / 100
+        let rate_weightedInterest_Unsubs = (weightedInterest_Unsubs / 12 ) / 100
+        var balance = cumulativeBalance_AllLoans
+        var unsubs_balance = cumulativeBalance_Unsubs
+        var subs_balance = cumulativeBalance_Subs
+        var excessInterest : Double = 0
+        var newBalance :Double = balance
+        
+        println([rate_weightedInterest_AllLoans, rate_weightedInterest_Subs, rate_weightedInterest_Unsubs, balance, unsubs_balance, subs_balance, excessInterest, newBalance])
+        
+        for year in 1...20{
+            let payment = self.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:year, increase:percentageincrease)
+            println("the eligible payment is \(payment)")
+
+            if PAYeligiblepayment > payment && year <= 3 {
+                for month in 1...12{
+                    //println(monthsLeftInTerm)
+                    var paymentToAdd = Payment_NotCoreData()
+                    //first, split up the balance
+                    let payment_applied_to_unsubsidiezed = payment * (cumulativeBalance_Unsubs / cumulativeBalance_AllLoans)
+                    let payment_applied_to_subsidiezed = payment * (cumulativeBalance_Subs / cumulativeBalance_AllLoans)//This year is in PAYE and interest does not exist for subsidized loans
+                    
+                    //next, add the payment on the unsubisidzed loans
+                    paymentToAdd.interest = minElement([payment_applied_to_unsubsidiezed, (unsubs_balance * rate_weightedInterest_Unsubs) ])
+                    paymentToAdd.principal = payment_applied_to_unsubsidiezed - paymentToAdd.interest
+                    paymentToAdd.total = payment_applied_to_unsubsidiezed
+                    unsubs_balance = unsubs_balance - paymentToAdd.principal
+                    excessInterest += maxElement([0, (paymentToAdd.interest - paymentToAdd.total)])
+                    
+                    //next add the part of hte payment on the subsiidized loans, but don't add the excess interest
+                    //next, add the payment on the unsubisidzed loans
+                    paymentToAdd.interest += minElement([payment_applied_to_subsidiezed, (subs_balance * rate_weightedInterest_Subs) ])
+                    paymentToAdd.principal += payment_applied_to_subsidiezed - paymentToAdd.interest
+                    paymentToAdd.total = payment //+= payment_applied_to_subsidiezed
+                    subs_balance = subs_balance - (payment_applied_to_subsidiezed - minElement([payment_applied_to_subsidiezed, (subs_balance * rate_weightedInterest_Subs) ]))
+                    println("payment number")
+                    println([year,month])
+                    println(paymentToAdd)
+                    paymentArrayToReturn.append(paymentToAdd)
+                }
+                newBalance = subs_balance + unsubs_balance + excessInterest
+            }
+            else if PAYeligiblepayment > payment {
+                //this year is in PAYE and interest accrus on all loans, we will never go back to differentiating subsizied and unsubsizied
+                for month in 1...12{
+                    //println(monthsLeftInTerm)
+                    var paymentToAdd = Payment_NotCoreData()
+                    //first, split up the balance
+                    let payment_applied_to_unsubsidiezed = payment * (cumulativeBalance_Unsubs / cumulativeBalance_AllLoans)
+                    let payment_applied_to_subsidiezed = payment * (cumulativeBalance_Subs / cumulativeBalance_AllLoans)//This year is in PAYE and interest does not exist for subsidized loans
+                    
+                    //next, add the payment on the unsubisidzed loans
+                    paymentToAdd.interest = minElement([payment_applied_to_unsubsidiezed, (unsubs_balance * rate_weightedInterest_Unsubs) ])
+                    paymentToAdd.principal = payment_applied_to_unsubsidiezed - paymentToAdd.interest
+                    paymentToAdd.total = payment_applied_to_unsubsidiezed
+                    unsubs_balance = unsubs_balance - paymentToAdd.principal
+                    
+                    //next add the part of hte payment on the subsiidized loans, but don't add the excess interest
+                    //next, add the payment on the unsubisidzed loans
+                    paymentToAdd.interest += minElement([payment_applied_to_subsidiezed, (subs_balance * rate_weightedInterest_Subs) ])
+                    paymentToAdd.principal += payment_applied_to_subsidiezed - paymentToAdd.interest
+                    paymentToAdd.total += payment_applied_to_subsidiezed
+                    subs_balance = subs_balance - (payment_applied_to_subsidiezed - minElement([payment_applied_to_subsidiezed, (subs_balance * rate_weightedInterest_Subs) ]))
+                    
+                    //how we add interest from both loans, including subsidized
+                    excessInterest += maxElement([0, (paymentToAdd.interest - paymentToAdd.total)])
+                    
+                    paymentArrayToReturn.append(paymentToAdd)
+                }
+                newBalance = subs_balance + unsubs_balance + excessInterest
+            }
+            else {
+                for month in 1...12{
+                    if newBalance > PAYeligiblepayment {
+                        var paymentToAdd = Payment_NotCoreData()
+                        paymentToAdd.interest = rate_weightedInterest_AllLoans * newBalance
+                        paymentToAdd.principal = PAYeligiblepayment - paymentToAdd.interest
+                        paymentToAdd.total = PAYeligiblepayment
+                        newBalance -= paymentToAdd.principal
+                        paymentArrayToReturn.append(paymentToAdd)
+                    }
+                    else {
+                        var lastPaymentToAdd = Payment_NotCoreData()
+                        lastPaymentToAdd.interest = newBalance * rate_weightedInterest_AllLoans
+                        lastPaymentToAdd.principal = newBalance
+                        lastPaymentToAdd.total = newBalance + (newBalance * rate_weightedInterest_AllLoans)
+                        newBalance = 0
+                        paymentArrayToReturn.append(lastPaymentToAdd)
+                        break
+                    }
+                }
+
+        }
+        
+        //for the first three years,
+        //keep track of accumulated interest 
+        //ASSUMPTION:
+    }
+        self.addPaymentsForOneLoan(managedObjectContext, loansPayments:paymentArrayToReturn)
+    }
+    
+    func percentageOfDiscretionaryIncome(percentOfDI: Double, AGI:Double, familySize:Int, year:Int, increase:Double) -> Double {
+        println([percentOfDI, AGI, familySize, year, increase])
+        //if all eligible laons were on a standard 10-year repayment plan, it would exceed 15 percent of their discretionary income
+        //this will return
+        //ASSUMPTION: Federal poverty guidelines for 48 continguous states
+        let FPG : Double!
+        var adjustedGrossIncome : Double = AGI
+        switch familySize{
+        case 1:
+            FPG = 11770
+        case 2:
+            FPG = 15930
+        case 3:
+            FPG = 20090
+        case 4:
+            FPG = 24250
+        case 5:
+            FPG = 28410
+        case 6:
+            FPG = 32570
+        case 7:
+            FPG = 36730
+        case 8:
+            FPG = 40890
+        default:
+            FPG = 11770
+        }
+        
+        let OneHundredFiftyPercentOfFPG = FPG * 1.5
+        for eachYear in 0...year {
+            adjustedGrossIncome = adjustedGrossIncome + adjustedGrossIncome*(increase/100)
+        }
+        let discretionaryIncome = maxElement([(adjustedGrossIncome - OneHundredFiftyPercentOfFPG), 0])
+        let percentOfDiscretionaryIncome = (percentOfDI/100) * discretionaryIncome
+        
+        return percentOfDiscretionaryIncome
+        
+    }
+
     
     func addPaymentsForOneLoan(managedObjectContext:NSManagedObjectContext, loansPayments:[Payment_NotCoreData]){
         let concatPayment = self.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
@@ -159,9 +395,54 @@ class Scenario: NSManagedObject {
         return arrayOfAllPrincipalPayments
     }
 
+//    func PAYE_WindUp(managedObjectContext:NSManagedObjectContext, AGI:Double, annualSalaryIncrease:Double, familySize:Int, PAYEReqs:Bool)
+    
+    
+    func refinance_WindUp(managedObjectContext:NSManagedObjectContext, interest:Double, variableBool:Bool, increaseInInterest:Double, refinanceTerm:Int, oneTimePayoff : Double){
+        //get all the loans as objects
+        let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
+        let oSet = defaultScenario.allLoans
+        
+        var lArray = [Loan]()
+        var totalPrincipalBalance : Double = 0
+        
+        //any loan can go into a private refinance, so we don't need to do any checking here
+        for object in oSet {
+            var oldLoan = object as! Loan
+            totalPrincipalBalance += oldLoan.balance.doubleValue
+        }
+        
+        //subtract any one-time payoff offered by the refinancer
+        totalPrincipalBalance -= oneTimePayoff
+        
+        let entity = NSEntityDescription.entityForName("Loan", inManagedObjectContext: managedObjectContext)
+        //set variable of what will be inserted into the entity "Loan"
+        var temporaryWindUpLoan = Loan(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+
+        temporaryWindUpLoan.balance = NSNumber(double: totalPrincipalBalance)
+        temporaryWindUpLoan.interest = NSNumber(double: interest)
+        temporaryWindUpLoan.monthsUntilRepayment = 0
+        
+        if variableBool == false {
+            //there's no variation in interest, so we just wind up the one loan we have at the correct interest rate
+            self.addPaymentsForOneLoan(managedObjectContext, loansPayments: temporaryWindUpLoan.standardFlat_WindUpLoan(refinanceTerm))
+        }
+        
+        else {
+            self.addPaymentsForOneLoan(managedObjectContext, loansPayments: temporaryWindUpLoan.refi_WindUpLoan(interest, increaseInInterest:increaseInInterest, refinanceTerm:refinanceTerm))
+            //ASSUMPTION: we are going to assume that the interest rate increases one percentage point ever year.
+        }
+        
+        managedObjectContext.deleteObject(temporaryWindUpLoan as NSManagedObject)
+    }
+    //var interestRateOnRefi : Double!
+    //var variableInterestRate : Bool = false
+    //var changeInInterestRate : Double!
+    
+    
     //want it to add in interestOverLife, timeToRepay, and ConcadenatedPayment
     //rename standardFlatExtraPayment_WindUp
-    func standardFlatExtraPayment_WindUp (managedObjectContext:NSManagedObjectContext, extra:Double, MWEPTotal:Int) {
+    func standardFlatExtraPayment_WindUp (managedObjectContext:NSManagedObjectContext, extra:Double, MWEPTotal:Int, paymentTerm:Int) {
         var error: NSError?
         var description : String = ""
         //reset interestoverlife and concat payment of the scenario we are working in.
@@ -191,12 +472,12 @@ class Scenario: NSManagedObject {
         
         for loan in lArray {
             //this is standard, so each loan has 120 payments.  If it hasn't enetered repayment yet, we add the positive number of months until repayment.  if it's already in repayment, we add the negative number of months already paid.
-            var loansTotalMonths = 120 + loan.monthsUntilRepayment.integerValue
+            var loansTotalMonths = paymentTerm + loan.monthsUntilRepayment.integerValue
             
             //if we've already enough exta payments that we are past the months in the loan overall, we would never be adding extra payments to this loan, so we just add it straight away
-            if MWEPSoFar >= loansTotalMonths {
+            if MWEPSoFar >= MWEPTotal {
                 //load up the loan just like normal doNothing
-                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: loan.standardFlat_WindUpLoan())
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: loan.standardFlat_WindUpLoan(paymentTerm))
                 description += "No supplemental payments were made on \(loan.name), which has an interest rate of %\(loan.interest)"
             }
                 
@@ -204,7 +485,7 @@ class Scenario: NSManagedObject {
             else if MWEPSoFar < MWEPTotal {
                 //know whether
                 let endMonthForExtraPayment = minElement([MWEPTotal, loansTotalMonths])
-                let enteredLoanWithExtra = loan.enteredLoanWithExtraPayment(managedObjectContext,extraAmount:extra,currentScenario:self,extraStart:MWEPSoFar, extraEnd:endMonthForExtraPayment)
+                let enteredLoanWithExtra = loan.standardFlat_ExtraPayment_WindUpLoan(managedObjectContext, extraAmount:extra, extraStart:MWEPSoFar, extraEnd:endMonthForExtraPayment, paymentTerm: paymentTerm)
                 MWEPSoFar = enteredLoanWithExtra.monthNumber
                 self.addPaymentsForOneLoan(managedObjectContext, loansPayments: enteredLoanWithExtra.parray)
                 description += enteredLoanWithExtra.description

@@ -22,6 +22,8 @@ class GraphOfScenario: UIView {
     @IBInspectable var bStartColor: UIColor = UIColor.greenColor()
     @IBInspectable var bEndColor: UIColor = UIColor.greenColor()
     
+    @IBInspectable var lineColor = UIColor(red: 233/255.0, green: 250/255.0, blue: 222/255.0, alpha: 1)
+    
     var maxHeight = Double() //Max total payment.  NOT max height in points/pixels 
     var maxWidth = Int()//Months CGFloat()
 
@@ -117,7 +119,7 @@ class GraphOfScenario: UIView {
             }
             
             UIColor.whiteColor().setFill()
-            UIColor.darkGrayColor().setStroke()//whiteColor().setStroke()
+            lineColor.setStroke()//whiteColor().setStroke()
             
             var totalGraphPath = UIBezierPath()
             println(graphedScenario!.name)
@@ -177,7 +179,7 @@ class GraphOfScenario: UIView {
             ////
             
             UIColor.whiteColor().setFill()
-            UIColor.darkGrayColor().setStroke()//UIColor.whiteColor().setStroke()
+            lineColor.setStroke()//UIColor.whiteColor().setStroke()
             
             //set up the points line
             var graphPath = UIBezierPath()

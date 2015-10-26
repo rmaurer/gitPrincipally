@@ -12,7 +12,8 @@ protocol ChildViewControllerDelegate {
     func updateScenarios(childViewController:RepaymentExtraTableViewController)
 }
 
-class RepaymentExtraTableViewController: UITableViewController {
+class RepaymentExtraTableViewController: UITableViewController {}
+/*
     
     var delegate:ChildViewControllerDelegate?
 
@@ -162,4 +163,4 @@ class RepaymentExtraTableViewController: UITableViewController {
     }
     */
 
-}
+} */
