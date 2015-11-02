@@ -14,6 +14,8 @@ class MonthlyPayment: NSManagedObject {
     @NSManaged var principal: NSNumber
     @NSManaged var interest: NSNumber
     @NSManaged var totalPayment: NSNumber
+    @NSManaged var totalPrincipalSoFar: NSNumber
+    @NSManaged var totalInterestSoFar: NSNumber
     @NSManaged var paymentIndex: NSNumber
     @NSManaged var loans: Loan
     @NSManaged var paymentConcatScenario: NSManagedObject

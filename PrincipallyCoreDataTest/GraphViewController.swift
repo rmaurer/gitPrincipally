@@ -28,6 +28,8 @@ class GraphViewController: UIViewController {
     var refiTerm:Int!
     var yearsInProgram: Double!
     var oneTimePayoff: Double!
+    
+    
     var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
    // var selectedScenario: Scenario!
     var currentScenario: Scenario!
@@ -65,13 +67,17 @@ class GraphViewController: UIViewController {
         let mpInterest = round(currentPayment.interest.floatValue * 100) / 100
         let mpPrincipal = round(currentPayment.principal.floatValue * 100) / 100
         let mpTotal = round(currentPayment.totalPayment.floatValue * 100) / 100
+        let mpPrincipalSoFar = round(currentPayment.totalPrincipalSoFar.floatValue * 100) / 100
+        let mpInterestSoFar = round(currentPayment.totalInterestSoFar.floatValue * 100) / 100
         
         principleLabel.text = "$\(mpPrincipal)"
         interestLabel.text = "$\(mpInterest)"
         totalLabel.text = "$\(mpTotal)"
         
-        
         var monthAndYear = currentScenario.getStringOfYearAndMonthForPaymentNumber(Double(sender.value))
+        
+        nameLabelOutlet.text = "In \(monthAndYear), you will make a payment of \(mpTotal).  \(mpPrincipal) will go towards principal, and \(mpInterest) will pay off interest.  At this point you'll have paid off \(mpPrincipalSoFar), and will have paid \(mpInterestSoFar) in interst so far"
+        
         paymentDateLabel.text = "Payment for \(monthAndYear)"
         
     }

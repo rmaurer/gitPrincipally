@@ -22,7 +22,8 @@ class GraphOfScenario: UIView {
     @IBInspectable var bStartColor: UIColor = UIColor.greenColor()
     @IBInspectable var bEndColor: UIColor = UIColor.greenColor()
     
-    @IBInspectable var lineColor = UIColor(red: 233/255.0, green: 250/255.0, blue: 222/255.0, alpha: 1)
+    @IBInspectable var principalLineColor = UIColor(red: 249/255.0, green: 154/255.0, blue: 0/255.0, alpha: 1)
+    @IBInspectable var interestLineColor = UIColor(red: 217/255.0, green: 56/255.0, blue: 41/255.0, alpha: 1)
     
     var maxHeight = Double() //Max total payment.  NOT max height in points/pixels 
     var maxWidth = Int()//Months CGFloat()
@@ -33,7 +34,8 @@ class GraphOfScenario: UIView {
         
         if graphedScenario != nil {
             
-            
+            var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
+            graphedScenario!.addTotalInterestAndPrincipalSoFarToConcatPayment(managedObjectContext)
             
             var interestGraphPoints : [Double] = graphedScenario!.makeArrayOfAllInterestPayments()
             var totalGraphPoints : [Double] = graphedScenario!.makeArrayOfTotalPayments()
@@ -119,7 +121,7 @@ class GraphOfScenario: UIView {
             }
             
             UIColor.whiteColor().setFill()
-            lineColor.setStroke()//whiteColor().setStroke()
+            principalLineColor.setStroke()//whiteColor().setStroke()
             
             var totalGraphPath = UIBezierPath()
             println(graphedScenario!.name)
@@ -179,7 +181,7 @@ class GraphOfScenario: UIView {
             ////
             
             UIColor.whiteColor().setFill()
-            lineColor.setStroke()//UIColor.whiteColor().setStroke()
+            interestLineColor.setStroke()//UIColor.whiteColor().setStroke()
             
             //set up the points line
             var graphPath = UIBezierPath()

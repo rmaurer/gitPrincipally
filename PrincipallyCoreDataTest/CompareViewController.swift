@@ -7,83 +7,136 @@
 //
 
 import UIKit
-//import JBChartView
 
-class CompareViewController: UIViewController {
+
+class CompareViewController: UIViewController, UIPageViewControllerDataSource {
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    var pageImages:[String]!
+    var pageColors:[UIColor]!
+    var pageViewController:UIPageViewController!
+    
+    @IBAction func RestartButton(sender: AnyObject) {
+        println("restartbutton worked") 
     }
     
- /*
-    @IBOutlet weak var barChart: JBBarChartView!
-    
-    @IBOutlet weak var informationLabel: UILabel!
-    
-    var chartLegend = ["11-14", "11-15","11-16", "11-17","11-18", "11-18", "11-20"]
-    var chartData = [70, 80, 76, 90, 69, 70]
-    
-    //uncomment this to figure out JBBarChart
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.darkGrayColor()
-
-        // Do any additional setup after loading the view.
-        barChart.backgroundColor = UIColor.darkGrayColor()
-        barChart.delegate = self
-        barChart.dataSource = self
-        barChart.minimumValue = 0 //mandatory and has to be a positive number
-        barChart.maximumValue = 100
+        // Do any additional setup after loading the view, typically from a nib.
         
-        //TODO (according to little bar chart stuff), add footer and header
-        barChart.reloadData()
-        barChart.setState(.Collapsed, animated: false)
         
-    
-    }
-
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+        pageImages = ["screen1","screen2","screen3"]
+        pageColors = [UIColor.blueColor(), UIColor.purpleColor(), UIColor.lightGrayColor()]
         
-        //reload the data if anything's changed.  View is already loaded.  This is for when we come back and the chart appears again (like switching between different tabs)
-        barChart.reloadData()
-        var timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target:self, selector:Selector("showChart"),userInfo:nil, repeats:false)
+        self.pageViewController = self.storyboard?.instantiateViewControllerWithIdentifier("PageViewController") as! UIPageViewController
+        
+        self.pageViewController.dataSource = self
+        
+        var initialContentViewController = self.pageTutorialAtIndex(0) as ContentViewController
+        
+        var viewControllers = NSArray(object: initialContentViewController)
+        
+        
+        self.pageViewController.setViewControllers(viewControllers as [AnyObject], direction: UIPageViewControllerNavigationDirection.Forward, animated: true, completion: nil)
+        
+        self.pageViewController.view.frame = CGRectMake(0, 50, self.view.frame.size.width, self.view.frame.size.height-100)
+        
+        self.addChildViewController(self.pageViewController)
+        self.view.addSubview(self.pageViewController.view)
+        self.pageViewController.didMoveToParentViewController(self)
+        
+        
     }
     
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        hideChart()
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
-    func hideChart(){
-        self.barChart.setState(.Collapsed, animated:true)
-    }
     
-    func showChart(){
-        self.barChart.setState(.Expanded, animated:true)
-    }
+    
+    
+    func pageTutorialAtIndex(index: Int) -> ContentViewController
+    {
+        
+        var pageContentViewController = self.storyboard?.instantiateViewControllerWithIdentifier("ContentViewController") as! ContentViewController
+        
+        pageContentViewController.compareLabelText = pageImages[index]
+        pageContentViewController.backgroundColor = pageColors[index]
+        pageContentViewController.pageIndex = index
+        
 
-    //MARK: JBBarChartView data sourc methods to implement
-    func numberOfBarsInBarChartView(barChartView: JBBarChartView!) -> UInt {
-        return UInt(chartData.count)
+        
+        
+        switch index {
+        case 1:
+            pageContentViewController.add1()
+            pageContentViewController.compareLabelText = "I was successfully changed"
+        case 2:
+            pageContentViewController.add2()
+            pageContentViewController.compareLabelText = "Time 2"
+        case 3:
+            pageContentViewController.add3()
+            pageContentViewController.compareLabelText = "Time 3" 
+        default:
+            break
+        }
+        
+        
+        return pageContentViewController
+        
     }
     
-    func barChartView(barChartView: JBBarChartView!, heightForBarViewAtIndex index: UInt) -> CGFloat {
-        return CGFloat(chartData[Int(index)])
+    
+    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController?
+    {
+        var viewController = viewController as! ContentViewController
+        var index = viewController.pageIndex as Int
+        
+        if(index == 0 || index == NSNotFound)
+        {
+            return nil
+        }
+        
+        index--
+        
+        return self.pageTutorialAtIndex(index)
     }
     
-    func barChartView(barChartView: JBBarChartView!, colorForBarViewAtIndex index: UInt) -> UIColor! {
-        return (index % 2 == 0) ? UIColor.lightGrayColor() : UIColor.whiteColor()
+    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController?
+    {
+        var viewController = viewController as! ContentViewController
+        var index = viewController.pageIndex as Int
+        
+        if((index == NSNotFound))
+        {
+            return nil
+        }
+        
+        index++
+        
+        if(index == pageImages.count)
+        {
+            return nil
+        }
+        
+        return self.pageTutorialAtIndex(index)
     }
     
-    func barChartView(barChartView: JBBarChartView!, didSelectBarAtIndex index: UInt) {
-        let data = chartData[Int(index)]
-        let key = chartLegend[Int(index)]
-        informationLabel.text = "Weather on \(key) was \(data)"
+    
+    
+    func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int
+    {
+        return pageImages.count
     }
     
-    func didDeselectBarChartView(barChartView: JBBarChartView!) {
-        informationLabel.text = ""
-    } */
+    
+    
+    
+    func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int
+    {
+        return 0
+    }
+    
+
 
 }

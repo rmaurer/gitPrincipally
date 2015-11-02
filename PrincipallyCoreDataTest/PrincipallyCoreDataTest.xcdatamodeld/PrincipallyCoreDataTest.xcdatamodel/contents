@@ -20,7 +20,9 @@
         <attribute name="interest" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="paymentIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="principal" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="totalInterestSoFar" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="totalPayment" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="totalPrincipalSoFar" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <relationship name="loans" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Loan" inverseName="mpForOneLoan" inverseEntity="Loan" syncable="YES"/>
         <relationship name="paymentConcatScenario" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Scenario" inverseName="concatenatedPayment" inverseEntity="Scenario" syncable="YES"/>
     </entity>
@@ -41,7 +43,7 @@
     </entity>
     <elements>
         <element name="Loan" positionX="-306" positionY="-243" width="128" height="255"/>
-        <element name="MonthlyPayment" positionX="-461" positionY="-7" width="128" height="133"/>
+        <element name="MonthlyPayment" positionX="-461" positionY="-7" width="128" height="165"/>
         <element name="Scenario" positionX="-551" positionY="-288" width="128" height="240"/>
     </elements>
 </model>

@@ -15,13 +15,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        //let tabBarController = self.window!.rootViewController as! UITabBarController
-        //let loanNavigationController = tabBarController.viewControllers[1] as! UINavigationController
         
-        //Because I have a tab bar view controller, I couldn't get it to work to set up the managedObjectContext upon launch in the AppDelegate.  This is the solution that I couldn't get how to implement in Swift //raywenderlich.com/forums/viewtopic.php?f=2&t=3297
-        //Potentially post here if you need to get this working raywenderlich.com/forums/posting.php?mode=post&f=2
-        //if let viewController = self.window!.rootViewController as? ViewController {
-        //    viewController.managedContext = self.managedObjectContext!}
+        var pageContoller = UIPageControl.appearance()
+        pageContoller.pageIndicatorTintColor = UIColor.lightGrayColor()
+        pageContoller.currentPageIndicatorTintColor = UIColor.blackColor()
+        pageContoller.backgroundColor = UIColor.whiteColor()
+        
         return true
     }
 

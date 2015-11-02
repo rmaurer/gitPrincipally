@@ -34,6 +34,11 @@
 		B3C123F01BCC998B00C6FBDA /* PlanTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C123EE1BCC998B00C6FBDA /* PlanTypeViewController.swift */; };
 		B3C123F11BCC998B00C6FBDA /* PlanTypeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3C123EF1BCC998B00C6FBDA /* PlanTypeViewController.xib */; };
 		B3C123F31BCF47AD00C6FBDA /* ScenarioTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C123F21BCF47AC00C6FBDA /* ScenarioTypeView.swift */; };
+		B3C4956E1BE57CE70097D30A /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4956D1BE57CE70097D30A /* ContentViewController.swift */; };
+		B3C495701BE6D2D40097D30A /* Compare_1_Interest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4956F1BE6D2D40097D30A /* Compare_1_Interest.swift */; };
+		B3C495721BE6D2EC0097D30A /* Compare_2_Principal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C495711BE6D2EC0097D30A /* Compare_2_Principal.swift */; };
+		B3C495741BE6D3060097D30A /* Compare_3_InitialPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C495731BE6D3060097D30A /* Compare_3_InitialPayment.swift */; };
+		B3C495761BE6D3700097D30A /* Compare_4_TotalPaid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C495751BE6D3700097D30A /* Compare_4_TotalPaid.swift */; };
 		B3CD91171BBDECCC007A5EA2 /* RepaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CD91161BBDECCC007A5EA2 /* RepaymentViewController.swift */; };
 		B3CD91191BBDECE6007A5EA2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CD91181BBDECE6007A5EA2 /* SettingsViewController.swift */; };
 		B3CD911B1BBDF064007A5EA2 /* SecnarioNavController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CD911A1BBDF064007A5EA2 /* SecnarioNavController.swift */; };
@@ -100,6 +105,11 @@
 		B3C123EE1BCC998B00C6FBDA /* PlanTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanTypeViewController.swift; sourceTree = "<group>"; };
 		B3C123EF1BCC998B00C6FBDA /* PlanTypeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlanTypeViewController.xib; sourceTree = "<group>"; };
 		B3C123F21BCF47AC00C6FBDA /* ScenarioTypeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenarioTypeView.swift; sourceTree = "<group>"; };
+		B3C4956D1BE57CE70097D30A /* ContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
+		B3C4956F1BE6D2D40097D30A /* Compare_1_Interest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compare_1_Interest.swift; sourceTree = "<group>"; };
+		B3C495711BE6D2EC0097D30A /* Compare_2_Principal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compare_2_Principal.swift; sourceTree = "<group>"; };
+		B3C495731BE6D3060097D30A /* Compare_3_InitialPayment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compare_3_InitialPayment.swift; sourceTree = "<group>"; };
+		B3C495751BE6D3700097D30A /* Compare_4_TotalPaid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compare_4_TotalPaid.swift; sourceTree = "<group>"; };
 		B3CD91161BBDECCC007A5EA2 /* RepaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepaymentViewController.swift; sourceTree = "<group>"; };
 		B3CD91181BBDECE6007A5EA2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		B3CD911A1BBDF064007A5EA2 /* SecnarioNavController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecnarioNavController.swift; sourceTree = "<group>"; };
@@ -180,7 +190,6 @@
 		B39A494D1B17F35F00707C56 /* Compare */ = {
 			isa = PBXGroup;
 			children = (
-				B39A494A1B1121C600707C56 /* CompareViewController.swift */,
 			);
 			name = Compare;
 			sourceTree = "<group>";
@@ -213,9 +222,19 @@
 			name = "Plan XIB";
 			sourceTree = "<group>";
 		};
+		B3C4956C1BE57B840097D30A /* ComparePages */ = {
+			isa = PBXGroup;
+			children = (
+				B39A494A1B1121C600707C56 /* CompareViewController.swift */,
+				B3C4956D1BE57CE70097D30A /* ContentViewController.swift */,
+			);
+			name = ComparePages;
+			sourceTree = "<group>";
+		};
 		B3CD91151BBDECB0007A5EA2 /* Scenario Repayment */ = {
 			isa = PBXGroup;
 			children = (
+				B3C4956C1BE57B840097D30A /* ComparePages */,
 				B3C123ED1BCC996F00C6FBDA /* Plan XIB */,
 				B3C123E61BCC97BF00C6FBDA /* ReDone Repayment */,
 				B3E65F5D1BBCA57B00EC0AF1 /* ScenarioTableViewController.swift */,
@@ -303,6 +322,10 @@
 				B3D3A84A1B51876C00B89D67 /* FlatTextField.swift */,
 				B3713F1D1B4864B500C1ABEF /* NavController.swift */,
 				B3CD911A1BBDF064007A5EA2 /* SecnarioNavController.swift */,
+				B3C4956F1BE6D2D40097D30A /* Compare_1_Interest.swift */,
+				B3C495711BE6D2EC0097D30A /* Compare_2_Principal.swift */,
+				B3C495731BE6D3060097D30A /* Compare_3_InitialPayment.swift */,
+				B3C495751BE6D3700097D30A /* Compare_4_TotalPaid.swift */,
 			);
 			name = "Design Subclasses";
 			sourceTree = "<group>";
@@ -531,6 +554,7 @@
 				B3D0D16B1B08F6DC00BD0C0C /* PrincipallyCoreDataTest.xcdatamodeld in Sources */,
 				B3F1C1E51B2FBB4B009283B0 /* CoreDataStack.swift in Sources */,
 				B3CD911D1BBE005C007A5EA2 /* RepaymentExtraTableViewController.swift in Sources */,
+				B3C495741BE6D3060097D30A /* Compare_3_InitialPayment.swift in Sources */,
 				B32344F91B3E041900B1709C /* LoanTableViewCell.swift in Sources */,
 				B3C123EC1BCC990300C6FBDA /* GraphedScenarioViewController.swift in Sources */,
 				B3D3A8491B51728C00B89D67 /* FlatLabel.swift in Sources */,
@@ -539,11 +563,15 @@
 				B354A45E1BD6F0F90051C1C0 /* EditAddAnotherScreenViewController.swift in Sources */,
 				B3D0D18D1B09311500BD0C0C /* PaymentViewController.swift in Sources */,
 				B3713F1E1B4864B500C1ABEF /* NavController.swift in Sources */,
+				B3C495721BE6D2EC0097D30A /* Compare_2_Principal.swift in Sources */,
 				B39A494B1B1121C600707C56 /* CompareViewController.swift in Sources */,
 				B336CF721BB224C5005B59AD /* GraphViewController.swift in Sources */,
 				B32299BB1B10F14B00AAD0F0 /* linkingfile.c in Sources */,
 				B3D0D1681B08F6DC00BD0C0C /* AppDelegate.swift in Sources */,
 				B3C123E81BCC97F600C6FBDA /* ReDoneRepaymentViewController.swift in Sources */,
+				B3C4956E1BE57CE70097D30A /* ContentViewController.swift in Sources */,
+				B3C495761BE6D3700097D30A /* Compare_4_TotalPaid.swift in Sources */,
+				B3C495701BE6D2D40097D30A /* Compare_1_Interest.swift in Sources */,
 				B3D0D18B1B09044E00BD0C0C /* LoanEntryViewController.swift in Sources */,
 				B3713F201B48A0E600C1ABEF /* EntryFormController.swift in Sources */,
 				B3C123F01BCC998B00C6FBDA /* PlanTypeViewController.swift in Sources */,
