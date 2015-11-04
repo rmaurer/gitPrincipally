@@ -24,8 +24,9 @@ class ScenarioTableViewController: UITableViewController {
 
         if tableIsNotInSelectionMode{
             self.tableView.setEditing(true, animated: true)
+            compareButtonOutlet.title = "Compare (\(compareScenarioArray.count))"
             self.tableView.reloadData()
-             tableIsNotInSelectionMode = !tableIsNotInSelectionMode
+            tableIsNotInSelectionMode = !tableIsNotInSelectionMode
         }
         
         else{
@@ -55,9 +56,18 @@ class ScenarioTableViewController: UITableViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        if tableIsNotInSelectionMode == false { //is in selection mode when the view appears.
+            //we clear out compareScenario
+            self.tableView.setEditing(false, animated: true)
+            compareScenarioArray.removeAll(keepCapacity: true)
+            println("you cleaned out the compareScenarioArray")
+            compareButtonOutlet.title = "Compare"
+            tableIsNotInSelectionMode = !tableIsNotInSelectionMode
+        }
         defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         myScenarios = CoreDataStack.getAllScenarios(CoreDataStack.sharedInstance)()
         self.tableView.reloadData()
+        println("tableViewDidAppear was called")
     }
 
     
@@ -78,26 +88,31 @@ class ScenarioTableViewController: UITableViewController {
             self.performSegueWithIdentifier("scenarioPressSegue", sender: indexPath)}
         else {
             compareScenarioArray.append(myScenarios[indexPath.row] as! Scenario)
-            compareButtonOutlet.title = "Compare(\(compareScenarioArray.count))"
-            println("multiple selections??")
+            compareButtonOutlet.title = "Compare (\(compareScenarioArray.count))"
+            println("multiple selections?? here is the length \(compareScenarioArray.count)")
         }
         
     }
     
     override func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
         for index in 0...compareScenarioArray.count-1 {
+            println("here is the information in didDeselect")
+            println(compareScenarioArray.count)
+            println(index)
             if compareScenarioArray[index].name == (myScenarios[indexPath.row] as! Scenario).name {
                 compareScenarioArray.removeAtIndex(index)
+                break
             }
             
         }
-        compareButtonOutlet.title = "Compare(\(compareScenarioArray.count))"
+        compareButtonOutlet.title = "Compare (\(compareScenarioArray.count))"
     }
     
    
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        println("cell for row at index path has been called") 
         var cell = tableView.dequeueReusableCellWithIdentifier("scenarioCell", forIndexPath: indexPath) as? UITableViewCell
         
         if cell == nil {
@@ -118,6 +133,11 @@ class ScenarioTableViewController: UITableViewController {
                 let selectedScenario = myScenarios[indexPath.row] as! Scenario
                 var vc:ReDoneRepaymentViewController = segue.destinationViewController as! ReDoneRepaymentViewController
                 vc.selectedScenario = selectedScenario
+            }
+            else if segue.identifier == "compareSegue" {
+                let scenarioArray = sender as! [Scenario]
+                var vc:CompareViewController = segue.destinationViewController as! CompareViewController
+                vc.scenarioArray = scenarioArray
             }
     }
     

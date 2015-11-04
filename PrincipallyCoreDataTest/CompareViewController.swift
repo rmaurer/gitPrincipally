@@ -7,13 +7,14 @@
 //
 
 import UIKit
-
+import CoreData
 
 class CompareViewController: UIViewController, UIPageViewControllerDataSource {
     
     var pageImages:[String]!
     var pageColors:[UIColor]!
     var pageViewController:UIPageViewController!
+    var scenarioArray:[Scenario]!
     
     @IBAction func RestartButton(sender: AnyObject) {
         println("restartbutton worked") 
@@ -22,7 +23,10 @@ class CompareViewController: UIViewController, UIPageViewControllerDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
+        for scenario in scenarioArray {
+            println("some scenarios got passed to the compareViewController")
+            println(scenario.name)
+        }
         
         pageImages = ["screen1","screen2","screen3"]
         pageColors = [UIColor.blueColor(), UIColor.purpleColor(), UIColor.lightGrayColor()]
@@ -63,6 +67,7 @@ class CompareViewController: UIViewController, UIPageViewControllerDataSource {
         pageContentViewController.compareLabelText = pageImages[index]
         pageContentViewController.backgroundColor = pageColors[index]
         pageContentViewController.pageIndex = index
+        pageContentViewController.scenarioArray = scenarioArray
         
 
         

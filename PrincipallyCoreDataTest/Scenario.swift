@@ -101,7 +101,7 @@ class Scenario: NSManagedObject {
         
     }
     
-    func getAllPAYEEligibleLoansPayment() -> Double {
+    func getAllEligibleLoansPayment(isIBR:Bool) -> Double {
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         let oSet = defaultScenario.allLoans
         var cumulativePayment : Double = 0
@@ -112,15 +112,28 @@ class Scenario: NSManagedObject {
             if oldLoan.loanType == "Direct, Subs." || oldLoan.loanType == "Direct, Unsubs."  || oldLoan.loanType == "Grad PLUS" {
                 cumulativePayment += oldLoan.getStandardMonthlyPayment(120, balance: oldLoan.balance.doubleValue)
             }
+            else if isIBR == true && oldLoan.loanType == "FFEL"{
+                cumulativePayment += oldLoan.getStandardMonthlyPayment(120, balance: oldLoan.balance.doubleValue)
+            }
         }
         return cumulativePayment
         
     }
     
-    func PAYE_WindUp(managedObjectContext: NSManagedObjectContext, AGI:Double, familySize:Int, percentageincrease:Double){
+    func PAYE_WindUp(managedObjectContext: NSManagedObjectContext, AGI:Double, familySize:Int, percentageincrease:Double, hasPILF:Bool, hasLimitedTimeInProgram:Bool, yearsInProgram:Int){
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         let oSet = defaultScenario.allLoans
         var totalBalance : Double = 0
+        var PAYETerm = 20
+        if hasPILF{
+            PAYETerm = 10
+        }
+        
+        var yearsInTheProgram = 20
+        
+        if hasLimitedTimeInProgram{
+            yearsInTheProgram = yearsInProgram
+        }
         
         var lArray = [Loan]()
         for object in oSet {
@@ -131,10 +144,10 @@ class Scenario: NSManagedObject {
         
         for loan in lArray{
             if loan.loanType == "Direct, Unsubs."  || loan.loanType == "Grad PLUS" {
-                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: self.PAYE_OneLoan_Wind_Up(totalBalance, loan:loan, percent:10, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:false))
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: self.incomeDriven_OneLoan_Wind_Up(totalBalance, loan:loan, percent:10, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:false, isIBR:false, term:PAYETerm, numberOfYearsInProgram:yearsInTheProgram))
             }
             else if loan.loanType == "Direct, Subs." {
-                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: self.PAYE_OneLoan_Wind_Up(totalBalance, loan:loan, percent:10, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:true))
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: self.incomeDriven_OneLoan_Wind_Up(totalBalance, loan:loan, percent:10, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:true, isIBR:false, term:PAYETerm, numberOfYearsInProgram:yearsInTheProgram))
             }
             else{
                 
@@ -146,16 +159,173 @@ class Scenario: NSManagedObject {
 
     }
     
+    func ICR_WindUp(managedObjectContext: NSManagedObjectContext, AGI:Double, familySize:Int, percentageincrease:Double, hasPILF:Bool, hasLimitedTimeInProgram:Bool, yearsInProgram:Int){
+        let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
+        let oSet = defaultScenario.allLoans
+        var totalBalance : Double = 0
+        var termOfICR = 25
+        
+        if hasPILF{
+           termOfICR = 10
+        }
+        
+        var yearsInTheProgram = 25
+        
+        if hasLimitedTimeInProgram{
+            yearsInTheProgram = yearsInProgram
+        }
+        
+        var lArray = [Loan]()
+        for object in oSet {
+            var oldLoan = object as! Loan
+            totalBalance += oldLoan.balance.doubleValue
+            lArray.append(oldLoan)
+        }
+        
+        for loan in lArray{
+            if loan.loanType == "Direct, Unsubs."  || loan.loanType == "Grad PLUS" || loan.loanType == "Direct, Subs."{
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: self.incomeDriven_OneLoan_Wind_Up(totalBalance, loan:loan, percent:20, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:false, isIBR:false, term:termOfICR, numberOfYearsInProgram:yearsInTheProgram))
+            }
+            else{
+                
+                //if it's not eligible, just add up the standard 10 year plan
+                //ASSUMPTION: IF the loan's not eligible, you put it on the 10 year plan
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: loan.standardFlat_WindUpLoan(120))
+            }
+        }
+        
+    }
+    
+    
+    
+    func IBR_WindUp(managedObjectContext: NSManagedObjectContext, AGI:Double, familySize:Int, percentageincrease:Double, term:Int, percent:Double, hasPILF:Bool, hasLimitedTimeInProgram:Bool, yearsInProgram:Int){
+        let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
+        let oSet = defaultScenario.allLoans
+        var totalBalance : Double = 0
+        var directLoanTerm = term
+        
+        if hasPILF{
+            directLoanTerm = 10
+        }
+        
+        var yearsInTheProgram = 25
+        
+        if hasLimitedTimeInProgram{
+            yearsInTheProgram = yearsInProgram
+        }
+        
+        var lArray = [Loan]()
+        for object in oSet {
+            var oldLoan = object as! Loan
+            totalBalance += oldLoan.balance.doubleValue
+            lArray.append(oldLoan)
+        }
+        
+        for loan in lArray{
+            if loan.loanType == "Direct, Unsubs."  || loan.loanType == "Grad PLUS" {
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: self.incomeDriven_OneLoan_Wind_Up(totalBalance, loan:loan, percent:percent, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:false, isIBR:true, term:directLoanTerm, numberOfYearsInProgram:yearsInTheProgram ))
+            }
+            else if loan.loanType == "FFEL"{
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: self.incomeDriven_OneLoan_Wind_Up(totalBalance, loan:loan, percent:percent, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:false, isIBR:true, term:term, numberOfYearsInProgram:yearsInTheProgram))
+            }
+            else if loan.loanType == "Direct, Subs." {
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: self.incomeDriven_OneLoan_Wind_Up(totalBalance, loan:loan, percent:percent, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:true, isIBR:true, term:directLoanTerm, numberOfYearsInProgram:yearsInTheProgram ))
+            }
+            else{
+                
+                //if it's not eligible, just add up the standard 10 year plan
+                //ASSUMPTION: IF the loan's not eligible, you put it on the 10 year plan
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: loan.standardFlat_WindUpLoan(120))
+            }
+        }
+        
+    }
+    
     //START HERE: Work in IBR Plan? 
     
-    func PAYE_OneLoan_Wind_Up(totalBalance:Double, loan:Loan, percent:Double, AGI:Double, familySize:Int, increase:Double, subsidized:Bool) -> [Payment_NotCoreData]{
+    func ICR_OneLoan_Wind_Up(totalBalance:Double, loan:Loan, percent:Double, AGI:Double, familySize:Int, increase:Double, subsidized:Bool, isIBR:Bool, term:Int, numberOfYearsInProgram:Int)-> [Payment_NotCoreData]{
+        var paymentArrayToReturn = [Payment_NotCoreData]()
+        var monthsUntilRepayment : Int = loan.monthsUntilRepayment.integerValue
+        var balance = loan.balance.doubleValue
+        var rate = (loan.interest.doubleValue / 12 ) / 100
+        var excessInterest : Double = 0
+        var monthlyStandardPayment = self.getAllEligibleLoansPayment(isIBR) //monthly
+        var newBalance : Double = balance
+
+        while monthsUntilRepayment > 0 {
+            var paymentToAdd = Payment_NotCoreData()
+            paymentArrayToReturn.append(paymentToAdd)
+            monthsUntilRepayment -= 1
+        }
+        /*
+        If your payments are not large enough to cover the interest that has accumulated on your loans, the unpaid amount will be capitalized (added to the loan principal) once each year. However, the amount of this capitalization is limited. If your principal becomes 10 percent greater than the amount you originally owed when you entered repayment, interest will continue to accrue but will not capitalize.
+        */
+        for year in 1...term{
+            let monthlyPAYEpayment = self.percentageOfDiscretionaryIncome(percent, AGI:AGI, familySize:familySize, year:year, increase:increase)
+            
+            if monthlyStandardPayment > monthlyPAYEpayment && year <= numberOfYearsInProgram {
+                var proRataPAYEPayment = monthlyPAYEpayment * (loan.balance.doubleValue / totalBalance)
+                
+                for month in 1...12{
+                    var paymentToAdd = Payment_NotCoreData()
+                    paymentToAdd.interest = minElement([proRataPAYEPayment, balance * rate])
+                    paymentToAdd.principal = proRataPAYEPayment - paymentToAdd.interest
+                    paymentToAdd.total = proRataPAYEPayment
+                    excessInterest += maxElement([0, (balance * rate) - paymentToAdd.interest])
+                    balance -= paymentToAdd.principal
+                    paymentArrayToReturn.append(paymentToAdd)
+                }
+                if balance + excessInterest < loan.balance.doubleValue * 1.1 {
+                    balance = balance + excessInterest
+                    excessInterest = 0
+                }
+                else {
+                    //we are at the 10% cap
+                    let cap = loan.balance.doubleValue * 1.1
+                    excessInterest = excessInterest - (cap - balance)
+                    balance = cap
+                }
+                
+                newBalance = balance + excessInterest
+            }
+            else {
+                var proRataStandardPayment = loan.getStandardMonthlyPayment(120-year*12, balance: newBalance)
+                
+                for month in 1...12{
+                    if newBalance > proRataStandardPayment {
+                        var paymentToAdd = Payment_NotCoreData()
+                        paymentToAdd.interest = rate * newBalance
+                        paymentToAdd.principal = proRataStandardPayment - paymentToAdd.interest
+                        paymentToAdd.total = proRataStandardPayment
+                        newBalance -= paymentToAdd.principal
+                        paymentArrayToReturn.append(paymentToAdd)
+                    }
+                    else {
+                        var lastPaymentToAdd = Payment_NotCoreData()
+                        lastPaymentToAdd.interest = newBalance * rate
+                        lastPaymentToAdd.principal = newBalance
+                        lastPaymentToAdd.total = newBalance + lastPaymentToAdd.interest
+                        newBalance = 0
+                        paymentArrayToReturn.append(lastPaymentToAdd)
+                        break
+                    }
+                }
+
+            }
+        
+        }
+         return paymentArrayToReturn
+    }
+    
+    
+    func incomeDriven_OneLoan_Wind_Up(totalBalance:Double, loan:Loan, percent:Double, AGI:Double, familySize:Int, increase:Double, subsidized:Bool, isIBR:Bool, term:Int, numberOfYearsInProgram:Int) -> [Payment_NotCoreData]{
         
         var paymentArrayToReturn = [Payment_NotCoreData]()
         var monthsUntilRepayment : Int = loan.monthsUntilRepayment.integerValue
         var balance = loan.balance.doubleValue
         var rate = (loan.interest.doubleValue / 12 ) / 100
         var excessInterest : Double = 0
-        var monthlyStandardPayment = self.getAllPAYEEligibleLoansPayment() //monthly
+        var monthlyStandardPayment = self.getAllEligibleLoansPayment(isIBR) //monthly
         var newBalance : Double = balance
         
         
@@ -165,10 +335,10 @@ class Scenario: NSManagedObject {
             monthsUntilRepayment -= 1
         }
         
-        for year in 1...20{
+        for year in 1...term{
             let monthlyPAYEpayment = self.percentageOfDiscretionaryIncome(percent, AGI:AGI, familySize:familySize, year:year, increase:increase)
             
-            if monthlyStandardPayment > monthlyPAYEpayment && subsidized == true && year <= 3 {
+            if monthlyStandardPayment > monthlyPAYEpayment && subsidized == true && year <= 3 && year <= numberOfYearsInProgram {
                 var proRataPAYEPayment = monthlyPAYEpayment * (loan.balance.doubleValue / totalBalance)
                 
                 for month in 1...12{
@@ -181,10 +351,10 @@ class Scenario: NSManagedObject {
                     paymentArrayToReturn.append(paymentToAdd)
                 }
                 newBalance = balance + excessInterest //if interest capitalized
-
+                
             }
-            
-            else if monthlyStandardPayment > monthlyPAYEpayment {
+                
+            else if monthlyStandardPayment > monthlyPAYEpayment && year <= numberOfYearsInProgram {
                 
                 var proRataPAYEPayment = monthlyPAYEpayment * (loan.balance.doubleValue / totalBalance)
                 
@@ -211,6 +381,10 @@ class Scenario: NSManagedObject {
                         newBalance -= paymentToAdd.principal
                         paymentArrayToReturn.append(paymentToAdd)
                     }
+                    else if newBalance == 0 {
+                        //do nothing, don't add any payment 
+                        break
+                    }
                     else {
                         var lastPaymentToAdd = Payment_NotCoreData()
                         lastPaymentToAdd.interest = newBalance * rate
@@ -228,6 +402,10 @@ class Scenario: NSManagedObject {
         return paymentArrayToReturn
         
     }
+
+    
+    
+    
     
     
     

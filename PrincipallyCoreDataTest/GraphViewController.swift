@@ -26,7 +26,7 @@ class GraphViewController: UIViewController {
     var ICRReqs:Bool = false
     var PAYEReqs:Bool = false
     var refiTerm:Int!
-    var yearsInProgram: Double!
+    var yearsInProgram: Int!
     var oneTimePayoff: Double!
     
     
@@ -168,10 +168,42 @@ class GraphViewController: UIViewController {
                 currentScenario.refinance_WindUp(managedObjectContext, interest:interestRateOnRefi, variableBool:variableInterestRate, increaseInInterest:changeInInterestRate, refinanceTerm: refiTerm, oneTimePayoff: oneTimePayoff)
                 wasTheScenarioCreated = true
             }
-        case "IBR":
-            wasTheScenarioCreated = false
         case "ICR":
-            wasTheScenarioCreated = false
+            currentScenario.ICR_WindUp(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, hasPILF:false, hasLimitedTimeInProgram:false, yearsInProgram:yearsInProgram)
+            wasTheScenarioCreated = true
+        case "IBR":
+            if IBRDateOptions  {
+                //new borrower
+                //first test if the standard loan payments is less than 10% of your discretionary income
+                if currentScenario.getAllEligibleLoansPayment(true) < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                    wasTheScenarioCreated = false
+                    let alert = UIAlertView()
+                    alert.title = "Alert"
+                    alert.message = "The payments on your IBR-eligible loans do not exceed 10% of your discretionary income, as required to enter the IBR plan.  However, some non-eligible loans can be consolidated into loans that would qualify.  Currently this estimator does not handle consolidated loans, but you can talk to your servicer about options, or read more online at the Department of Education's website"
+                    alert.addButtonWithTitle("Understood")
+                    alert.show()
+                }
+                else{
+                    currentScenario.IBR_WindUp(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:20, percent:10, hasPILF:false, hasLimitedTimeInProgram:false, yearsInProgram:yearsInProgram)
+                    wasTheScenarioCreated = true
+                }
+            }
+            else {
+                //old borrower
+                if currentScenario.getAllEligibleLoansPayment(true) < currentScenario.percentageOfDiscretionaryIncome(15, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                    wasTheScenarioCreated = false
+                    let alert = UIAlertView()
+                    alert.title = "Alert"
+                    alert.message = "The payments on your IBR-eligible loans do not exceed 15% of your discretionary income, as required to enter the IBR plan.  However, some non-eligible loans can be consolidated into loans that would qualify.  Currently this estimator does not handle consolidated loans, but you can talk to your servicer about options, or read more online at the Department of Education's website"
+                    alert.addButtonWithTitle("Understood")
+                    alert.show()
+                }
+                else {
+                    currentScenario.IBR_WindUp(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:25, percent:15, hasPILF:false, hasLimitedTimeInProgram:false, yearsInProgram:yearsInProgram)
+                    wasTheScenarioCreated = true
+                }
+            }
+            
         case "PAYE":
             if PAYEReqs == false {
                 wasTheScenarioCreated = false
@@ -181,7 +213,7 @@ class GraphViewController: UIViewController {
                 alert.addButtonWithTitle("Understood")
                 alert.show()
             }
-            else if currentScenario.getAllPAYEEligibleLoansPayment() < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+            else if currentScenario.getAllEligibleLoansPayment(false) < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                 wasTheScenarioCreated = false
                 let alert = UIAlertView()
                 alert.title = "Alert"
@@ -190,17 +222,151 @@ class GraphViewController: UIViewController {
                 alert.show()
             }
             else {
-                currentScenario.PAYE_WindUp(managedObjectContext, AGI:AGI, familySize:familySize, percentageincrease:annualSalaryIncrease)
+                currentScenario.PAYE_WindUp(managedObjectContext, AGI:AGI, familySize:familySize, percentageincrease:annualSalaryIncrease, hasPILF:false, hasLimitedTimeInProgram:false, yearsInProgram:yearsInProgram)
              wasTheScenarioCreated = true
             }
             
             //if yes, wind up PAYE
         case "IBR with PILF":
-            wasTheScenarioCreated = false
+            if qualifyingJob == false {
+                wasTheScenarioCreated = false
+                let alert = UIAlertView()
+                alert.title = "Alert"
+                alert.message = "Unfortunately, you only qualify for PILF if you have a qualifying public interest job while you make the 120 qualifying payments"
+                alert.addButtonWithTitle("Understood")
+                alert.show()
+            }
+            else if IBRDateOptions  {
+                //new borrower
+                //first test if the standard loan payments is less than 10% of your discretionary income
+                if currentScenario.getAllEligibleLoansPayment(true) < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                    wasTheScenarioCreated = false
+                    let alert = UIAlertView()
+                    alert.title = "Alert"
+                    alert.message = "The payments on your IBR-eligible loans do not exceed 10% of your discretionary income, as required to enter the IBR plan.  However, some non-eligible loans can be consolidated into loans that would qualify.  Currently this estimator does not handle consolidated loans, but you can talk to your servicer about options, or read more online at the Department of Education's website"
+                    alert.addButtonWithTitle("Understood")
+                    alert.show()
+                }
+                else{
+                    currentScenario.IBR_WindUp(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:20, percent:10, hasPILF:true, hasLimitedTimeInProgram:false, yearsInProgram:yearsInProgram)
+                    wasTheScenarioCreated = true
+                }
+            }
+            else {
+                //old borrower
+                if currentScenario.getAllEligibleLoansPayment(true) < currentScenario.percentageOfDiscretionaryIncome(15, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                    wasTheScenarioCreated = false
+                    let alert = UIAlertView()
+                    alert.title = "Alert"
+                    alert.message = "The payments on your IBR-eligible loans do not exceed 15% of your discretionary income, as required to enter the IBR plan.  However, some non-eligible loans can be consolidated into loans that would qualify.  Currently this estimator does not handle consolidated loans, but you can talk to your servicer about options, or read more online at the Department of Education's website"
+                    alert.addButtonWithTitle("Understood")
+                    alert.show()
+                }
+                else {
+                    currentScenario.IBR_WindUp(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:25, percent:15, hasPILF:true, hasLimitedTimeInProgram:false, yearsInProgram:yearsInProgram)
+                    wasTheScenarioCreated = true
+                }
+            }
+
         case "ICR with PILF":
-            wasTheScenarioCreated = false
+            if qualifyingJob == false {
+                wasTheScenarioCreated = false
+                let alert = UIAlertView()
+                alert.title = "Alert"
+                alert.message = "Unfortunately, you only qualify for PILF if you have a qualifying public interest job while you make the 120 qualifying payments"
+                alert.addButtonWithTitle("Understood")
+                alert.show()
+            }
+            else {
+                currentScenario.ICR_WindUp(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, hasPILF:true, hasLimitedTimeInProgram:false, yearsInProgram:yearsInProgram)
+                wasTheScenarioCreated = true
+            }
         case "PAYE with PILF":
-            wasTheScenarioCreated = false
+            if qualifyingJob == false {
+                wasTheScenarioCreated = false
+                let alert = UIAlertView()
+                alert.title = "Alert"
+                alert.message = "Unfortunately, you only qualify for PILF if you have a qualifying public interest job while you make the 120 qualifying payments"
+                alert.addButtonWithTitle("Understood")
+                alert.show()
+            }
+            else if PAYEReqs == false {
+                wasTheScenarioCreated = false
+                let alert = UIAlertView()
+                alert.title = "Alert"
+                alert.message = "Unfortunately, you only qualify for PAYE if you meet the date eligibility requirements.  However, see if you qualify for other income-driven repayment plans"
+                alert.addButtonWithTitle("Understood")
+                alert.show()
+            }
+            else if currentScenario.getAllEligibleLoansPayment(false) < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                wasTheScenarioCreated = false
+                let alert = UIAlertView()
+                alert.title = "Alert"
+                alert.message = "The payments on your PAYE-eligible loans do not exceed 10% of your discretionary income, as required to enter the PAYE plan.  However, some non-eligible loans can be consolidated into loans that would qualify.  Currently this estimator does not handle consolidated loans, but you can talk to your servicer about options, or read more online at the Department of Education's website"
+                alert.addButtonWithTitle("Understood")
+                alert.show()
+            }
+            else {
+                currentScenario.PAYE_WindUp(managedObjectContext, AGI:AGI, familySize:familySize, percentageincrease:annualSalaryIncrease, hasPILF:true, hasLimitedTimeInProgram:false, yearsInProgram:yearsInProgram)
+                wasTheScenarioCreated = true
+            }
+        case "IBR Limited":
+            if IBRDateOptions  {
+                //new borrower
+                //first test if the standard loan payments is less than 10% of your discretionary income
+                if currentScenario.getAllEligibleLoansPayment(true) < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                    wasTheScenarioCreated = false
+                    let alert = UIAlertView()
+                    alert.title = "Alert"
+                    alert.message = "The payments on your IBR-eligible loans do not exceed 10% of your discretionary income, as required to enter the IBR plan.  However, some non-eligible loans can be consolidated into loans that would qualify.  Currently this estimator does not handle consolidated loans, but you can talk to your servicer about options, or read more online at the Department of Education's website"
+                    alert.addButtonWithTitle("Understood")
+                    alert.show()
+                }
+                else{
+                    currentScenario.IBR_WindUp(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:20, percent:10, hasPILF:false, hasLimitedTimeInProgram:true, yearsInProgram:yearsInProgram)
+                    wasTheScenarioCreated = true
+                }
+            }
+            else {
+                //old borrower
+                if currentScenario.getAllEligibleLoansPayment(true) < currentScenario.percentageOfDiscretionaryIncome(15, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                    wasTheScenarioCreated = false
+                    let alert = UIAlertView()
+                    alert.title = "Alert"
+                    alert.message = "The payments on your IBR-eligible loans do not exceed 15% of your discretionary income, as required to enter the IBR plan.  However, some non-eligible loans can be consolidated into loans that would qualify.  Currently this estimator does not handle consolidated loans, but you can talk to your servicer about options, or read more online at the Department of Education's website"
+                    alert.addButtonWithTitle("Understood")
+                    alert.show()
+                }
+                else {
+                    currentScenario.IBR_WindUp(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:25, percent:15, hasPILF:false, hasLimitedTimeInProgram:true, yearsInProgram:yearsInProgram)
+                    wasTheScenarioCreated = true
+                }
+            }
+        case "PAYE Limited":
+            if PAYEReqs == false {
+                wasTheScenarioCreated = false
+                let alert = UIAlertView()
+                alert.title = "Alert"
+                alert.message = "Unfortunately, you only qualify for PAYE if you meet the date eligibility requirements.  However, see if you qualify for other income-driven repayment plans"
+                alert.addButtonWithTitle("Understood")
+                alert.show()
+            }
+            else if currentScenario.getAllEligibleLoansPayment(false) < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                wasTheScenarioCreated = false
+                let alert = UIAlertView()
+                alert.title = "Alert"
+                alert.message = "The payments on your PAYE-eligible loans do not exceed 10% of your discretionary income, as required to enter the PAYE plan.  However, some non-eligible loans can be consolidated into loans that would qualify.  Currently this estimator does not handle consolidated loans, but you can talk to your servicer about options, or read more online at the Department of Education's website"
+                alert.addButtonWithTitle("Understood")
+                alert.show()
+            }
+            else {
+                currentScenario.PAYE_WindUp(managedObjectContext, AGI:AGI, familySize:familySize, percentageincrease:annualSalaryIncrease, hasPILF:false, hasLimitedTimeInProgram:true, yearsInProgram:yearsInProgram)
+                wasTheScenarioCreated = true
+            }
+
+        case "ICR Limited":
+            currentScenario.ICR_WindUp(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, hasPILF:false, hasLimitedTimeInProgram:true, yearsInProgram:yearsInProgram)
+            wasTheScenarioCreated = true
         default:
             wasTheScenarioCreated = false
         }

@@ -76,7 +76,7 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
             graphedScenarioView.ICRReqs = planOptionsView.ICRDatesSwitch10.on
             graphedScenarioView.PAYEReqs = planOptionsView.PAYEDatesSwtich12.on
             graphedScenarioView.refiTerm = getRefiTermYears(planOptionsView.repaymentTermSlider.value)
-            graphedScenarioView.yearsInProgram = planOptionsView.stepperOutlet.value
+            graphedScenarioView.yearsInProgram = Int(floor(planOptionsView.stepperOutlet.value))
             graphedScenarioView.oneTimePayoff = getNSNumberFromOneTimePayoffString(planOptionsView.oneTimePayoffTextFieldOutlet.text).doubleValue
             
             

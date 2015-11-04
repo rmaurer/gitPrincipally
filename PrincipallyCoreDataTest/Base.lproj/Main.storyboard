@@ -1309,20 +1309,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iod-3z-0UT">
-                                <rect key="frame" x="16" y="86" width="288" height="288"/>
-                                <color key="backgroundColor" red="0.57823938129999997" green="0.81487834449999996" blue="0.82746112350000001" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="288" id="0Lt-Rh-w1D"/>
-                                </constraints>
-                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, World" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E43-YP-r6S">
                                 <rect key="frame" x="26" y="28" width="94" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nfv-6y-6fq" userLabel="test" customClass="Compare_1_Interest" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nfv-6y-6fq" userLabel="test" customClass="Compare_1_Interest" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
                                 <rect key="frame" x="128" y="19" width="65" height="39"/>
                                 <color key="backgroundColor" red="0.45882352939999999" green="0.89411764709999997" blue="0.70196078429999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -1330,16 +1323,20 @@
                                     <constraint firstAttribute="height" constant="39" id="pLr-Rq-c9g"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iod-3z-0UT">
+                                <rect key="frame" x="16" y="86" width="288" height="462"/>
+                                <color key="backgroundColor" red="0.57823938129999997" green="0.81487834449999996" blue="0.82746112350000001" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Iod-3z-0UT" firstAttribute="trailing" secondItem="sIp-1x-fzm" secondAttribute="trailingMargin" id="9lE-oZ-v1W"/>
                             <constraint firstItem="E43-YP-r6S" firstAttribute="leading" secondItem="sIp-1x-fzm" secondAttribute="leadingMargin" constant="10" id="DxR-PZ-NhA"/>
                             <constraint firstItem="E43-YP-r6S" firstAttribute="top" secondItem="mlP-Kz-umd" secondAttribute="bottom" constant="8" id="Ioa-0o-3Nz"/>
-                            <constraint firstItem="Iod-3z-0UT" firstAttribute="leading" secondItem="sIp-1x-fzm" secondAttribute="leadingMargin" id="Xw5-hO-Cal"/>
+                            <constraint firstItem="Iod-3z-0UT" firstAttribute="leading" secondItem="sIp-1x-fzm" secondAttribute="leadingMargin" id="QGo-8S-6Xd"/>
+                            <constraint firstItem="Iod-3z-0UT" firstAttribute="trailing" secondItem="sIp-1x-fzm" secondAttribute="trailingMargin" id="Qgb-sL-2qL"/>
+                            <constraint firstItem="dNu-dU-UjR" firstAttribute="top" secondItem="Iod-3z-0UT" secondAttribute="bottom" constant="20" id="Xa4-gu-aaS"/>
+                            <constraint firstItem="Iod-3z-0UT" firstAttribute="top" secondItem="E43-YP-r6S" secondAttribute="bottom" constant="37" id="bKx-4P-X4t"/>
                             <constraint firstItem="Nfv-6y-6fq" firstAttribute="leading" secondItem="E43-YP-r6S" secondAttribute="trailing" constant="8" id="sAT-Ze-Dwg"/>
-                            <constraint firstItem="Iod-3z-0UT" firstAttribute="top" secondItem="Nfv-6y-6fq" secondAttribute="bottom" constant="28" id="tSy-DT-DI7"/>
-                            <constraint firstItem="Iod-3z-0UT" firstAttribute="top" secondItem="E43-YP-r6S" secondAttribute="bottom" constant="37" id="xai-FJ-i84"/>
                         </constraints>
                     </view>
                     <connections>
