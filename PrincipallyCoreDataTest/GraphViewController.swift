@@ -370,6 +370,12 @@ class GraphViewController: UIViewController {
         default:
             wasTheScenarioCreated = false
         }
+        
+        if wasTheScenarioCreated{
+            currentScenario.addTotalInterestAndPrincipalSoFarToConcatPayment(managedObjectContext)
+        }
+        
+        
         if !managedObjectContext.save(&error) {
             println("Could not save \(error), \(error?.userInfo)")}
         return wasTheScenarioCreated

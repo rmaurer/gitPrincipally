@@ -34,13 +34,16 @@ class GraphOfScenario: UIView {
         
         if graphedScenario != nil {
             
-            var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
-            graphedScenario!.addTotalInterestAndPrincipalSoFarToConcatPayment(managedObjectContext)
+            //var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
+            //graphedScenario!.addTotalInterestAndPrincipalSoFarToConcatPayment(managedObjectContext)
             
             var interestGraphPoints : [Double] = graphedScenario!.makeArrayOfAllInterestPayments()
             var totalGraphPoints : [Double] = graphedScenario!.makeArrayOfTotalPayments()
             maxWidth = totalGraphPoints.count
             maxHeight = 1.2*(maxElement(totalGraphPoints))
+            if maxHeight == 0 {
+                maxHeight = 200
+            }
             //var app = principallyApp()
             //app.printAllScenariosAndLoans()
             //var currentScenarioInterestGraphPoints : [Double] = currentScenario!.makeArrayOfAllInterestPayments()
@@ -128,7 +131,7 @@ class GraphOfScenario: UIView {
             println(totalGraphPoints)
             println(columnXPoint(0)
                 )
-            println(columnYPoint(743.43))
+            println(columnYPoint(0))
             totalGraphPath.moveToPoint(CGPoint(x:columnXPoint(0),y:columnYPoint(totalGraphPoints[0])))
             
             //This is the TOTAL PAYMENTS line

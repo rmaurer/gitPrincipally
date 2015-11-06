@@ -11,7 +11,6 @@ import CoreData
 
 class ContentViewController: UIViewController {
 
-    @IBOutlet weak var testCompare1: Compare_1_Interest!
     
     var scenarioArray:[Scenario]!
     
@@ -31,7 +30,7 @@ class ContentViewController: UIViewController {
         super.viewDidLoad()
         compareUIView.backgroundColor = backgroundColor
         compareLabel.text = compareLabelText
-        testCompare1.setNeedsDisplay()
+
         
         
         // Do any additional setup after loading the view.
@@ -41,16 +40,22 @@ class ContentViewController: UIViewController {
             if let vview = vview as? Compare_1_Interest {
                 let frame = CGRectMake(0,0,compareUIView.frame.width,compareUIView.frame.height)
                 vview.frame = frame
+                vview.backgroundColor = UIColor.whiteColor()
+                vview.scenarioArray = scenarioArray
                 vview.setNeedsDisplay()
             }
             else if let vview = vview as? Compare_2_Principal {
                 let frame = CGRectMake(0,0,compareUIView.frame.width,compareUIView.frame.height)
                 vview.frame = frame
+                vview.backgroundColor = UIColor.whiteColor()
+                vview.scenarioArray = scenarioArray
                 vview.setNeedsDisplay()
             }
             else if let vview = vview as? Compare_3_InitialPayment{
                 let frame = CGRectMake(0,0,compareUIView.frame.width,compareUIView.frame.height)
                 vview.frame = frame
+                vview.backgroundColor = UIColor.whiteColor()
+                vview.scenarioArray = scenarioArray
                 vview.setNeedsDisplay()
             }
         }

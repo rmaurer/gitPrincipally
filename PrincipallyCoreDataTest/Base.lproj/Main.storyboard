@@ -1315,14 +1315,6 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nfv-6y-6fq" userLabel="test" customClass="Compare_1_Interest" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
-                                <rect key="frame" x="128" y="19" width="65" height="39"/>
-                                <color key="backgroundColor" red="0.45882352939999999" green="0.89411764709999997" blue="0.70196078429999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="65" id="SMF-3x-ap2"/>
-                                    <constraint firstAttribute="height" constant="39" id="pLr-Rq-c9g"/>
-                                </constraints>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iod-3z-0UT">
                                 <rect key="frame" x="16" y="86" width="288" height="462"/>
                                 <color key="backgroundColor" red="0.57823938129999997" green="0.81487834449999996" blue="0.82746112350000001" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1336,13 +1328,11 @@
                             <constraint firstItem="Iod-3z-0UT" firstAttribute="trailing" secondItem="sIp-1x-fzm" secondAttribute="trailingMargin" id="Qgb-sL-2qL"/>
                             <constraint firstItem="dNu-dU-UjR" firstAttribute="top" secondItem="Iod-3z-0UT" secondAttribute="bottom" constant="20" id="Xa4-gu-aaS"/>
                             <constraint firstItem="Iod-3z-0UT" firstAttribute="top" secondItem="E43-YP-r6S" secondAttribute="bottom" constant="37" id="bKx-4P-X4t"/>
-                            <constraint firstItem="Nfv-6y-6fq" firstAttribute="leading" secondItem="E43-YP-r6S" secondAttribute="trailing" constant="8" id="sAT-Ze-Dwg"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="compareLabel" destination="E43-YP-r6S" id="Vvd-L0-KDF"/>
                         <outlet property="compareUIView" destination="Iod-3z-0UT" id="A2v-xj-klz"/>
-                        <outlet property="testCompare1" destination="Nfv-6y-6fq" id="u5Y-3u-tdT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JGA-Aa-ux1" userLabel="First Responder" sceneMemberID="firstResponder"/>
