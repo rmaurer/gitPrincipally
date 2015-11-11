@@ -52,10 +52,21 @@ class PlanOptionsTableViewController: UITableViewController {
     
     @IBOutlet weak var extraAmountTextField: UITextField! //2
     
+    @IBOutlet weak var infoButton_ExtraAmount_2: UIButton!
+    
+    @IBAction func infoButton_ExtraAmount_2_Action(sender: UIButton) {
+         self.performSegueWithIdentifier("modalInfoSegue", sender:"Extra Payments")
+    }
+    
     @IBOutlet weak var interestRateOnRefinanceLabel: UILabel! //3
     
     @IBOutlet weak var interestRateOnRefinanceTextFieldOutlet: ParkedTextField! //3
     
+    @IBOutlet weak var infoButton_InterestRateIncease_5: UIButton!
+    
+    @IBAction func infoButton_InterestRateIncease_5_Action(sender: UIButton) {
+        self.performSegueWithIdentifier("modalInfoSegue", sender:"Increases in Interest Rate")
+    }
     @IBOutlet weak var variableInterestRateLabel: UILabel! //4
     
     @IBOutlet weak var variableInterestRateSwitchOutlet: UISwitch! //4
@@ -63,6 +74,13 @@ class PlanOptionsTableViewController: UITableViewController {
     @IBAction func variableInterestRateSwitchAction(sender: UISwitch) {
         self.tableView.reloadData()
     }
+    
+    @IBOutlet weak var infoButtonVariableOutlet: UIButton! //4
+    
+    @IBAction func infoButtonVariableAction(sender: AnyObject) {
+        self.performSegueWithIdentifier("modalInfoSegue", sender:"Variable Interest Rate")
+    }
+    
     
     @IBOutlet weak var changeinRateLabel: UILabel! //5
     
@@ -72,28 +90,46 @@ class PlanOptionsTableViewController: UITableViewController {
         sender.value = Float(Int(sender.value))
         switch sender.value {
         case 0:
-            return changeInRateAmountLabel.text = "No Change"
+            return changeInRateAmountLabel.text = "0%"
         case 1:
-            return changeInRateAmountLabel.text = "1% Increase"
+            return changeInRateAmountLabel.text = "1%"
         case 2:
-            return changeInRateAmountLabel.text = "2% Increase"
+            return changeInRateAmountLabel.text = "2%"
         case 3:
-            return changeInRateAmountLabel.text = "4% Increase"
+            return changeInRateAmountLabel.text = "4%"
         case 4:
-            return changeInRateAmountLabel.text = "6% Increase"
+            return changeInRateAmountLabel.text = "6%"
         case 5:
-            return changeInRateAmountLabel.text = "8% Increase"
+            return changeInRateAmountLabel.text = "8%"
         default:
-            return changeInRateAmountLabel.text = "No Change"
+            return changeInRateAmountLabel.text = "0%"
         }
     }
     
     @IBOutlet weak var changeInRateAmountLabel: UILabel! //5
     
+    @IBAction func infoButton_AGI_6_Action(sender: UIButton) {
+         self.performSegueWithIdentifier("modalInfoSegue", sender:"Adjusted Gross Income")
+    }
 
+    @IBOutlet weak var infoButton_AGI_6: UIButton!
+   
+    
+    @IBOutlet weak var infoButton_SalaryIncrease_7: UIButton!
+    
+    @IBAction func infoButton_SalaryIncrease_7_Action(sender: UIButton) {
+        self.performSegueWithIdentifier("modalInfoSegue", sender:"Annual Salary Increase")
+    }
+    
     @IBOutlet weak var qualifyingJobLabel: UILabel! //9
     
     @IBOutlet weak var qualifyingJobSwitch: UISwitch! //9
+    
+    @IBOutlet weak var infoButton_Job_9: UIButton!
+    
+    @IBAction func infoButton_Job_9(sender: UIButton) {
+        self.performSegueWithIdentifier("modalInfoSegue", sender:"Qualifying Job")
+    }
     
     @IBOutlet weak var adjustedGrossIncomeLabel6: UILabel!
     
@@ -103,22 +139,53 @@ class PlanOptionsTableViewController: UITableViewController {
     
     @IBOutlet weak var annualSalaryIncreaseTextField7: ParkedTextField!
     
-    @IBOutlet weak var familySizeLabel8: UILabel!
+    @IBOutlet weak var familySizeLabel8: UILabel! //8
     
-    @IBOutlet weak var familySizeTextField8: UITextField!
+   
+    @IBOutlet weak var familySizeStepperOutlet: UIStepper! //8
     
+    @IBOutlet weak var familySizeNumLabel: UILabel! //8
+    
+    @IBAction func familySizeStepper_Action(sender: UIStepper) {
+        familySizeNumLabel.text = String(stringInterpolationSegment: sender.value)
+    } //8
+    
+    @IBOutlet weak var infoButton_FamilySize_8: UIButton!
+    
+    
+    @IBAction func infoButton_FamilySize_8(sender: UIButton) {
+        self.performSegueWithIdentifier("modalInfoSegue", sender:"Family Size")
+    }
     
     @IBOutlet weak var IBRDatesLabel10: UILabel!
     
     @IBOutlet weak var IBRDatesSwitch10: UISwitch!
     
+    @IBOutlet weak var infoButton_IBR_10: UIButton!
+    
+    
+    @IBAction func infoButton_IBR_10_Action(sender: UIButton) {
+        self.performSegueWithIdentifier("modalInfoSegue", sender:"New Borrower For IBR Program")
+    }
+    
     @IBOutlet weak var ICRDatesLabel10: UILabel! //11 oops.
     
+    @IBAction func infoButton_ICR_11_Action(sender: UIButton) {
+        self.performSegueWithIdentifier("modalInfoSegue", sender:"ICR Date Requirements")
+    }
+    
     @IBOutlet weak var ICRDatesSwitch10: UISwitch! //11 oops.
+    @IBOutlet weak var infoButton_ICR_11: UIButton!
     
     @IBOutlet weak var PAYEDatesLabel12: UILabel!
     
     @IBOutlet weak var PAYEDatesSwtich12: UISwitch!
+    
+    @IBOutlet weak var infoButton_PAYE_12: UIButton!
+    
+    @IBAction func infoButton_PAYE_12(sender: UIButton) {
+        self.performSegueWithIdentifier("modalInfoSegue", sender:"PAYE Date Requirements")
+    }
     
     @IBOutlet weak var instructionsLabel: UILabel! //13
     
@@ -153,35 +220,40 @@ class PlanOptionsTableViewController: UITableViewController {
 
     @IBOutlet weak var stepperOutlet: UIStepper!
     
+
     
     @IBAction func stepperAction(sender: UIStepper) {
         switch sender.value {
         case 1:
-            stepperYearsOutlet.text = "1 year"
+            stepperYearsOutlet.text = "1"
         case 2:
-            stepperYearsOutlet.text = "2 years"
+            stepperYearsOutlet.text = "2"
         case 3:
-            stepperYearsOutlet.text = "3 years"
+            stepperYearsOutlet.text = "3"
         case 4:
-            stepperYearsOutlet.text = "4 years"
+            stepperYearsOutlet.text = "4"
         case 5:
-            stepperYearsOutlet.text = "5 years"
+            stepperYearsOutlet.text = "5"
         case 6:
-            stepperYearsOutlet.text = "6 years"
+            stepperYearsOutlet.text = "6"
         case 7:
-            stepperYearsOutlet.text = "7 years"
+            stepperYearsOutlet.text = "7"
         case 8:
-            stepperYearsOutlet.text = "8 years"
+            stepperYearsOutlet.text = "8"
         case 9:
-            stepperYearsOutlet.text = "9 years"
+            stepperYearsOutlet.text = "9"
         default:
-            stepperYearsOutlet.text = "1 year"
+            stepperYearsOutlet.text = "1"
         }
     }
     
     @IBOutlet weak var stepperYearsOutlet: UILabel!
     
+    @IBOutlet weak var infoButton_YearsInProgram: UIButton!
     
+    @IBAction func infoButton_YearsInProgram_Action(sender: UIButton) {
+        self.performSegueWithIdentifier("modalInfoSegue", sender:"PAYE Date Requirements")
+    }
     @IBOutlet weak var oneTimePayoffLabel: UILabel!
     
     @IBOutlet weak var oneTimePayoffTextFieldOutlet: UITextField!
@@ -235,6 +307,7 @@ class PlanOptionsTableViewController: UITableViewController {
                 extraPaymentAmountLabel.hidden = false
                 extraAmountPaid.hidden = false
                 extraAmountTextField.hidden = false
+                infoButton_ExtraAmount_2.hidden = false
                 return 45
             }
             else{
@@ -243,6 +316,7 @@ class PlanOptionsTableViewController: UITableViewController {
                 extraPaymentAmountLabel.hidden = true
                 extraAmountPaid.hidden = true
                 extraAmountTextField.hidden = true
+                infoButton_ExtraAmount_2.hidden = true 
                 return 0
             }
         case 3,4:
@@ -251,6 +325,7 @@ class PlanOptionsTableViewController: UITableViewController {
                 interestRateOnRefinanceTextFieldOutlet.hidden = false
                 variableInterestRateLabel.hidden = false
                 variableInterestRateSwitchOutlet.hidden = false
+                infoButtonVariableOutlet.hidden = false
                // changeinRateLabel.hidden = false
                // changeInRateSliderOutlet.hidden = false
                // changeInRateAmountLabel.hidden = false
@@ -261,6 +336,7 @@ class PlanOptionsTableViewController: UITableViewController {
                 interestRateOnRefinanceTextFieldOutlet.hidden = true
                 variableInterestRateLabel.hidden = true
                 variableInterestRateSwitchOutlet.hidden = true
+                infoButtonVariableOutlet.hidden = true
               //  changeinRateLabel.hidden = true
               //  changeInRateSliderOutlet.hidden = true
               //  changeInRateAmountLabel.hidden = true
@@ -271,12 +347,14 @@ class PlanOptionsTableViewController: UITableViewController {
                 changeinRateLabel.hidden = false
                 changeInRateSliderOutlet.hidden = false
                 changeInRateAmountLabel.hidden = false
+                infoButton_InterestRateIncease_5.hidden = false
                 return 45
             }
             else {
                 changeinRateLabel.hidden = true
                 changeInRateSliderOutlet.hidden = true
                 changeInRateAmountLabel.hidden = true
+                infoButton_InterestRateIncease_5.hidden = true
                 return 0
             }
         case 6, 7, 8:
@@ -286,7 +364,11 @@ class PlanOptionsTableViewController: UITableViewController {
                 annualSalaryIncreaseLabel7.hidden = false
                 annualSalaryIncreaseTextField7.hidden = false
                 familySizeLabel8.hidden = false
-                familySizeTextField8.hidden = false
+                familySizeStepperOutlet.hidden = false
+                familySizeNumLabel.hidden = false
+                infoButton_FamilySize_8.hidden = false
+                infoButton_AGI_6.hidden = false
+                infoButton_SalaryIncrease_7.hidden = false
                 return 45
             }
             else{
@@ -294,8 +376,12 @@ class PlanOptionsTableViewController: UITableViewController {
                 adjustedGrossIncomeTextField6.hidden = true
                 annualSalaryIncreaseLabel7.hidden = true
                 annualSalaryIncreaseTextField7.hidden = true
+                familySizeStepperOutlet.hidden = true
+                familySizeNumLabel.hidden = true
                 familySizeLabel8.hidden = true
-                familySizeTextField8.hidden = true
+                infoButton_FamilySize_8.hidden = true
+                infoButton_AGI_6.hidden = true
+                infoButton_SalaryIncrease_7.hidden = true
                 return 0
             }
 
@@ -303,11 +389,13 @@ class PlanOptionsTableViewController: UITableViewController {
             if selectedRepaymentPlan == "IBR with PILF" || selectedRepaymentPlan == "ICR with PILF" || selectedRepaymentPlan == "PAYE with PILF" {
                 qualifyingJobLabel.hidden = false
                 qualifyingJobSwitch.hidden = false
+                infoButton_Job_9.hidden = false
                 return 45
             }
             else {
                 qualifyingJobLabel.hidden = true
                 qualifyingJobSwitch.hidden = true
+                infoButton_Job_9.hidden = true
                 return 0
             }
             
@@ -326,22 +414,27 @@ class PlanOptionsTableViewController: UITableViewController {
             if selectedRepaymentPlan == "ICR" || selectedRepaymentPlan == "ICR with PILF" || selectedRepaymentPlan == "ICR Limited"{
                 ICRDatesLabel10.hidden = false
                 ICRDatesSwitch10.hidden = false
+                infoButton_ICR_11.hidden = false
                 return 45
             }
             else {
-                ICRDatesLabel10.hidden = true
-                ICRDatesSwitch10.hidden = true
+                //right now I don't see any date requirements for ICR...
+                ICRDatesLabel10.hidden = false
+                ICRDatesSwitch10.hidden = false
+                infoButton_ICR_11.hidden = false
                 return 0
             }
         case 12:
             if selectedRepaymentPlan == "PAYE" || selectedRepaymentPlan == "PAYE with PILF" ||  selectedRepaymentPlan == "PAYE Limited" {
                 PAYEDatesLabel12.hidden = false
                 PAYEDatesSwtich12.hidden = false
+                infoButton_PAYE_12.hidden = false
                 return 45
             }
             else {
                 PAYEDatesLabel12.hidden = true
                 PAYEDatesSwtich12.hidden = true
+                infoButton_PAYE_12.hidden = true
                 return 0
             }
         case 13:
@@ -396,6 +489,19 @@ class PlanOptionsTableViewController: UITableViewController {
             return 45
         }
     }
+    
+    
+    override func prepareForSegue
+        (segue: UIStoryboardSegue, sender: AnyObject?) {
+            
+            if segue.identifier == "modalInfoSegue" {
+                let option = sender as! String
+                var vc:PlanOptionsInfo = segue.destinationViewController as! PlanOptionsInfo
+                vc.labelText = option
+            }
+    }
+    
+    
     /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! UITableViewCell

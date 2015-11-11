@@ -58,6 +58,13 @@ class ContentViewController: UIViewController {
                 vview.scenarioArray = scenarioArray
                 vview.setNeedsDisplay()
             }
+            else if let vview = vview as? Compare_4_TotalPaid{
+                let frame = CGRectMake(0,0,compareUIView.frame.width,compareUIView.frame.height)
+                vview.frame = frame
+                vview.backgroundColor = UIColor.whiteColor()
+                vview.scenarioArray = scenarioArray
+                vview.setNeedsDisplay()
+            }
         }
     }
 
@@ -69,7 +76,7 @@ class ContentViewController: UIViewController {
     func add1(){
         var v = self.view
         for view in compareUIView.subviews {
-            if view is Compare_1_Interest || view is Compare_2_Principal || view is Compare_3_InitialPayment {
+            if view is Compare_1_Interest || view is Compare_2_Principal || view is Compare_3_InitialPayment || view is Compare_4_TotalPaid {
                 view.removeFromSuperview()
             }
         }
@@ -81,7 +88,7 @@ class ContentViewController: UIViewController {
     func add2(){
         var v = self.view
         for view in compareUIView.subviews {
-            if view is Compare_1_Interest || view is Compare_2_Principal || view is Compare_3_InitialPayment {
+            if view is Compare_1_Interest || view is Compare_2_Principal || view is Compare_3_InitialPayment || view is Compare_4_TotalPaid {
                 view.removeFromSuperview()
             }
         }
@@ -96,11 +103,22 @@ class ContentViewController: UIViewController {
     func add3(){
         var v = self.view
         for view in compareUIView.subviews {
-            if view is Compare_1_Interest || view is Compare_2_Principal || view is Compare_3_InitialPayment {
+            if view is Compare_1_Interest || view is Compare_2_Principal || view is Compare_3_InitialPayment || view is Compare_4_TotalPaid {
                 view.removeFromSuperview()
             }
         }
         var interestView = Compare_3_InitialPayment(frame: self.compareUIView.frame)
+        compareUIView.addSubview(interestView)
+    }
+    
+    func add4(){
+        var v = self.view
+        for view in compareUIView.subviews {
+            if view is Compare_1_Interest || view is Compare_2_Principal || view is Compare_3_InitialPayment || view is Compare_4_TotalPaid {
+                view.removeFromSuperview()
+            }
+        }
+        var interestView = Compare_4_TotalPaid(frame: self.compareUIView.frame)
         compareUIView.addSubview(interestView)
     }
     /*

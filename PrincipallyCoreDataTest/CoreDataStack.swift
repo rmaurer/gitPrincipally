@@ -135,6 +135,12 @@ class CoreDataStack {
         return defaultScenario
     }
     
+    func getNumberOfLoans() -> Int {
+        var defaultS : Scenario = self.getDefault()
+        var loans = defaultS.allLoans.count
+        return loans
+    }
+    
     func getUnsaved() -> Scenario {
         let scenarioEntity = NSEntityDescription.entityForName("Scenario", inManagedObjectContext: self.context)
         let unsavedScenarioName = "unsaved"

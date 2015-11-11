@@ -21,7 +21,6 @@
 		B378D1B91B65619200AD66F5 /* SelectLoanTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B378D1B81B65619200AD66F5 /* SelectLoanTypeView.swift */; };
 		B378D1BB1B65AB5500AD66F5 /* ParkedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B378D1BA1B65AB5500AD66F5 /* ParkedTextField.swift */; };
 		B378D1BD1B65AC3200AD66F5 /* ReverseParkedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B378D1BC1B65AC3200AD66F5 /* ReverseParkedTextField.swift */; };
-		B3942D641B52BC29005BCD2C /* PayExtraEachMonthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3942D631B52BC29005BCD2C /* PayExtraEachMonthViewController.swift */; };
 		B3942D661B531DA0005BCD2C /* GraphOfScenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3942D651B531DA0005BCD2C /* GraphOfScenario.swift */; };
 		B39A494B1B1121C600707C56 /* CompareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A494A1B1121C600707C56 /* CompareViewController.swift */; };
 		B39A49581B1A9AA300707C56 /* Loan.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49571B1A9AA300707C56 /* Loan.swift */; };
@@ -30,7 +29,7 @@
 		B39A495E1B1DE6F200707C56 /* Scraps.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A495D1B1DE6F200707C56 /* Scraps.swift */; };
 		B3C123E81BCC97F600C6FBDA /* ReDoneRepaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C123E71BCC97F500C6FBDA /* ReDoneRepaymentViewController.swift */; };
 		B3C123EA1BCC98E300C6FBDA /* PlanOptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C123E91BCC98E300C6FBDA /* PlanOptionsTableViewController.swift */; };
-		B3C123EC1BCC990300C6FBDA /* GraphedScenarioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C123EB1BCC990300C6FBDA /* GraphedScenarioViewController.swift */; };
+		B3C123EC1BCC990300C6FBDA /* PlanOptionsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C123EB1BCC990300C6FBDA /* PlanOptionsInfo.swift */; };
 		B3C123F01BCC998B00C6FBDA /* PlanTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C123EE1BCC998B00C6FBDA /* PlanTypeViewController.swift */; };
 		B3C123F11BCC998B00C6FBDA /* PlanTypeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3C123EF1BCC998B00C6FBDA /* PlanTypeViewController.xib */; };
 		B3C123F31BCF47AD00C6FBDA /* ScenarioTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C123F21BCF47AC00C6FBDA /* ScenarioTypeView.swift */; };
@@ -92,7 +91,6 @@
 		B378D1B81B65619200AD66F5 /* SelectLoanTypeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectLoanTypeView.swift; sourceTree = "<group>"; };
 		B378D1BA1B65AB5500AD66F5 /* ParkedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkedTextField.swift; sourceTree = "<group>"; };
 		B378D1BC1B65AC3200AD66F5 /* ReverseParkedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReverseParkedTextField.swift; sourceTree = "<group>"; };
-		B3942D631B52BC29005BCD2C /* PayExtraEachMonthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayExtraEachMonthViewController.swift; sourceTree = "<group>"; };
 		B3942D651B531DA0005BCD2C /* GraphOfScenario.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphOfScenario.swift; sourceTree = "<group>"; };
 		B39A494A1B1121C600707C56 /* CompareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompareViewController.swift; sourceTree = "<group>"; };
 		B39A49571B1A9AA300707C56 /* Loan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loan.swift; sourceTree = "<group>"; };
@@ -101,7 +99,7 @@
 		B39A495D1B1DE6F200707C56 /* Scraps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scraps.swift; sourceTree = "<group>"; };
 		B3C123E71BCC97F500C6FBDA /* ReDoneRepaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReDoneRepaymentViewController.swift; sourceTree = "<group>"; };
 		B3C123E91BCC98E300C6FBDA /* PlanOptionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanOptionsTableViewController.swift; sourceTree = "<group>"; };
-		B3C123EB1BCC990300C6FBDA /* GraphedScenarioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphedScenarioViewController.swift; sourceTree = "<group>"; };
+		B3C123EB1BCC990300C6FBDA /* PlanOptionsInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanOptionsInfo.swift; sourceTree = "<group>"; };
 		B3C123EE1BCC998B00C6FBDA /* PlanTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanTypeViewController.swift; sourceTree = "<group>"; };
 		B3C123EF1BCC998B00C6FBDA /* PlanTypeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlanTypeViewController.xib; sourceTree = "<group>"; };
 		B3C123F21BCF47AC00C6FBDA /* ScenarioTypeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenarioTypeView.swift; sourceTree = "<group>"; };
@@ -198,7 +196,6 @@
 			isa = PBXGroup;
 			children = (
 				B3D0D18C1B09311500BD0C0C /* PaymentViewController.swift */,
-				B3942D631B52BC29005BCD2C /* PayExtraEachMonthViewController.swift */,
 			);
 			name = Scenario;
 			sourceTree = "<group>";
@@ -208,6 +205,7 @@
 			children = (
 				B3C123E71BCC97F500C6FBDA /* ReDoneRepaymentViewController.swift */,
 				B3C123E91BCC98E300C6FBDA /* PlanOptionsTableViewController.swift */,
+				B3C123EB1BCC990300C6FBDA /* PlanOptionsInfo.swift */,
 				B336CF711BB224C5005B59AD /* GraphViewController.swift */,
 			);
 			name = "ReDone Repayment";
@@ -346,7 +344,6 @@
 			children = (
 				B3CD911C1BBE005C007A5EA2 /* RepaymentExtraTableViewController.swift */,
 				B3CD91161BBDECCC007A5EA2 /* RepaymentViewController.swift */,
-				B3C123EB1BCC990300C6FBDA /* GraphedScenarioViewController.swift */,
 				B39A494D1B17F35F00707C56 /* Compare */,
 				B39A494E1B17F37400707C56 /* Scenario */,
 				B3F1C1F51B3CCFA3009283B0 /* EnteredViewController.swift */,
@@ -556,7 +553,7 @@
 				B3CD911D1BBE005C007A5EA2 /* RepaymentExtraTableViewController.swift in Sources */,
 				B3C495741BE6D3060097D30A /* Compare_3_InitialPayment.swift in Sources */,
 				B32344F91B3E041900B1709C /* LoanTableViewCell.swift in Sources */,
-				B3C123EC1BCC990300C6FBDA /* GraphedScenarioViewController.swift in Sources */,
+				B3C123EC1BCC990300C6FBDA /* PlanOptionsInfo.swift in Sources */,
 				B3D3A8491B51728C00B89D67 /* FlatLabel.swift in Sources */,
 				B3942D661B531DA0005BCD2C /* GraphOfScenario.swift in Sources */,
 				B378D1BB1B65AB5500AD66F5 /* ParkedTextField.swift in Sources */,
@@ -575,7 +572,6 @@
 				B3D0D18B1B09044E00BD0C0C /* LoanEntryViewController.swift in Sources */,
 				B3713F201B48A0E600C1ABEF /* EntryFormController.swift in Sources */,
 				B3C123F01BCC998B00C6FBDA /* PlanTypeViewController.swift in Sources */,
-				B3942D641B52BC29005BCD2C /* PayExtraEachMonthViewController.swift in Sources */,
 				B3F1C1F11B3B89FD009283B0 /* TypeModalVC.swift in Sources */,
 				B3C123F31BCF47AD00C6FBDA /* ScenarioTypeView.swift in Sources */,
 				B39A495E1B1DE6F200707C56 /* Scraps.swift in Sources */,

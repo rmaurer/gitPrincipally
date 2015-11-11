@@ -175,10 +175,13 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
         loadChildViews()
         paymentView.delegate = self
         editAddanotherView.delegate = self
+        let loanNum = CoreDataStack.getNumberOfLoans(CoreDataStack.sharedInstance)() + 1
+        loanNameOutlet.text = "Loan #\(String(loanNum))"
         if selectedLoan != nil {
             println("selectedLoan did not equal nil")
             flipAroundWithoutLoadingLoan()
         }
+        
     }
     
 

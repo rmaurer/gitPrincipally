@@ -30,38 +30,7 @@ class Loan: NSManagedObject {
     @NSManaged var nnewTotalLoanInterest: NSNumber
     @NSManaged var nnewTotalLoanMonths: NSNumber
     
-    //can be deleted
-    func copySelfToNewLoan(nnewLoan:Loan, managedObjectContext:NSManagedObjectContext) {
-        let oldLoan = self
-        nnewLoan.name = oldLoan.name
-        nnewLoan.interest = oldLoan.interest
-        nnewLoan.balance = oldLoan.balance
-        nnewLoan.loanType = oldLoan.loanType
-        nnewLoan.defaultMonthlyPayment = oldLoan.defaultMonthlyPayment
-        nnewLoan.monthsInRepaymentTerm = oldLoan.monthsInRepaymentTerm
-        nnewLoan.monthsUntilRepayment = oldLoan.monthsUntilRepayment
-        nnewLoan.defaultTotalLoanMonths = oldLoan.defaultTotalLoanMonths
-        nnewLoan.defaultTotalLoanInterest = oldLoan.defaultTotalLoanInterest
-        
-        let entity = NSEntityDescription.entityForName("MonthlyPayment", inManagedObjectContext: managedObjectContext)
-        let oldLoanMP = self.mpForOneLoan.mutableCopy() as! NSOrderedSet
-        var nnewLoanMP = nnewLoan.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
-        
-        for payment in oldLoanMP {
-            var oldPayment = payment as! MonthlyPayment
-            var nnewPayment = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
-            nnewPayment.principal = oldPayment.principal
-            nnewPayment.interest = oldPayment.interest
-            nnewPayment.totalPayment = oldPayment.totalPayment
-            nnewLoanMP.addObject(nnewPayment)
-        }
-        
-        nnewLoan.mpForOneLoan = nnewLoanMP.copy() as! NSOrderedSet
-        var error: NSError?
-        if !managedObjectContext.save(&error) {
-            println("Could not save: \(error)") }
-    }
-    
+   
     func refi_WindUpLoan(interest:Double, increaseInInterest:Double, refinanceTerm:Int) -> [Payment_NotCoreData]{
         var paymentArrayToReturn = [Payment_NotCoreData]()
         var numberOfInterestIncreases = Int(increaseInInterest)
@@ -383,7 +352,7 @@ class Loan: NSManagedObject {
             }
     
     
-    //toDelete
+    /*//toDelete
     func deleteLoanFromDefaultScenario(managedObjectContext:NSManagedObjectContext) {
         //TODO: when you subtract the MP and it goes down to 0, you need to delete the mpEntirely. 
         var defaultScenario: Scenario! = getDefault(managedObjectContext)
@@ -420,6 +389,7 @@ class Loan: NSManagedObject {
         }
         return totalInterest
     }
+    */
 
     func standardFlat_ExtraPayment_WindUpLoan(managedObjectContext:NSManagedObjectContext,extraAmount:Double, extraStart:Int, extraEnd:Int, paymentTerm:Int) -> (parray: [Payment_NotCoreData], monthNumber: Int, description:String) {
         println("extrapayment was called")

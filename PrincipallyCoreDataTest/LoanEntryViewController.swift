@@ -183,7 +183,7 @@ import CoreData
         
         // Do any additional setup after loading the view.
         newName.text = "Loan #" + String(GlobalLoanCount.sharedGlobalLoanCount.count)
-        
+        GlobalLoanCount.sharedGlobalLoanCount.count = GlobalLoanCount.sharedGlobalLoanCount.count + 1
         
     }
 

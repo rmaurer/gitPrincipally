@@ -70,7 +70,7 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
             graphedScenarioView.changeInInterestRate = interestRateSliderToLIBORNumber(planOptionsView.changeInRateSliderOutlet.value)
             graphedScenarioView.AGI = getNSNumberFromAGIString(planOptionsView.adjustedGrossIncomeTextField6.text).doubleValue
            graphedScenarioView.annualSalaryIncrease = getNSNumberFromAnnualSalaryIncreaseString(planOptionsView.annualSalaryIncreaseTextField7.text).doubleValue
-            graphedScenarioView.familySize = getNSNumberFromFamilySizeString(planOptionsView.familySizeTextField8.text).integerValue
+            graphedScenarioView.familySize = planOptionsView.familySizeStepperOutlet.value
             graphedScenarioView.qualifyingJob = planOptionsView.qualifyingJobSwitch.on
             graphedScenarioView.IBRDateOptions = planOptionsView.IBRDatesSwitch10.on
             graphedScenarioView.ICRReqs = planOptionsView.ICRDatesSwitch10.on

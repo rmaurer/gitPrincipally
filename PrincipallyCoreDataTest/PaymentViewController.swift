@@ -11,7 +11,7 @@ import CoreData
 import Foundation
 
 class PaymentViewController: UIViewController {
-
+/*
     @IBOutlet weak var payExtraContainer: UIView!
 
     @IBOutlet weak var changePlanContainer: UIView!
@@ -46,5 +46,6 @@ class PaymentViewController: UIViewController {
         self.doBothContainer.hidden = true
         self.changePlanContainer.hidden = true
     }
+*/
 }
 

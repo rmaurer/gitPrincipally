@@ -41,18 +41,19 @@ class Payment_NotCoreData {
 class Scenario: NSManagedObject {
 
     @NSManaged var interestOverLife: NSNumber
-    @NSManaged var timeToRepay: NSDate
     @NSManaged var scenarioDescription: String
     @NSManaged var name: String
     @NSManaged var allLoans: NSOrderedSet
     @NSManaged var concatenatedPayment: NSOrderedSet
-    @NSManaged var defaultTotalScenarioInterest: NSNumber
-    @NSManaged var defaultTotalScenarioMonths: NSNumber
+    @NSManaged var defaultTotalScenarioInterest: NSNumber //delete
+    @NSManaged var defaultTotalScenarioMonths: NSNumber //delete
     @NSManaged var nnewTotalScenarioInterest: NSNumber
     @NSManaged var nnewTotalScenarioMonths: NSNumber
-    @NSManaged var defaultScenarioMaxPayment: NSNumber
-    @NSManaged var nnewScenarioMaxPayment: NSNumber
+    @NSManaged var nnewTotalCapitalizedInterest : NSNumber
+    @NSManaged var nnewTotalPrincipal : NSNumber
     @NSManaged var repaymentType : String
+    //add an object called "scenario variables" where you store all that information.  type, true fals / numbers, etc, so that you can call it again if need be. 
+    //add capitalized interest variable? 
     
     func addTotalInterestAndPrincipalSoFarToConcatPayment(managedObjectContext:NSManagedObjectContext){
         let concatPayment = self.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
@@ -66,6 +67,11 @@ class Scenario: NSManagedObject {
             objectMonth.totalPrincipalSoFar = NSNumber(double: totalPrincipalSoFar)
             objectMonth.totalInterestSoFar = NSNumber(double: totalInterestSoFar)
         }
+        
+        self.nnewTotalScenarioMonths = concatPayment.count
+        self.nnewTotalPrincipal = totalPrincipalSoFar - self.nnewTotalCapitalizedInterest.doubleValue
+        self.nnewTotalScenarioInterest = NSNumber(double: totalInterestSoFar)
+        
         self.concatenatedPayment = concatPayment.copy() as! NSOrderedSet
         var error: NSError?
         
@@ -78,9 +84,6 @@ class Scenario: NSManagedObject {
     
         //initialize things
         self.interestOverLife = 0
-        self.nnewScenarioMaxPayment = 0
-        self.nnewTotalScenarioInterest = 0
-        self.nnewTotalScenarioMonths = 0
         
         //get all the loans as objects
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
@@ -142,12 +145,19 @@ class Scenario: NSManagedObject {
             lArray.append(oldLoan)
         }
         
+        var scenarioCapitalizedInterest : Double = 0
+        
         for loan in lArray{
             if loan.loanType == "Direct, Unsubs."  || loan.loanType == "Grad PLUS" {
-                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: self.incomeDriven_OneLoan_Wind_Up(totalBalance, loan:loan, percent:10, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:false, isIBR:false, term:PAYETerm, numberOfYearsInProgram:yearsInTheProgram))
+                var woundUpLoan = self.incomeDriven_OneLoan_Wind_Up(totalBalance, loan:loan, percent:10, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:false, isIBR:false, term:PAYETerm, numberOfYearsInProgram:yearsInTheProgram)
+                
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: woundUpLoan.parray)
+                scenarioCapitalizedInterest += woundUpLoan.capitalizedInterest
             }
             else if loan.loanType == "Direct, Subs." {
-                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: self.incomeDriven_OneLoan_Wind_Up(totalBalance, loan:loan, percent:10, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:true, isIBR:false, term:PAYETerm, numberOfYearsInProgram:yearsInTheProgram))
+                var woundUpLoan = self.incomeDriven_OneLoan_Wind_Up(totalBalance, loan:loan, percent:10, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:true, isIBR:false, term:PAYETerm, numberOfYearsInProgram:yearsInTheProgram)
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: woundUpLoan.parray)
+                scenarioCapitalizedInterest += woundUpLoan.capitalizedInterest
             }
             else{
                 
@@ -156,6 +166,8 @@ class Scenario: NSManagedObject {
                 self.addPaymentsForOneLoan(managedObjectContext, loansPayments: loan.standardFlat_WindUpLoan(120))
             }
         }
+        
+        self.nnewTotalCapitalizedInterest = scenarioCapitalizedInterest 
 
     }
     
@@ -182,9 +194,14 @@ class Scenario: NSManagedObject {
             lArray.append(oldLoan)
         }
         
+        var scenarioCapitalizedInterest : Double = 0
+        
         for loan in lArray{
             if loan.loanType == "Direct, Unsubs."  || loan.loanType == "Grad PLUS" || loan.loanType == "Direct, Subs."{
-                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: self.incomeDriven_OneLoan_Wind_Up(totalBalance, loan:loan, percent:20, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:false, isIBR:false, term:termOfICR, numberOfYearsInProgram:yearsInTheProgram))
+                var woundUpLoan = self.ICR_OneLoan_Wind_Up(totalBalance, loan:loan, percent:20, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:false, isIBR:false, term:termOfICR, numberOfYearsInProgram:yearsInTheProgram)
+                
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: woundUpLoan.parray)
+                scenarioCapitalizedInterest += woundUpLoan.capitalizedInterest
             }
             else{
                 
@@ -193,6 +210,8 @@ class Scenario: NSManagedObject {
                 self.addPaymentsForOneLoan(managedObjectContext, loansPayments: loan.standardFlat_WindUpLoan(120))
             }
         }
+        
+        self.nnewTotalCapitalizedInterest = scenarioCapitalizedInterest
         
     }
     
@@ -221,15 +240,23 @@ class Scenario: NSManagedObject {
             lArray.append(oldLoan)
         }
         
+        var scenarioCapitalizedInterest : Double = 0
+        
         for loan in lArray{
             if loan.loanType == "Direct, Unsubs."  || loan.loanType == "Grad PLUS" {
-                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: self.incomeDriven_OneLoan_Wind_Up(totalBalance, loan:loan, percent:percent, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:false, isIBR:true, term:directLoanTerm, numberOfYearsInProgram:yearsInTheProgram ))
+                var woundUpLoan = self.incomeDriven_OneLoan_Wind_Up(totalBalance, loan:loan, percent:percent, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:false, isIBR:true, term:directLoanTerm, numberOfYearsInProgram:yearsInTheProgram)
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: woundUpLoan.parray)
+                scenarioCapitalizedInterest += woundUpLoan.capitalizedInterest
             }
             else if loan.loanType == "FFEL"{
-                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: self.incomeDriven_OneLoan_Wind_Up(totalBalance, loan:loan, percent:percent, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:false, isIBR:true, term:term, numberOfYearsInProgram:yearsInTheProgram))
+                var woundUpLoan = self.incomeDriven_OneLoan_Wind_Up(totalBalance, loan:loan, percent:percent, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:false, isIBR:true, term:term, numberOfYearsInProgram:yearsInTheProgram)
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: woundUpLoan.parray)
+                scenarioCapitalizedInterest += woundUpLoan.capitalizedInterest
             }
             else if loan.loanType == "Direct, Subs." {
-                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: self.incomeDriven_OneLoan_Wind_Up(totalBalance, loan:loan, percent:percent, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:true, isIBR:true, term:directLoanTerm, numberOfYearsInProgram:yearsInTheProgram ))
+                var woundUpLoan = self.incomeDriven_OneLoan_Wind_Up(totalBalance, loan:loan, percent:percent, AGI:AGI, familySize:familySize, increase:percentageincrease, subsidized:true, isIBR:true, term:directLoanTerm, numberOfYearsInProgram:yearsInTheProgram)
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: woundUpLoan.parray)
+                scenarioCapitalizedInterest += woundUpLoan.capitalizedInterest
             }
             else{
                 
@@ -239,11 +266,13 @@ class Scenario: NSManagedObject {
             }
         }
         
+        self.nnewTotalCapitalizedInterest = scenarioCapitalizedInterest
+        
     }
     
     //START HERE: Work in IBR Plan? 
     
-    func ICR_OneLoan_Wind_Up(totalBalance:Double, loan:Loan, percent:Double, AGI:Double, familySize:Int, increase:Double, subsidized:Bool, isIBR:Bool, term:Int, numberOfYearsInProgram:Int)-> [Payment_NotCoreData]{
+    func ICR_OneLoan_Wind_Up(totalBalance:Double, loan:Loan, percent:Double, AGI:Double, familySize:Int, increase:Double, subsidized:Bool, isIBR:Bool, term:Int, numberOfYearsInProgram:Int)->(parray: [Payment_NotCoreData], capitalizedInterest:Double){
         var paymentArrayToReturn = [Payment_NotCoreData]()
         var monthsUntilRepayment : Int = loan.monthsUntilRepayment.integerValue
         var balance = loan.balance.doubleValue
@@ -251,6 +280,7 @@ class Scenario: NSManagedObject {
         var excessInterest : Double = 0
         var monthlyStandardPayment = self.getAllEligibleLoansPayment(isIBR) //monthly
         var newBalance : Double = balance
+        var capitalizedInterestToReturn : Double = 0
 
         while monthsUntilRepayment > 0 {
             var paymentToAdd = Payment_NotCoreData()
@@ -277,18 +307,22 @@ class Scenario: NSManagedObject {
                 }
                 if balance + excessInterest < loan.balance.doubleValue * 1.1 {
                     balance = balance + excessInterest
+                    capitalizedInterestToReturn += excessInterest
                     excessInterest = 0
                 }
                 else {
                     //we are at the 10% cap
                     let cap = loan.balance.doubleValue * 1.1
                     excessInterest = excessInterest - (cap - balance)
+                    capitalizedInterestToReturn += (cap - balance)
                     balance = cap
                 }
                 
                 newBalance = balance + excessInterest
             }
             else {
+                capitalizedInterestToReturn += excessInterest
+                //to fix: what happens when you leave ICR after more than 10 years? 
                 var proRataStandardPayment = loan.getStandardMonthlyPayment(120-year*12, balance: newBalance)
                 
                 for month in 1...12{
@@ -314,11 +348,11 @@ class Scenario: NSManagedObject {
             }
         
         }
-         return paymentArrayToReturn
+         return (paymentArrayToReturn, capitalizedInterestToReturn)
     }
     
     
-    func incomeDriven_OneLoan_Wind_Up(totalBalance:Double, loan:Loan, percent:Double, AGI:Double, familySize:Int, increase:Double, subsidized:Bool, isIBR:Bool, term:Int, numberOfYearsInProgram:Int) -> [Payment_NotCoreData]{
+    func incomeDriven_OneLoan_Wind_Up(totalBalance:Double, loan:Loan, percent:Double, AGI:Double, familySize:Int, increase:Double, subsidized:Bool, isIBR:Bool, term:Int, numberOfYearsInProgram:Int) -> (parray: [Payment_NotCoreData], capitalizedInterest:Double){
         
         var paymentArrayToReturn = [Payment_NotCoreData]()
         var monthsUntilRepayment : Int = loan.monthsUntilRepayment.integerValue
@@ -327,7 +361,7 @@ class Scenario: NSManagedObject {
         var excessInterest : Double = 0
         var monthlyStandardPayment = self.getAllEligibleLoansPayment(isIBR) //monthly
         var newBalance : Double = balance
-        
+        var capitalizedInterestToReturn : Double = 0
         
         while monthsUntilRepayment > 0 {
             var paymentToAdd = Payment_NotCoreData()
@@ -370,6 +404,7 @@ class Scenario: NSManagedObject {
                 newBalance = balance + excessInterest //if interest capitalized
             }
             else {
+                capitalizedInterestToReturn = excessInterest
                 var proRataStandardPayment = loan.getStandardMonthlyPayment(120-year*12, balance: newBalance)
                 
                 for month in 1...12{
@@ -399,7 +434,7 @@ class Scenario: NSManagedObject {
                 }
             }
         }
-        return paymentArrayToReturn
+        return (paymentArrayToReturn, capitalizedInterestToReturn)
         
     }
 
@@ -579,9 +614,7 @@ class Scenario: NSManagedObject {
         var description : String = ""
         //reset interestoverlife and concat payment of the scenario we are working in.
         self.interestOverLife = 0
-        self.nnewScenarioMaxPayment = 0
-        self.nnewTotalScenarioInterest = 0
-        self.nnewTotalScenarioMonths = 0
+
         
 
         //setup default variable to count how far we are into adding the payments.
@@ -734,45 +767,6 @@ class Scenario: NSManagedObject {
             println("Could not save: \(error)") }
     }
     
-    func windUpConcatenatedPaymentWithAllLoans(managedObjectContext:NSManagedObjectContext) {
-        //set newInterest and newMax, but you need to already have the newTotalMonths
-        
-        var mpForAllLoans  = self.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
-        var allLoans = self.allLoans.mutableCopy() as! NSMutableOrderedSet
-        let newTotalMonths = self.nnewTotalScenarioMonths.integerValue - 1
-        //firstcreate blanks
-        let entity = NSEntityDescription.entityForName("MonthlyPayment", inManagedObjectContext: managedObjectContext)
-        
-        var newInterest : Double = 0
-        var newMax : Double = 0
-        
-        for index in 0...newTotalMonths{
-            var monthlyPaymentToBeAddedToScenario = MonthlyPayment(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
-            monthlyPaymentToBeAddedToScenario.interest = 0
-            monthlyPaymentToBeAddedToScenario.principal = 0
-            monthlyPaymentToBeAddedToScenario.totalPayment = 0
-            
-            for loan in allLoans {
-                var loan = loan as! Loan
-                if index < loan.mpForOneLoan.count {
-                    var mpToBeAddedToMonth = loan.mpForOneLoan[index] as! MonthlyPayment
-                    monthlyPaymentToBeAddedToScenario.addAnotherMP(mpToBeAddedToMonth)
-                }
-            }
-            newInterest = newInterest + monthlyPaymentToBeAddedToScenario.interest.doubleValue
-            newMax = maxElement([newMax,monthlyPaymentToBeAddedToScenario.totalPayment.doubleValue])
-            mpForAllLoans.addObject(monthlyPaymentToBeAddedToScenario)
-        }
-        //TODO: SET THIS BACK TO NNEWTOTALSCENARIOINTEREST.  Right now you are getting around the issue of the graphedScenario sometimes being default and sometimes being the newscenario
-        self.defaultTotalScenarioInterest = newInterest
-        self.nnewScenarioMaxPayment = newMax
-        self.concatenatedPayment = mpForAllLoans.copy() as! NSOrderedSet
-
-        var error: NSError?
-        if !managedObjectContext.save(&error) {
-            println("Could not save: \(error)") }
-    }
-
     func extendedFlatWindUpWithExtraPayments(managedObjectContext:NSManagedObjectContext, extraAmount:NSNumber, MWEPT:Int) -> [Double] {
         //START HERE: YOU SHOULD ADD COPY over makeNewExtraPaymentScenario for extended repayment
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()

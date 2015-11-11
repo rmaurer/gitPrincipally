@@ -12,7 +12,21 @@ import QuartzCore
 
 class Compare_1_Interest: UIView {
 
+   
+     var interestLineColor = UIColor(red: 217/255.0, green: 56/255.0, blue: 41/255.0, alpha: 1)
+    
     var scenarioArray : [Scenario]? = nil
+    
+    func getTotalPayment(sArray:[Scenario])->[Double]{
+        var returnArray = [Double]()
+        for scenario in sArray{
+            let concatPayment = scenario.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
+            let lastPayment = concatPayment.lastObject as! MonthlyPayment
+            returnArray.append(lastPayment.totalPrincipalSoFar.doubleValue + lastPayment.totalInterestSoFar.doubleValue)
+        }
+        return returnArray
+    }
+    
     
     func getTotalInterest(sArray:[Scenario])->[Double]{
         var returnArray = [Double]()
@@ -36,7 +50,7 @@ class Compare_1_Interest: UIView {
             var blockWidth = rect.width / CGFloat(scenarioArray!.count)
             var lineWidth = blockWidth / 3
             let totalInterestArray :[Double] = self.getTotalInterest(scenarioArray!)
-            let maxHeightInDollars = maxElement(totalInterestArray) * 1.2
+            let maxHeightInDollars = maxElement(self.getTotalPayment(scenarioArray!)) * 1.2
             
             var convertNumberToYCoordinate = { (graphPoint:Double) -> CGFloat in
                 var y:CGFloat = CGFloat(graphPoint) /
@@ -55,42 +69,23 @@ class Compare_1_Interest: UIView {
                 let context = UIGraphicsGetCurrentContext()
                 CGContextSetLineWidth(context, 4.0)
                 CGContextSetStrokeColorWithColor(context,
-                    UIColor.redColor().CGColor)
+                   interestLineColor.CGColor)
                 let rectangle = CGRectMake(startX,topY,lineWidth,height-topY)
                 CGContextAddRect(context, rectangle)
                 CGContextStrokePath(context)
                 CGContextSetFillColorWithColor(context,
-                    UIColor.redColor().CGColor)
+                    interestLineColor.CGColor)
                 CGContextFillRect(context, rectangle)
                 
+                var roundInterest = floor(totalInterestArray[index] * 100) / 100
                 
-                
+                var s: NSString = "\(scenarioArray![index].name): $\(roundInterest) in interest"
+                let fieldFont = UIFont(name: "Helvetica Neue", size: 14)
+                s.drawWithBasePoint(CGPointMake(startX+lineWidth, bounds.height-20), angle: CGFloat(-M_PI_2), font: fieldFont!)
                 
             }
-            /*var s: NSString = "Whereof we cannot speak, thereof we must remain silent."
-            // set the text color to dark gray
-            let fieldColor: UIColor = UIColor.darkGrayColor()
-            
-            // set the font to Helvetica Neue 18
-            let fieldFont = UIFont(name: "Helvetica Neue", size: 18)
-            
-            // set the line spacing to 6
-            var paraStyle = NSMutableParagraphStyle()
-            paraStyle.lineSpacing = 6.0
-            
-            // set the Obliqueness to 0.1
-            var skew = 0.1
-            
-            var attributes: NSDictionary = [
-                NSForegroundColorAttributeName: fieldColor,
-                NSParagraphStyleAttributeName: paraStyle,
-                NSObliquenessAttributeName: skew,
-                NSFontAttributeName: fieldFont!
-            ]*/
-            var s: NSString = "Whereof we cannot speak, thereof we must remain silent."
-            let fieldFont = UIFont(name: "Helvetica Neue", size: 14)
-            
-            s.drawWithBasePoint(CGPointMake(bounds.width/2, bounds.height/2), angle: CGFloat(-M_PI_2), font: fieldFont!)
+
+
             
             //s.drawInRect(CGRectMake(20.0, 140.0, 300.0, 48.0), withAttributes: attributes as [NSObject : AnyObject])
             
@@ -127,9 +122,9 @@ extension NSString {
         CGContextConcatCTM(context, r)
         
         
-        self.drawAtPoint(CGPointMake(-1 * textSize.width / 2, -1 * textSize.height / 2), withAttributes: attrs as [NSObject : AnyObject])
-        
-        
+        self.drawAtPoint(CGPointMake(0, textSize.height / 4), withAttributes: attrs as [NSObject : AnyObject])
+        //textSize.height / 2
+        //        -1 * textSize.width / 2
         CGContextConcatCTM(context, CGAffineTransformInvert(r))
         CGContextConcatCTM(context, CGAffineTransformInvert(t))
         

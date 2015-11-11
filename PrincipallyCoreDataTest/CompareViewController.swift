@@ -73,11 +73,14 @@ class CompareViewController: UIViewController, UIPageViewControllerDataSource {
         
         
         switch index {
-        case 1:
+        case 0:
             pageContentViewController.add1()
             pageContentViewController.compareLabelText = "I was successfully changed"
-        case 2:
+        case 1:
             pageContentViewController.add2()
+            pageContentViewController.compareLabelText = "I was successfully changed"
+        case 2:
+            pageContentViewController.add4()
             pageContentViewController.compareLabelText = "Time 2"
         case 3:
             pageContentViewController.add3()
