@@ -70,7 +70,7 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
             graphedScenarioView.changeInInterestRate = interestRateSliderToLIBORNumber(planOptionsView.changeInRateSliderOutlet.value)
             graphedScenarioView.AGI = getNSNumberFromAGIString(planOptionsView.adjustedGrossIncomeTextField6.text).doubleValue
            graphedScenarioView.annualSalaryIncrease = getNSNumberFromAnnualSalaryIncreaseString(planOptionsView.annualSalaryIncreaseTextField7.text).doubleValue
-            graphedScenarioView.familySize = planOptionsView.familySizeStepperOutlet.value
+            graphedScenarioView.familySize = Int(floor(planOptionsView.familySizeStepperOutlet.value))
             graphedScenarioView.qualifyingJob = planOptionsView.qualifyingJobSwitch.on
             graphedScenarioView.IBRDateOptions = planOptionsView.IBRDatesSwitch10.on
             graphedScenarioView.ICRReqs = planOptionsView.ICRDatesSwitch10.on
@@ -130,14 +130,13 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.loadChildViews()
         self.navigationController!.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
         whiteBackgroundView.layer.borderWidth = 4
         whiteBackgroundView.layer.borderColor = greenPrincipallyColor.CGColor
         if selectedScenario != nil {
             flipAroundGraphWithoutLoadingScenario()
         }
-        //selectPlanTypeButtonOutlet.layer.backgroundColor = greenPrincipallyColor.CGColor
-        // Do any additional setup after loading the view.
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -151,6 +150,11 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        self.loadChildViews()
+        planOptionsView.resignResponder()
     }
     
     

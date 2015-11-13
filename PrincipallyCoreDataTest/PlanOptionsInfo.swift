@@ -16,10 +16,13 @@ class PlanOptionsInfo: UIViewController {
     
     @IBOutlet weak var infoTextView: UITextView!
     
+    var backgroundGrey = UIColor.darkGrayColor().colorWithAlphaComponent(0.5)
+    
     var labelText : String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = backgroundGrey
         infoTitleLabel.text = labelText
         switch labelText {
         case "Variable Interest Rate":
@@ -40,6 +43,10 @@ class PlanOptionsInfo: UIViewController {
             infoTextView.text = "The percentage of your income you will pay in IBR differs depending on when you first borrowed federal student loans. You are a so-called “new borrowers” if you took out your  first federal loan after July 1, 2014, or if you repaid all your earlier loans before taking out a new loan after July 1, 2014.  If you are a new borrower, you pay no more than 10% of your discretionary income towards your loans in the IBR program.  However, if you borrowed loans earlier, you may still be eligible for the IBR program.  You will just pay 15% of your discretionary income towards your loans.  As with all income-drive repayment options, remember that your servicer will ultimately determine your eligibility."
         case "PAYE Date Requirements":
             infoTextView.text = "Only borrowers who took out loans after a certain date are eligible for the Pay As You Earn repayment plan.  To be eligible, you must meet two prongs.  First: you must have borrowed your first federal loan after October 1, 2007.  If you had federal loans from before October 1, 2007, you can still be eligible for PAYE only if those loans were completely repayed before taking out a new loan after October 1, 2007.  Second: you must have received a new loan, received a disbursement on an existing loan, or consolidated your loans after October 1, 2011. As with all income-drive repayment options, remember that your servicer will ultimately determine your eligibility."
+        case "Years In Program":
+            infoTextView.text = "Under this repayment option, you are expecting to be in an income-driven repayment plan for a set number of years and then return to the Standard (10-year) repayment plan.  Use this option to let the estimator know whether you are planning to be in income-driven repayment for 1 year, 2 years, 3 years or more.  Remember, the longer you stay in an income-driven plan, the higher your payments will be for the remainder of the 10 years to get everything paid off in time."
+        case "One Time Payoff":
+            infoTextView.text = "Many private refinance companies offer a one-time payment as an incentive to refinance.  This option allows you to input that one-time payoff to see how it will affect your repayment plan."
         default:
             infoTextView.text = ""
         }

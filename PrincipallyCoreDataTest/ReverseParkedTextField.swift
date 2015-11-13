@@ -13,7 +13,7 @@ class ReverseParkedTextField: UITextField {
     // MARK: Properties
     
     /// Constant part of the text. Defaults to "".
-    @IBInspectable public var parkedText: String {
+    @IBInspectable internal var parkedText: String {
         get {
             return _parkedText
         }
@@ -37,7 +37,7 @@ class ReverseParkedTextField: UITextField {
     var _parkedText = ""
     
     /// Variable part of the text. Defaults to "".
-    @IBInspectable public var typedText: String {
+    @IBInspectable internal var typedText: String {
         get {
             if text.hasSuffix(parkedText) {
                 return text[text.startIndex..<advance(text.endIndex, -count(parkedText))]
@@ -52,7 +52,7 @@ class ReverseParkedTextField: UITextField {
     }
     
     /// Placeholder before parkedText. Defaults to "".
-    @IBInspectable public var placeholderText: String = "" {
+    @IBInspectable internal var placeholderText: String = "" {
         didSet {
             placeholder =  parkedText + placeholderText
         }
@@ -60,14 +60,14 @@ class ReverseParkedTextField: UITextField {
     
     
     /// Constant part of the text. Defaults to the text field's font.
-    public var parkedTextFont: UIFont! {
+    internal var parkedTextFont: UIFont! {
         didSet {
             parkedText += ""
         }
     }
     
     /// Constant part of the text. Defaults to the text field's textColor.
-    @IBInspectable public var parkedTextColor: UIColor! {
+    @IBInspectable internal var parkedTextColor: UIColor! {
         didSet {
             parkedText += ""
         }
@@ -81,7 +81,7 @@ class ReverseParkedTextField: UITextField {
         ]
     }
     
-    public override var placeholder: String? {
+    internal override var placeholder: String? {
         didSet {
             if let placeholder = placeholder {
                 let attributedString = NSMutableAttributedString(string: placeholder)
@@ -110,12 +110,12 @@ class ReverseParkedTextField: UITextField {
     
     // MARK: Initialization
     
-    public required init(coder aDecoder: NSCoder) {
+    internal required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
     }
     
-    public override init(frame: CGRect) {
+    internal override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
     }

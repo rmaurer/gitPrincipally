@@ -272,7 +272,7 @@ class Scenario: NSManagedObject {
     
     //START HERE: Work in IBR Plan? 
     
-    func ICR_OneLoan_Wind_Up(totalBalance:Double, loan:Loan, percent:Double, AGI:Double, familySize:Int, increase:Double, subsidized:Bool, isIBR:Bool, term:Int, numberOfYearsInProgram:Int)->(parray: [Payment_NotCoreData], capitalizedInterest:Double){
+    func ICR_OneLoan_Wind_Up(totalBalance:Double, loan:Loan, percent:Double, AGI:Double, familySize:Int, increase:Double, subsidized:Bool, isIBR:Bool, term:Int, numberOfYearsInProgram:Int)->(parray: [Payment_NotCoreData], capitalizedInterest:Double, forgivenBalance:Double){
         var paymentArrayToReturn = [Payment_NotCoreData]()
         var monthsUntilRepayment : Int = loan.monthsUntilRepayment.integerValue
         var balance = loan.balance.doubleValue
@@ -293,17 +293,31 @@ class Scenario: NSManagedObject {
         for year in 1...term{
             let monthlyPAYEpayment = self.percentageOfDiscretionaryIncome(percent, AGI:AGI, familySize:familySize, year:year, increase:increase)
             
-            if monthlyStandardPayment > monthlyPAYEpayment && year <= numberOfYearsInProgram {
+            if year <= numberOfYearsInProgram { //monthlyStandardPayment > monthlyPAYEpayment &&
                 var proRataPAYEPayment = monthlyPAYEpayment * (loan.balance.doubleValue / totalBalance)
                 
                 for month in 1...12{
-                    var paymentToAdd = Payment_NotCoreData()
-                    paymentToAdd.interest = minElement([proRataPAYEPayment, balance * rate])
-                    paymentToAdd.principal = proRataPAYEPayment - paymentToAdd.interest
-                    paymentToAdd.total = proRataPAYEPayment
-                    excessInterest += maxElement([0, (balance * rate) - paymentToAdd.interest])
-                    balance -= paymentToAdd.principal
-                    paymentArrayToReturn.append(paymentToAdd)
+                    if balance > proRataPAYEPayment {
+                        var paymentToAdd = Payment_NotCoreData()
+                        paymentToAdd.interest = minElement([proRataPAYEPayment, balance * rate])
+                        paymentToAdd.principal = proRataPAYEPayment - paymentToAdd.interest
+                        paymentToAdd.total = proRataPAYEPayment
+                        excessInterest += maxElement([0, (balance * rate) - paymentToAdd.interest])
+                        balance -= paymentToAdd.principal
+                        paymentArrayToReturn.append(paymentToAdd)
+                    }
+                    else if balance == 0 {
+                        break
+                    }
+                    else {
+                        var lastPaymentToAdd = Payment_NotCoreData()
+                        lastPaymentToAdd.interest = balance * rate
+                        lastPaymentToAdd.principal = balance
+                        lastPaymentToAdd.total = balance + lastPaymentToAdd.interest
+                        balance = 0
+                        paymentArrayToReturn.append(lastPaymentToAdd)
+                        break
+                    }
                 }
                 if balance + excessInterest < loan.balance.doubleValue * 1.1 {
                     balance = balance + excessInterest
@@ -321,9 +335,11 @@ class Scenario: NSManagedObject {
                 newBalance = balance + excessInterest
             }
             else {
+                //only get here in Limited ICR cases
                 capitalizedInterestToReturn += excessInterest
-                //to fix: what happens when you leave ICR after more than 10 years? 
-                var proRataStandardPayment = loan.getStandardMonthlyPayment(120-year*12, balance: newBalance)
+                
+                //to fix: what happens when you leave ICR after more than 10 years?
+                var proRataStandardPayment = loan.getStandardMonthlyPayment(120-numberOfYearsInProgram*12, balance: newBalance)
                 
                 for month in 1...12{
                     if newBalance > proRataStandardPayment {
@@ -344,15 +360,14 @@ class Scenario: NSManagedObject {
                         break
                     }
                 }
-
             }
         
         }
-         return (paymentArrayToReturn, capitalizedInterestToReturn)
+         return (paymentArrayToReturn, capitalizedInterestToReturn, balance)
     }
     
     
-    func incomeDriven_OneLoan_Wind_Up(totalBalance:Double, loan:Loan, percent:Double, AGI:Double, familySize:Int, increase:Double, subsidized:Bool, isIBR:Bool, term:Int, numberOfYearsInProgram:Int) -> (parray: [Payment_NotCoreData], capitalizedInterest:Double){
+    func incomeDriven_OneLoan_Wind_Up(totalBalance:Double, loan:Loan, percent:Double, AGI:Double, familySize:Int, increase:Double, subsidized:Bool, isIBR:Bool, term:Int, numberOfYearsInProgram:Int) -> (parray: [Payment_NotCoreData], capitalizedInterest:Double, forgivenBalance:Double){
         
         var paymentArrayToReturn = [Payment_NotCoreData]()
         var monthsUntilRepayment : Int = loan.monthsUntilRepayment.integerValue
@@ -403,9 +418,41 @@ class Scenario: NSManagedObject {
                 }
                 newBalance = balance + excessInterest //if interest capitalized
             }
+            else if year > numberOfYearsInProgram {
+                //here is what happens if you leave IBR after being partially finished.  Now your loan payment is based on the number of years remaining in the 10 year term. 
+                capitalizedInterestToReturn = excessInterest
+                var proRataStandardPayment = loan.getStandardMonthlyPayment(120-numberOfYearsInProgram*12, balance: newBalance)
+                for month in 1...12{
+                    if newBalance > proRataStandardPayment {
+                        var paymentToAdd = Payment_NotCoreData()
+                        paymentToAdd.interest = rate * newBalance
+                        paymentToAdd.principal = proRataStandardPayment - paymentToAdd.interest
+                        paymentToAdd.total = proRataStandardPayment
+                        newBalance -= paymentToAdd.principal
+                        paymentArrayToReturn.append(paymentToAdd)
+                    }
+                    else if newBalance == 0 {
+                        //do nothing, don't add any payment
+                        break
+                    }
+                    else {
+                        var lastPaymentToAdd = Payment_NotCoreData()
+                        lastPaymentToAdd.interest = newBalance * rate
+                        lastPaymentToAdd.principal = newBalance
+                        lastPaymentToAdd.total = newBalance + lastPaymentToAdd.interest
+                        newBalance = 0
+                        paymentArrayToReturn.append(lastPaymentToAdd)
+                        break
+                    }
+                    
+                    
+                }
+
+                
+            }
             else {
                 capitalizedInterestToReturn = excessInterest
-                var proRataStandardPayment = loan.getStandardMonthlyPayment(120-year*12, balance: newBalance)
+                var proRataStandardPayment = loan.getStandardMonthlyPayment(120, balance: loan.balance.doubleValue)
                 
                 for month in 1...12{
                     if newBalance > proRataStandardPayment {
@@ -434,7 +481,7 @@ class Scenario: NSManagedObject {
                 }
             }
         }
-        return (paymentArrayToReturn, capitalizedInterestToReturn)
+        return (paymentArrayToReturn, capitalizedInterestToReturn, newBalance)
         
     }
 

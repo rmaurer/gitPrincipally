@@ -12,6 +12,15 @@ class PlanOptionsTableViewController: UITableViewController {
 
     var selectedRepaymentPlan : String?
     
+    @IBAction func firstCellButton(sender: AnyObject) {
+        self.resignResponder()
+    }
+    
+    @IBAction func lastCellButton(sender: UIButton) {
+        self.resignResponder()
+    }
+    
+    
     @IBAction func extraPaymentSliderAction(sender: UISlider) {
         sender.value = Float(Int(sender.value))
         switch sender.value {
@@ -147,7 +156,7 @@ class PlanOptionsTableViewController: UITableViewController {
     @IBOutlet weak var familySizeNumLabel: UILabel! //8
     
     @IBAction func familySizeStepper_Action(sender: UIStepper) {
-        familySizeNumLabel.text = String(stringInterpolationSegment: sender.value)
+        familySizeNumLabel.text = String(stringInterpolationSegment: Int(sender.value))
     } //8
     
     @IBOutlet weak var infoButton_FamilySize_8: UIButton!
@@ -252,18 +261,22 @@ class PlanOptionsTableViewController: UITableViewController {
     @IBOutlet weak var infoButton_YearsInProgram: UIButton!
     
     @IBAction func infoButton_YearsInProgram_Action(sender: UIButton) {
-        self.performSegueWithIdentifier("modalInfoSegue", sender:"PAYE Date Requirements")
+        self.performSegueWithIdentifier("modalInfoSegue", sender:"Years In Program")
     }
     @IBOutlet weak var oneTimePayoffLabel: UILabel!
     
     @IBOutlet weak var oneTimePayoffTextFieldOutlet: UITextField!
     
+    @IBAction func infoButton_OneTimePayoff_Action(sender: UIButton) {
+        self.performSegueWithIdentifier("modalInfoSegue", sender:"One Time Payoff")
+    }
+    @IBOutlet weak var infoButton_OneTimePayoff: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         extraPaymentAmountLabel.text = "Never"
         extraPaymentSliderOutlet.maximumValue = Float(19)
         changeInRateSliderOutlet.maximumValue = Float(5)
-        changeInRateAmountLabel.text = "No Change"
+        changeInRateAmountLabel.text = "0%"
         repaymentTermSlider.maximumValue = Float(4)
         repaymentTermSlider.value = 2
         RepaymentTermYearLabel.text = "10 years"
@@ -291,7 +304,7 @@ class PlanOptionsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return 17
+        return 18
     }
 
     
@@ -403,25 +416,27 @@ class PlanOptionsTableViewController: UITableViewController {
             if selectedRepaymentPlan == "IBR" || selectedRepaymentPlan == "IBR with PILF" || selectedRepaymentPlan == "IBR Limited" {
                 IBRDatesLabel10.hidden = false
                 IBRDatesSwitch10.hidden = false
+                infoButton_IBR_10.hidden = false
                 return 45
             }
             else {
                 IBRDatesLabel10.hidden = true
                 IBRDatesSwitch10.hidden = true
+                infoButton_IBR_10.hidden = true 
                 return 0
             }
         case 11:
             if selectedRepaymentPlan == "ICR" || selectedRepaymentPlan == "ICR with PILF" || selectedRepaymentPlan == "ICR Limited"{
-                ICRDatesLabel10.hidden = false
-                ICRDatesSwitch10.hidden = false
-                infoButton_ICR_11.hidden = false
-                return 45
+                ICRDatesLabel10.hidden = true
+                ICRDatesSwitch10.hidden = true
+                infoButton_ICR_11.hidden = true
+                return 0
             }
             else {
                 //right now I don't see any date requirements for ICR...
-                ICRDatesLabel10.hidden = false
-                ICRDatesSwitch10.hidden = false
-                infoButton_ICR_11.hidden = false
+                ICRDatesLabel10.hidden = true
+                ICRDatesSwitch10.hidden = true
+                infoButton_ICR_11.hidden = true
                 return 0
             }
         case 12:
@@ -440,7 +455,7 @@ class PlanOptionsTableViewController: UITableViewController {
         case 13:
             if selectedRepaymentPlan == nil {
                 instructionsLabel.hidden = false
-                return 60
+                return self.view.frame.height
             }
             else {
                 instructionsLabel.hidden = true
@@ -464,30 +479,47 @@ class PlanOptionsTableViewController: UITableViewController {
                 yearsInProgramLabel.hidden = false
                 stepperOutlet.hidden = false
                 stepperYearsOutlet.hidden = false
+                infoButton_YearsInProgram.hidden = false
                 return 45
             }
             else{
                 yearsInProgramLabel.hidden = true
                 stepperOutlet.hidden = true
                 stepperYearsOutlet.hidden = true
+                infoButton_YearsInProgram.hidden = true
                 return 0
             }
         case 16:
             if selectedRepaymentPlan == "Refi"{
                 oneTimePayoffLabel.hidden = false
                 oneTimePayoffTextFieldOutlet.hidden = false
+                infoButton_OneTimePayoff.hidden = false
                 return 45
             }
             else{
                 oneTimePayoffLabel.hidden = true
                 oneTimePayoffTextFieldOutlet.hidden = true
+                infoButton_OneTimePayoff.hidden = true
                 return 0 
             }
         case 17:
-            return self.tableView.frame.size.height
+            return self.view.frame.height - 90
         default:
-            return 45
+            return self.view.frame.height
+            
         }
+    }
+    
+    func resignResponder(){
+        extraAmountTextField.resignFirstResponder()
+        interestRateOnRefinanceTextFieldOutlet.resignFirstResponder()
+        adjustedGrossIncomeTextField6.resignFirstResponder()
+        annualSalaryIncreaseLabel7.resignFirstResponder()
+        oneTimePayoffTextFieldOutlet.resignFirstResponder()
+    }
+    
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        self.resignResponder()
     }
     
     

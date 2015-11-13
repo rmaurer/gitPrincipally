@@ -13,7 +13,9 @@ class ScenarioTypeView: UIView {
         
         var dashedBorder = CAShapeLayer()
         let clearColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
-        var greenPrincipallyColor = UIColor(red: 30/255, green: 149/255, blue: 127/255, alpha: 1)
+        var greenPrincipallyColor = UIColor(red: 249/255.0, green: 154/255.0, blue: 0/255.0, alpha: 1)
+    
+        // actual green principally color UIColor(red: 30/255, green: 149/255, blue: 127/255, alpha: 1)
         // Only override drawRect: if you perform custom drawing.
         // An empty implementation adversely affects performance during animation.
         
