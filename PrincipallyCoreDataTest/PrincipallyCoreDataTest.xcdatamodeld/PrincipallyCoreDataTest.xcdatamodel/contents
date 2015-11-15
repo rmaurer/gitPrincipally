@@ -29,6 +29,7 @@
     <entity name="Scenario" representedClassName="PrincipallyCoreDataTest.Scenario" syncable="YES">
         <attribute name="defaultTotalScenarioInterest" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="defaultTotalScenarioMonths" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="forgivenBalance" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="interestOverLife" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nnewTotalCapitalizedInterest" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -39,10 +40,32 @@
         <attribute name="scenarioDescription" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="allLoans" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Loan" inverseName="thisLoansScenario" inverseEntity="Loan" syncable="YES"/>
         <relationship name="concatenatedPayment" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="MonthlyPayment" inverseName="paymentConcatScenario" inverseEntity="MonthlyPayment" syncable="YES"/>
+        <relationship name="settings" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ScenarioSettings" inverseName="thisSettingsScenario" inverseEntity="ScenarioSettings" syncable="YES"/>
+    </entity>
+    <entity name="ScenarioSettings" representedClassName="PRODUCT_MODULE_NAME.ScenarioSettings" syncable="YES">
+        <attribute name="agi" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="amountOfExtraPayments" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="annualSalaryIncrease" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="changeInInterestRate" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="familySize" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="frequencyOfExtraPayments" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="headOfHousehold" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="ibrDateOptions" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="icrReqs" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="interestRateOnRefi" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="oneTimePayoff" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="payeReqs" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="qualifyingJob" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="refiTerm" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="repaymentType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="variableInterestRate" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="yearsInProgram" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="thisSettingsScenario" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Scenario" inverseName="settings" inverseEntity="Scenario" syncable="YES"/>
     </entity>
     <elements>
         <element name="Loan" positionX="-306" positionY="-243" width="128" height="255"/>
         <element name="MonthlyPayment" positionX="-461" positionY="-7" width="128" height="165"/>
-        <element name="Scenario" positionX="-551" positionY="-288" width="128" height="225"/>
+        <element name="Scenario" positionX="-551" positionY="-288" width="128" height="255"/>
+        <element name="ScenarioSettings" positionX="-432" positionY="-135" width="128" height="315"/>
     </elements>
 </model>

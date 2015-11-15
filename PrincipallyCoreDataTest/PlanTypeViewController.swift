@@ -10,17 +10,33 @@ import UIKit
 
 class PlanTypeViewController: UIViewController {
 
+    @IBOutlet weak var myScrollView: UIScrollView!
+    
+    @IBOutlet weak var contentView: UIView!
+    
     @IBAction func standardButtonAction(sender: UIButton) {
         type = getAbbreviation(sender.currentTitle!)
         self.dismissViewControllerAnimated(true, completion: nil)
         delegate!.chooseTypeDidFinish(type)
     
     }
-
     
-    @IBAction func test(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    override func viewDidLayoutSubviews() {
+        myScrollView.contentSize = CGSizeMake(myScrollView.frame.size.width, 1500);
+        /*let scrollViewBounds = myScrollView.bounds
+        let containerViewBounds = contentView.bounds
+        
+        var scrollViewInsets = UIEdgeInsetsZero
+        scrollViewInsets.top = scrollViewBounds.size.height/2.0;
+        scrollViewInsets.top -= contentView.bounds.size.height/2.0;
+        
+        scrollViewInsets.bottom = scrollViewBounds.size.height/2.0
+        scrollViewInsets.bottom -= contentView.bounds.size.height/2.0;
+        scrollViewInsets.bottom += 1
+        
+        myScrollView.contentInset = scrollViewInsets*/
     }
+
     var delegate:PlanViewDelegate? = nil
     var type = ""
     
@@ -37,8 +53,6 @@ class PlanTypeViewController: UIViewController {
     
     func getAbbreviation (sender:String) -> String {
         switch sender{
-        case "Default (loans as you entered them)":
-            return "Default"
         case "Standard":
             return "Standard"
         case "Standard Graduated":
@@ -55,20 +69,20 @@ class PlanTypeViewController: UIViewController {
             return "ICR"
         case "Pay As You Earn":
             return "PAYE"
-        case "Income Based Repayment with Public Interest Loan Forgiveness":
+        case "Income Based Repayment with PILF":
             return "IBR with PILF"
-        case "Income Contingent Repayment with Public Interest Loan Forgiveness":
+        case "Income Contingent Repayment with PILF":
             return "ICR with PILF"
-        case "Pay As You Earn with Public Interest Loan Forgiveness":
+        case "Pay As You Earn with PILF":
             return "PAYE with PILF"
-        case "Limited Number of Years: Income Based Repayment":
+        case "Limited: Income Based Repayment":
             return "IBR Limited"
-        case "Limited Number of Years: Pay As You Earn":
+        case "Limited: Pay As You Earn":
             return "PAYE Limited"
-        case "Limited Number of Years: Income Contingent Repayment":
+        case "Limited: Income Contingent Repayment":
             return "ICR Limited"
         default:
-            return "Type"
+            return "Standard"
         }
     }
 

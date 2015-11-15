@@ -124,6 +124,25 @@ class ScenarioTableViewController: UITableViewController {
 
         return cell!
     }
+    
+    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        println("got into willSelectRowAtIndexPath")
+        
+        let selectedIndexPaths = indexPathsForSelectedRowsInSection(indexPath.section)
+        
+        if selectedIndexPaths?.count == 3 {
+            println("selectedIndexPaths count ==3")
+            tableView.deselectRowAtIndexPath(selectedIndexPaths!.first!, animated: true)
+        }
+        
+        return indexPath
+    }
+    
+    func indexPathsForSelectedRowsInSection(section: Int) -> [NSIndexPath]? {
+        return (tableView.indexPathsForSelectedRows() as? [NSIndexPath])?.filter({ (indexPath) -> Bool in
+            indexPath.section == section
+        })
+    }
 
     override func prepareForSegue
         (segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -134,10 +153,12 @@ class ScenarioTableViewController: UITableViewController {
                 var vc:ReDoneRepaymentViewController = segue.destinationViewController as! ReDoneRepaymentViewController
                 vc.selectedScenario = selectedScenario
             }
+                
             else if segue.identifier == "compareSegue" {
                 let scenarioArray = sender as! [Scenario]
                 var vc:CompareViewController = segue.destinationViewController as! CompareViewController
                 vc.scenarioArray = scenarioArray
+                
             }
     }
     

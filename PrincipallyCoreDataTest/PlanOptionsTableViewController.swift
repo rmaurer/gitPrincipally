@@ -12,6 +12,120 @@ class PlanOptionsTableViewController: UITableViewController {
 
     var selectedRepaymentPlan : String?
     
+    func monthNumbertoSliderValue(monthNumber:Double) -> Float {
+        switch floor(monthNumber) {
+            //matching these up with with the months value seen in //RepaymentExtraTableViewController
+        case 0:
+            return 0
+        case 1,2,3,4,5,6,7,8,9,10,11:
+            return Float(floor(monthNumber))
+        case 12:
+            return 12
+        case 18:
+            return 13
+        case 24:
+            return 14
+        case 30:
+            return 15
+        case 36:
+            return 16
+        case 48:
+            return 17
+        case 60:
+            return 18
+        case 999:
+            return 19
+        default:
+            return 0
+        }
+    }
+    
+    func extraPaymentNumberToLabeLText(sliderValue: Float) {
+        switch sliderValue {
+        case 0:
+            return extraPaymentAmountLabel.text = "Never"
+        case 1:
+            return extraPaymentAmountLabel.text = "1 month"
+        case 2,3,4,5,6,7,8,9,10,11:
+            return extraPaymentAmountLabel.text = "\(Int(sliderValue)) months"
+        case 12:
+            return extraPaymentAmountLabel.text = "12 months"
+        case 13:
+            return extraPaymentAmountLabel.text = "18 months"
+        case 14:
+            return extraPaymentAmountLabel.text = "24 months"
+        case 15:
+            return extraPaymentAmountLabel.text = "30 months"
+        case 16:
+            return extraPaymentAmountLabel.text = "3 years"
+        case 17:
+            return extraPaymentAmountLabel.text = "4 years"
+        case 18:
+            return extraPaymentAmountLabel.text = "5 years"
+        case 19:
+            return extraPaymentAmountLabel.text = "Every time"
+        default:
+            return extraPaymentAmountLabel.text = "Every time"
+        }
+        
+    }
+    
+    func lIBORnumbertoSliderValue(ssender:Double) -> Float {
+        switch floor(ssender){
+        case 0: return 0
+        case 1: return 1
+        case 2: return 2
+        case 4: return 3
+        case 6: return 4
+        case 8: return 5
+        default: return 0
+        }
+    }
+    
+    func getSliderValueFromRefiTermYears(ssender:Double) -> Float {
+        let intSender = Int(floor(ssender))
+        switch intSender {
+        case 5:
+            return 0
+        case 7:
+            return 1
+        case 10:
+            return 2
+        case 15:
+            return 3
+        case 20:
+            return 4
+        default:
+            return 1
+            
+        }
+    }
+    
+    func reloadScenarioSettings(settings:ScenarioSettings){
+        self.tableView.reloadData()
+        extraPaymentSliderOutlet.value = self.monthNumbertoSliderValue(settings.frequencyOfExtraPayments.doubleValue)
+        extraPaymentNumberToLabeLText(extraPaymentSliderOutlet.value)
+        //extraPaymentAmountLabel.text =
+        extraAmountTextField.text = "$\(floor(settings.amountOfExtraPayments.doubleValue * 100) / 100)"
+        interestRateOnRefinanceLabel.text = "\(floor(settings.interestRateOnRefi.doubleValue * 1000) / 1000)%"
+        variableInterestRateSwitchOutlet.setOn(settings.variableInterestRate.boolValue, animated:true)
+        changeInRateSliderOutlet.value = lIBORnumbertoSliderValue(settings.changeInInterestRate.doubleValue)
+        changeInRateAmountLabel.text = "\(settings.changeInInterestRate.integerValue)%"
+        adjustedGrossIncomeTextField6.text = "$\(floor(settings.agi.doubleValue * 100) / 100)"
+        annualSalaryIncreaseTextField7.text = "\(floor(settings.annualSalaryIncrease.doubleValue * 100) / 100)%"
+        qualifyingJobSwitch.setOn(settings.qualifyingJob.boolValue, animated:true)
+        IBRDatesSwitch10.setOn(settings.ibrDateOptions.boolValue,animated:true)//this is actually new borrower status 
+        ICRDatesSwitch10.setOn(settings.icrReqs.boolValue, animated:true)
+        PAYEDatesSwtich12.setOn(settings.payeReqs.boolValue, animated:true)
+        repaymentTermSlider.value = self.getSliderValueFromRefiTermYears(settings.refiTerm.doubleValue)
+        RepaymentTermYearLabel.text = "\(Int(settings.refiTerm.integerValue)) years"
+        yearsInProgramLabel.text = "\(settings.yearsInProgram.integerValue)"
+        stepperOutlet.value = settings.yearsInProgram.doubleValue
+        oneTimePayoffTextFieldOutlet.text = "$\(floor(settings.oneTimePayoff.doubleValue * 100) / 100)"
+        headOfHouseholdSwitch.setOn(settings.headOfHousehold.boolValue, animated:true)
+    }
+    
+    
     @IBAction func firstCellButton(sender: AnyObject) {
         self.resignResponder()
     }
@@ -270,6 +384,12 @@ class PlanOptionsTableViewController: UITableViewController {
     @IBAction func infoButton_OneTimePayoff_Action(sender: UIButton) {
         self.performSegueWithIdentifier("modalInfoSegue", sender:"One Time Payoff")
     }
+    
+    @IBOutlet weak var headOfHouseholdLabel: UILabel!
+    
+    
+    @IBOutlet weak var headOfHouseholdSwitch: UISwitch!
+    
     @IBOutlet weak var infoButton_OneTimePayoff: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -280,13 +400,18 @@ class PlanOptionsTableViewController: UITableViewController {
         repaymentTermSlider.maximumValue = Float(4)
         repaymentTermSlider.value = 2
         RepaymentTermYearLabel.text = "10 years"
-        stepperYearsOutlet.text = "1 year"
+        //stepperYearsOutlet.text = "1 year"
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
+    
+    
+    
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -304,8 +429,10 @@ class PlanOptionsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return 18
+        return 19
     }
+    
+
 
     
     //START HERE: FIRST, THIS TABLE NEEDS TO BE REDRAWN WHEN THE PERSON DISMISSES THE REPAYMENT PLAN SELECTION.  NEXT, THIS NEEDS TO BE WIRED UP WITH THE VARIOUS OPTIONS.  
@@ -503,6 +630,16 @@ class PlanOptionsTableViewController: UITableViewController {
                 return 0 
             }
         case 17:
+             if selectedRepaymentPlan == "ICR" || selectedRepaymentPlan == "ICR with PILF" || selectedRepaymentPlan == "ICR Limited"{
+                headOfHouseholdLabel.hidden = false
+                headOfHouseholdSwitch.hidden = false
+                return 45}
+             else {
+                headOfHouseholdLabel.hidden = true
+                headOfHouseholdSwitch.hidden = true
+                return 0
+            }
+        case 18:
             return self.view.frame.height - 90
         default:
             return self.view.frame.height

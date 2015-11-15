@@ -171,7 +171,17 @@ class CoreDataStack {
         //3 - Execute hte Fetch Request
         var error: NSError?
         let fetchedResults = managedObjectContext.executeFetchRequest(fetchRequest, error: &error) as? [NSManagedObject]
-        return fetchedResults!
+        
+        var mutableFetchedResults = [NSManagedObject]()
+        
+        for index in 0...fetchedResults!.count-1 {
+            var thisScneario = fetchedResults![index] as! Scenario
+            if thisScneario.name != "default" {
+                mutableFetchedResults.append(thisScneario as NSManagedObject)
+            }
+        }
+        
+        return mutableFetchedResults
     }
     
 

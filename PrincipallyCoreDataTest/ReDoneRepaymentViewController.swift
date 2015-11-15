@@ -24,10 +24,18 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
     let typeXIBVC = PlanTypeViewController(nibName: "PlanTypeViewController", bundle: nil)
     
     var planOptionsView = PlanOptionsTableViewController()
+    
+    var repaymentName : String = ""
+    var repaymentType : String = ""
+    
+
+    
     var graphedScenarioView = GraphViewController()
 
     var selectedScenario: Scenario?
 
+    @IBOutlet weak var selectedLoanTypeView: SelectLoanTypeView!
+    
     @IBOutlet weak var whiteBackgroundView: UIView!
     
     @IBOutlet weak var parentFlipView: UIView!
@@ -46,13 +54,17 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
         //Here's where we do the flipping
         loadChildViews()
         if scenarioWasEnteredGraphIsShowing {
+            self.selectPlanTypeButtonOutlet.setTitle(graphedScenarioView.currentScenario.settings.repaymentType, forState: .Normal)
+            planOptionsView.selectedRepaymentPlan = graphedScenarioView.currentScenario.settings.repaymentType
+            planOptionsView.reloadScenarioSettings(graphedScenarioView.currentScenario.settings)
             graphedScenarioView.scenario_UserWantsToEditAgain()
+            
             UIView.transitionFromView(graphedScenarioContainer,
                 toView: tableContainer,
                 duration: 1.0,
                 options: UIViewAnimationOptions.TransitionFlipFromRight
                     | UIViewAnimationOptions.ShowHideTransitionViews, completion: nil)
-            sender.title = "View Repayment"
+            sender.title = "Save Repayment"
             scenarioWasEnteredGraphIsShowing = !scenarioWasEnteredGraphIsShowing
 
         }
@@ -78,6 +90,7 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
             graphedScenarioView.refiTerm = getRefiTermYears(planOptionsView.repaymentTermSlider.value)
             graphedScenarioView.yearsInProgram = Int(floor(planOptionsView.stepperOutlet.value))
             graphedScenarioView.oneTimePayoff = getNSNumberFromOneTimePayoffString(planOptionsView.oneTimePayoffTextFieldOutlet.text).doubleValue
+            graphedScenarioView.headOfHousehold = planOptionsView.headOfHouseholdSwitch.on
             
             
             if graphedScenarioView.scenario_WindUpForGraph() {
@@ -132,10 +145,13 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
         super.viewDidLoad()
         self.loadChildViews()
         self.navigationController!.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+        selectedLoanTypeView.interestLineColor = UIColor(red: 249/255.0, green: 154/255.0, blue: 0/255.0, alpha: 1)
         whiteBackgroundView.layer.borderWidth = 4
         whiteBackgroundView.layer.borderColor = greenPrincipallyColor.CGColor
         if selectedScenario != nil {
             flipAroundGraphWithoutLoadingScenario()
+            selectPlanTypeButtonOutlet.setTitle(selectedScenario!.repaymentType, forState: .Normal)
+            planNameOutlet.text = selectedScenario!.name
         }
     }
     

@@ -13,11 +13,12 @@ class TypeModalVC: UIViewController {
     var delegate:TypeViewDelegate? = nil
     var type = ""
 
-    @IBAction func Perkins(sender: UIButton) {
+    @IBAction func loanTypeButton(sender: UIButton) {
         type = getAbbreviation(sender.currentTitle!)
         self.dismissViewControllerAnimated(true, completion: nil)
         delegate!.chooseTypeDidFinish(type)
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -33,22 +34,18 @@ class TypeModalVC: UIViewController {
         switch sender{
         case "Perkins":
             return "Perkins"
-        case "Direct Stafford - Subsidized":
+        case "Direct Loan - Subsidized":
             return "Direct, Subs."
-        case "Direct Stafford - Unsubsidized":
+        case "Direct Loan - Unsubsidized":
             return "Direct, Unsubs."
-        case "Graduate PLUS Loans":
+        case "Graduate PLUS Loan":
             return "Grad PLUS"
-        case "Parent PLUS Loans":
+        case "Parent PLUS Loan":
             return "Parent PLUS"
-        case "Direct Consolidated Loan":
-            return "Consolidated"
-        case "Direct Consolidated Loan that Includes ParentPLUS":
-            return "Consolidated with ParentPLUS"
-        case "FFEL Program":
+        case "FFEL Program Loan":
             return "FFELP"
-        case "Private Loan":
-            return "Private"
+        case "FFEL Parent Loan":
+            return "FFELP Parent"
         default:
             return "Loan"
         }

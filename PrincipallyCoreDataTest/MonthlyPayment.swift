@@ -50,3 +50,22 @@ class MonthlyPayment: NSManagedObject {
         self.totalPayment = self.totalPayment.doubleValue + nonCoreDataPayment.total
     }
 }
+
+
+class FakeScenario: NSManagedObject {
+    
+    @NSManaged var interestOverLife: NSNumber
+    @NSManaged var scenarioDescription: String
+    @NSManaged var name: String
+    @NSManaged var allLoans: NSOrderedSet
+    @NSManaged var concatenatedPayment: NSOrderedSet
+    @NSManaged var defaultTotalScenarioInterest: NSNumber //delete
+    @NSManaged var defaultTotalScenarioMonths: NSNumber //delete
+    @NSManaged var nnewTotalScenarioInterest: NSNumber
+    @NSManaged var nnewTotalScenarioMonths: NSNumber
+    @NSManaged var nnewTotalCapitalizedInterest : NSNumber
+    @NSManaged var nnewTotalPrincipal : NSNumber
+    @NSManaged var repaymentType : String
+
+
+}

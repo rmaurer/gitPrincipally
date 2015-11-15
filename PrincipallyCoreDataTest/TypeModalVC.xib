@@ -14,159 +14,105 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pmZ-0X-cCs">
-                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                    <state key="normal" title="Direct Stafford - Subsidized">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <variation key="widthClass=compact" fixedFrame="YES">
-                        <rect key="frame" x="58" y="127" width="190" height="30"/>
-                    </variation>
-                    <connections>
-                        <action selector="Perkins:" destination="-1" eventType="touchUpInside" id="vOB-kz-r6T"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zJV-xC-X6M">
-                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                    <state key="normal" title="Direct Stafford - Unsubsidized">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <variation key="widthClass=compact" fixedFrame="YES">
-                        <rect key="frame" x="58" y="185" width="207" height="30"/>
-                    </variation>
-                    <connections>
-                        <action selector="Perkins:" destination="-1" eventType="touchUpInside" id="kDC-Yj-ylp"/>
-                    </connections>
-                </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type of Loan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o7A-dA-dww">
-                    <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select the Type of Loan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OwV-Tc-7Zk">
+                    <rect key="frame" x="210" y="40" width="181" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
-                    <variation key="widthClass=compact" fixedFrame="YES">
-                        <rect key="frame" x="27" y="28" width="99" height="21"/>
-                    </variation>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bWw-Nv-9hs">
-                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Fw-sx-evs">
+                    <rect key="frame" x="50" y="75" width="169" height="30"/>
+                    <state key="normal" title="Direct Loan - Subsidized">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="loanTypeButton:" destination="-1" eventType="touchUpInside" id="rto-MJ-yL7"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dOH-20-WjK">
+                    <rect key="frame" x="50" y="113" width="187" height="30"/>
+                    <state key="normal" title="Direct Loan - Unsubsidized">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="loanTypeButton:" destination="-1" eventType="touchUpInside" id="H2I-Id-mU6"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cUh-uE-Nb6">
+                    <rect key="frame" x="20" y="341" width="560" height="58"/>
+                    <string key="text">Right now this program does not support federal consolidated loans or private loans.  We are working on adding this functionality.  Some types of loans (Perkins, FFEL, and even, in some circumstances, Parent PLUS loans) can be consolidated into a loan that would be eligible for income-driven repayment options.  Check with your servicer about this option in the meantime. </string>
+                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0dK-ps-Yh6">
+                    <rect key="frame" x="50" y="151" width="127" height="30"/>
+                    <state key="normal" title="Parent PLUS Loan">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="loanTypeButton:" destination="-1" eventType="touchUpInside" id="wTt-VS-o44"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9fK-Wq-6ar">
+                    <rect key="frame" x="50" y="189" width="146" height="30"/>
+                    <state key="normal" title="Graduate PLUS Loan">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="loanTypeButton:" destination="-1" eventType="touchUpInside" id="dQ2-0i-wNS"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vrh-0q-tMi">
+                    <rect key="frame" x="50" y="265" width="137" height="30"/>
+                    <state key="normal" title="FFEL Program Loan">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="loanTypeButton:" destination="-1" eventType="touchUpInside" id="Piz-vR-aWw"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ojt-GH-MZy">
+                    <rect key="frame" x="50" y="227" width="51" height="30"/>
                     <state key="normal" title="Perkins">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
-                    <variation key="widthClass=compact" fixedFrame="YES">
-                        <rect key="frame" x="58" y="73" width="51" height="30"/>
-                    </variation>
                     <connections>
-                        <action selector="Perkins:" destination="-1" eventType="touchUpInside" id="RqH-CS-bhc"/>
+                        <action selector="loanTypeButton:" destination="-1" eventType="touchUpInside" id="sCd-Zx-9l5"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="av0-hu-8Pq">
-                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                    <state key="normal" title="Graduate PLUS Loans">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BI5-OC-eaZ">
+                    <rect key="frame" x="50" y="303" width="123" height="30"/>
+                    <state key="normal" title="FFEL Parent Loan">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
-                    <variation key="widthClass=compact" fixedFrame="YES">
-                        <rect key="frame" x="58" y="245" width="154" height="30"/>
-                    </variation>
                     <connections>
-                        <action selector="Perkins:" destination="-1" eventType="touchUpInside" id="YJA-Ox-CHq"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fL0-6X-KM6">
-                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                    <state key="normal" title="Parent PLUS Loans">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <variation key="widthClass=compact" fixedFrame="YES">
-                        <rect key="frame" x="58" y="302" width="134" height="30"/>
-                    </variation>
-                    <connections>
-                        <action selector="Perkins:" destination="-1" eventType="touchUpInside" id="UkW-hW-jyM"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MhZ-3p-Z3L">
-                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                    <state key="normal" title="Direct Consolidated Loan">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <variation key="widthClass=compact" fixedFrame="YES">
-                        <rect key="frame" x="58" y="358" width="174" height="30"/>
-                    </variation>
-                    <connections>
-                        <action selector="Perkins:" destination="-1" eventType="touchUpInside" id="R2h-dD-Wum"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aIu-23-U2S">
-                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                    <state key="normal" title="Private Loan">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <variation key="widthClass=compact" fixedFrame="YES">
-                        <rect key="frame" x="58" y="464" width="86" height="30"/>
-                    </variation>
-                    <connections>
-                        <action selector="Perkins:" destination="-1" eventType="touchUpInside" id="yzK-TH-3Fh"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pob-Et-lmA">
-                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                    <state key="normal" title="FFEL Program">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <variation key="widthClass=compact" fixedFrame="YES">
-                        <rect key="frame" x="58" y="412" width="99" height="30"/>
-                    </variation>
-                    <connections>
-                        <action selector="Perkins:" destination="-1" eventType="touchUpInside" id="yaO-DS-KRc"/>
+                        <action selector="loanTypeButton:" destination="-1" eventType="touchUpInside" id="I3q-AT-lap"/>
                     </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <variation key="default">
-                <mask key="subviews">
-                    <exclude reference="pmZ-0X-cCs"/>
-                    <exclude reference="zJV-xC-X6M"/>
-                    <exclude reference="o7A-dA-dww"/>
-                    <exclude reference="bWw-Nv-9hs"/>
-                    <exclude reference="av0-hu-8Pq"/>
-                    <exclude reference="fL0-6X-KM6"/>
-                    <exclude reference="MhZ-3p-Z3L"/>
-                    <exclude reference="aIu-23-U2S"/>
-                    <exclude reference="Pob-Et-lmA"/>
-                </mask>
-            </variation>
-            <variation key="widthClass=compact">
-                <mask key="subviews">
-                    <include reference="pmZ-0X-cCs"/>
-                    <include reference="zJV-xC-X6M"/>
-                    <include reference="o7A-dA-dww"/>
-                    <include reference="bWw-Nv-9hs"/>
-                    <include reference="av0-hu-8Pq"/>
-                    <include reference="fL0-6X-KM6"/>
-                    <include reference="MhZ-3p-Z3L"/>
-                    <include reference="aIu-23-U2S"/>
-                    <include reference="Pob-Et-lmA"/>
-                </mask>
-            </variation>
+            <constraints>
+                <constraint firstItem="cUh-uE-Nb6" firstAttribute="top" secondItem="BI5-OC-eaZ" secondAttribute="bottom" constant="8" symbolic="YES" id="37G-X6-0pb"/>
+                <constraint firstItem="Ojt-GH-MZy" firstAttribute="top" secondItem="9fK-Wq-6ar" secondAttribute="bottom" constant="8" symbolic="YES" id="3mi-Wn-MO3"/>
+                <constraint firstItem="Ojt-GH-MZy" firstAttribute="leading" secondItem="9fK-Wq-6ar" secondAttribute="leading" id="5lw-wa-Ylj"/>
+                <constraint firstItem="dOH-20-WjK" firstAttribute="top" secondItem="0Fw-sx-evs" secondAttribute="bottom" constant="8" symbolic="YES" id="8Gg-4R-JeV"/>
+                <constraint firstAttribute="centerX" secondItem="OwV-Tc-7Zk" secondAttribute="centerX" id="BQf-Ah-nJo"/>
+                <constraint firstItem="cUh-uE-Nb6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" symbolic="YES" id="ESv-tX-Fgi"/>
+                <constraint firstItem="Ojt-GH-MZy" firstAttribute="leading" secondItem="dOH-20-WjK" secondAttribute="leading" id="FHl-xG-f9N"/>
+                <constraint firstItem="Ojt-GH-MZy" firstAttribute="leading" secondItem="0Fw-sx-evs" secondAttribute="leading" id="J88-Sh-hu2"/>
+                <constraint firstItem="Ojt-GH-MZy" firstAttribute="leading" secondItem="vrh-0q-tMi" secondAttribute="leading" id="NrV-7D-3eg"/>
+                <constraint firstItem="Ojt-GH-MZy" firstAttribute="leading" secondItem="BI5-OC-eaZ" secondAttribute="leading" id="Qkx-nh-nva"/>
+                <constraint firstItem="BI5-OC-eaZ" firstAttribute="top" secondItem="vrh-0q-tMi" secondAttribute="bottom" constant="8" symbolic="YES" id="S5d-Tp-pFH"/>
+                <constraint firstItem="OwV-Tc-7Zk" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="40" id="Vr4-LF-6B5"/>
+                <constraint firstItem="vrh-0q-tMi" firstAttribute="top" secondItem="Ojt-GH-MZy" secondAttribute="bottom" constant="8" symbolic="YES" id="beG-Th-KNu"/>
+                <constraint firstItem="0Fw-sx-evs" firstAttribute="top" secondItem="OwV-Tc-7Zk" secondAttribute="bottom" constant="14" id="kXW-Gv-ocU"/>
+                <constraint firstItem="0Fw-sx-evs" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="50" id="ldQ-kc-7ky"/>
+                <constraint firstItem="9fK-Wq-6ar" firstAttribute="top" secondItem="0dK-ps-Yh6" secondAttribute="bottom" constant="8" symbolic="YES" id="ob5-Eg-D6t"/>
+                <constraint firstItem="Ojt-GH-MZy" firstAttribute="leading" secondItem="0dK-ps-Yh6" secondAttribute="leading" id="rTG-5R-NDb"/>
+                <constraint firstAttribute="trailing" secondItem="cUh-uE-Nb6" secondAttribute="trailing" constant="20" symbolic="YES" id="scN-ho-Dda"/>
+                <constraint firstItem="0dK-ps-Yh6" firstAttribute="top" secondItem="dOH-20-WjK" secondAttribute="bottom" constant="8" symbolic="YES" id="y9T-J9-C9k"/>
+            </constraints>
         </view>
-        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="f59-Lc-a1W">
-            <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <state key="normal" title="Perkins">
-                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-            </state>
-            <connections>
-                <action selector="Perkins:" destination="-1" eventType="touchUpInside" id="BPz-Lj-HMh"/>
-            </connections>
-        </button>
-        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="mGh-A7-h8C">
-            <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <state key="normal" title="Parent PLUS Loans">
-                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-            </state>
-            <connections>
-                <action selector="Perkins:" destination="-1" eventType="touchUpInside" id="r6z-OI-L4Q"/>
-            </connections>
-        </button>
     </objects>
 </document>

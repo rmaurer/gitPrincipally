@@ -28,6 +28,7 @@ class GraphViewController: UIViewController {
     var refiTerm:Int!
     var yearsInProgram: Int!
     var oneTimePayoff: Double!
+    var headOfHousehold:Bool = false
     
     
     var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
@@ -169,13 +170,13 @@ class GraphViewController: UIViewController {
                 wasTheScenarioCreated = true
             }
         case "ICR":
-            currentScenario.ICR_WindUp(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, hasPILF:false, hasLimitedTimeInProgram:false, yearsInProgram:yearsInProgram)
+            currentScenario.ICR_PILF_or_Standard_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, headOfHousehold:headOfHousehold, term:25)
             wasTheScenarioCreated = true
         case "IBR":
             if IBRDateOptions  {
                 //new borrower
                 //first test if the standard loan payments is less than 10% of your discretionary income
-                if currentScenario.getAllEligibleLoansPayment(true) < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                if currentScenario.getAllEligibleLoansPayment(true, isPILF:false).monthly < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                     wasTheScenarioCreated = false
                     let alert = UIAlertView()
                     alert.title = "Alert"
@@ -184,13 +185,13 @@ class GraphViewController: UIViewController {
                     alert.show()
                 }
                 else{
-                    currentScenario.IBR_WindUp(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:20, percent:10, hasPILF:false, hasLimitedTimeInProgram:false, yearsInProgram:yearsInProgram)
+                    currentScenario.IBR_Standard_Or_PILF_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:20, newBorrower:true)
                     wasTheScenarioCreated = true
                 }
             }
             else {
                 //old borrower
-                if currentScenario.getAllEligibleLoansPayment(true) < currentScenario.percentageOfDiscretionaryIncome(15, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                if currentScenario.getAllEligibleLoansPayment(true, isPILF:false).monthly < currentScenario.percentageOfDiscretionaryIncome(15, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                     wasTheScenarioCreated = false
                     let alert = UIAlertView()
                     alert.title = "Alert"
@@ -199,7 +200,7 @@ class GraphViewController: UIViewController {
                     alert.show()
                 }
                 else {
-                    currentScenario.IBR_WindUp(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:25, percent:15, hasPILF:false, hasLimitedTimeInProgram:false, yearsInProgram:yearsInProgram)
+                    currentScenario.IBR_Standard_Or_PILF_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:25, newBorrower:false)
                     wasTheScenarioCreated = true
                 }
             }
@@ -213,7 +214,7 @@ class GraphViewController: UIViewController {
                 alert.addButtonWithTitle("Understood")
                 alert.show()
             }
-            else if currentScenario.getAllEligibleLoansPayment(false) < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+            else if currentScenario.getAllEligibleLoansPayment(false, isPILF:false).monthly < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                 wasTheScenarioCreated = false
                 let alert = UIAlertView()
                 alert.title = "Alert"
@@ -222,7 +223,7 @@ class GraphViewController: UIViewController {
                 alert.show()
             }
             else {
-                currentScenario.PAYE_WindUp(managedObjectContext, AGI:AGI, familySize:familySize, percentageincrease:annualSalaryIncrease, hasPILF:false, hasLimitedTimeInProgram:false, yearsInProgram:yearsInProgram)
+                currentScenario.PAYE_Standard_Or_PILF_Wrapper(managedObjectContext, AGI:AGI, familySize:familySize, percentageincrease:annualSalaryIncrease, term:20)
              wasTheScenarioCreated = true
             }
             
@@ -239,7 +240,7 @@ class GraphViewController: UIViewController {
             else if IBRDateOptions  {
                 //new borrower
                 //first test if the standard loan payments is less than 10% of your discretionary income
-                if currentScenario.getAllEligibleLoansPayment(true) < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                if currentScenario.getAllEligibleLoansPayment(true, isPILF:true).monthly < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                     wasTheScenarioCreated = false
                     let alert = UIAlertView()
                     alert.title = "Alert"
@@ -248,13 +249,13 @@ class GraphViewController: UIViewController {
                     alert.show()
                 }
                 else{
-                    currentScenario.IBR_WindUp(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:20, percent:10, hasPILF:true, hasLimitedTimeInProgram:false, yearsInProgram:yearsInProgram)
+                    currentScenario.IBR_Standard_Or_PILF_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:10, newBorrower:true)
                     wasTheScenarioCreated = true
                 }
             }
             else {
                 //old borrower
-                if currentScenario.getAllEligibleLoansPayment(true) < currentScenario.percentageOfDiscretionaryIncome(15, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                if currentScenario.getAllEligibleLoansPayment(true, isPILF:true).monthly < currentScenario.percentageOfDiscretionaryIncome(15, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                     wasTheScenarioCreated = false
                     let alert = UIAlertView()
                     alert.title = "Alert"
@@ -263,7 +264,7 @@ class GraphViewController: UIViewController {
                     alert.show()
                 }
                 else {
-                    currentScenario.IBR_WindUp(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:25, percent:15, hasPILF:true, hasLimitedTimeInProgram:false, yearsInProgram:yearsInProgram)
+                    currentScenario.IBR_Standard_Or_PILF_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:10, newBorrower:false)
                     wasTheScenarioCreated = true
                 }
             }
@@ -278,7 +279,7 @@ class GraphViewController: UIViewController {
                 alert.show()
             }
             else {
-                currentScenario.ICR_WindUp(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, hasPILF:true, hasLimitedTimeInProgram:false, yearsInProgram:yearsInProgram)
+                currentScenario.ICR_PILF_or_Standard_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, headOfHousehold:headOfHousehold, term:10)
                 wasTheScenarioCreated = true
             }
         case "PAYE with PILF":
@@ -298,7 +299,7 @@ class GraphViewController: UIViewController {
                 alert.addButtonWithTitle("Understood")
                 alert.show()
             }
-            else if currentScenario.getAllEligibleLoansPayment(false) < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+            else if currentScenario.getAllEligibleLoansPayment(false, isPILF:true).monthly < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                 wasTheScenarioCreated = false
                 let alert = UIAlertView()
                 alert.title = "Alert"
@@ -307,14 +308,14 @@ class GraphViewController: UIViewController {
                 alert.show()
             }
             else {
-                currentScenario.PAYE_WindUp(managedObjectContext, AGI:AGI, familySize:familySize, percentageincrease:annualSalaryIncrease, hasPILF:true, hasLimitedTimeInProgram:false, yearsInProgram:yearsInProgram)
+                currentScenario.PAYE_Standard_Or_PILF_Wrapper(managedObjectContext, AGI:AGI, familySize:familySize, percentageincrease:annualSalaryIncrease, term:10)
                 wasTheScenarioCreated = true
             }
         case "IBR Limited":
             if IBRDateOptions  {
                 //new borrower
                 //first test if the standard loan payments is less than 10% of your discretionary income
-                if currentScenario.getAllEligibleLoansPayment(true) < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                if currentScenario.getAllEligibleLoansPayment(true, isPILF:false).monthly < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                     wasTheScenarioCreated = false
                     let alert = UIAlertView()
                     alert.title = "Alert"
@@ -323,13 +324,13 @@ class GraphViewController: UIViewController {
                     alert.show()
                 }
                 else{
-                    currentScenario.IBR_WindUp(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:20, percent:10, hasPILF:false, hasLimitedTimeInProgram:true, yearsInProgram:yearsInProgram)
+                    currentScenario.IBR_LimitedTerm_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease,yearsInProgram:yearsInProgram, newBorrower:true)
                     wasTheScenarioCreated = true
                 }
             }
             else {
                 //old borrower
-                if currentScenario.getAllEligibleLoansPayment(true) < currentScenario.percentageOfDiscretionaryIncome(15, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                if currentScenario.getAllEligibleLoansPayment(true, isPILF:false).monthly < currentScenario.percentageOfDiscretionaryIncome(15, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                     wasTheScenarioCreated = false
                     let alert = UIAlertView()
                     alert.title = "Alert"
@@ -338,7 +339,7 @@ class GraphViewController: UIViewController {
                     alert.show()
                 }
                 else {
-                    currentScenario.IBR_WindUp(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:25, percent:15, hasPILF:false, hasLimitedTimeInProgram:true, yearsInProgram:yearsInProgram)
+                    currentScenario.IBR_LimitedTerm_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease,yearsInProgram:yearsInProgram, newBorrower:false)
                     wasTheScenarioCreated = true
                 }
             }
@@ -351,7 +352,7 @@ class GraphViewController: UIViewController {
                 alert.addButtonWithTitle("Understood")
                 alert.show()
             }
-            else if currentScenario.getAllEligibleLoansPayment(false) < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+            else if currentScenario.getAllEligibleLoansPayment(false, isPILF:false).monthly < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                 wasTheScenarioCreated = false
                 let alert = UIAlertView()
                 alert.title = "Alert"
@@ -360,12 +361,12 @@ class GraphViewController: UIViewController {
                 alert.show()
             }
             else {
-                currentScenario.PAYE_WindUp(managedObjectContext, AGI:AGI, familySize:familySize, percentageincrease:annualSalaryIncrease, hasPILF:false, hasLimitedTimeInProgram:true, yearsInProgram:yearsInProgram)
+                currentScenario.PAYE_LimitedTerm_Wrapper(managedObjectContext, AGI:AGI, familySize:familySize, percentageincrease:annualSalaryIncrease, yearsInProgram:yearsInProgram)
                 wasTheScenarioCreated = true
             }
 
         case "ICR Limited":
-            currentScenario.ICR_WindUp(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, hasPILF:false, hasLimitedTimeInProgram:true, yearsInProgram:yearsInProgram)
+            currentScenario.ICR_LimitedTerm_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, headOfHousehold:headOfHousehold, term:yearsInProgram)
             wasTheScenarioCreated = true
         default:
             wasTheScenarioCreated = false
@@ -373,12 +374,46 @@ class GraphViewController: UIViewController {
         
         if wasTheScenarioCreated{
             currentScenario.addTotalInterestAndPrincipalSoFarToConcatPayment(managedObjectContext)
+            self.saveScenarioSettings()
         }
         
         
         if !managedObjectContext.save(&error) {
             println("Could not save \(error), \(error?.userInfo)")}
         return wasTheScenarioCreated
+    }
+    
+    func saveScenarioSettings(){
+        
+        let entity = NSEntityDescription.entityForName("ScenarioSettings", inManagedObjectContext: managedObjectContext)
+        var error: NSError?
+        var settings = ScenarioSettings(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+        
+        
+        settings.repaymentType = repaymentType
+        settings.frequencyOfExtraPayments = frequencyOfExtraPayments
+        settings.amountOfExtraPayments = amountOfExtraPayments
+        settings.interestRateOnRefi = interestRateOnRefi
+        settings.variableInterestRate = variableInterestRate
+        settings.changeInInterestRate = changeInInterestRate // this one will need enum to describe options
+        settings.agi = AGI
+        settings.annualSalaryIncrease = annualSalaryIncrease
+        settings.familySize = familySize
+        settings.qualifyingJob = qualifyingJob
+        settings.ibrDateOptions = IBRDateOptions
+        settings.icrReqs = ICRReqs
+        settings.payeReqs = PAYEReqs
+        settings.refiTerm = refiTerm
+        settings.yearsInProgram = yearsInProgram
+        settings.oneTimePayoff = oneTimePayoff
+        settings.headOfHousehold = headOfHousehold
+        
+        currentScenario.settings = settings
+        
+        if !managedObjectContext.save(&error) {
+            println("Could not save: \(error)") }
+        println("got past saving")
+        
     }
     
     

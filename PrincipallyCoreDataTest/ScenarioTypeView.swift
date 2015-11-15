@@ -12,6 +12,7 @@ class ScenarioTypeView: UIView {
 
         
         var dashedBorder = CAShapeLayer()
+        
         let clearColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
         var greenPrincipallyColor = UIColor(red: 249/255.0, green: 154/255.0, blue: 0/255.0, alpha: 1)
     
@@ -40,12 +41,14 @@ class ScenarioTypeView: UIView {
             dashedBorder.path = path.CGPath
             dashedBorder.fillColor = clearColor.CGColor
             dashedBorder.fillRule = kCAFillRuleNonZero
-            dashedBorder.lineWidth = 4.0
+            dashedBorder.lineWidth = 0.0
             dashedBorder.strokeColor = greenPrincipallyColor.CGColor
             //dashedBorder.lineDashPattern = [2,2]
             
             self.layer.addSublayer(dashedBorder)
             // Drawing code
+            
+            
         }
         
         

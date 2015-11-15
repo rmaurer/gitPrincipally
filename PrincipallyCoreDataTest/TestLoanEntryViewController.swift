@@ -35,6 +35,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
     var editAddanotherView = EditAddAnotherScreenViewController()
     var selectedLoan: Loan?
     var firstLoan : Loan!
+    var greenColor = UIColor(red: 26/255.0, green: 165/255.0, blue: 146/255.0, alpha: 1)
     
     @IBOutlet weak var graphContainer: UIView!
     @IBOutlet weak var entryContainer: UIView!
@@ -56,6 +57,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
                 | UIViewAnimationOptions.ShowHideTransitionViews, completion: nil)
             //sender.title = "Save Loan"
             selectLoantype.enabled = true
+            selectLoantype.setTitleColor(greenColor, forState: .Normal)
             BIView.interest.userInteractionEnabled = true
             BIView.balance.userInteractionEnabled = true
             loanNameOutlet.userInteractionEnabled = true
@@ -101,6 +103,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
         BIView.balance.userInteractionEnabled = false
         selectLoantype.setTitle(selectedLoan!.loanType, forState: .Normal)
         selectLoantype.enabled = false
+        self.selectLoantype.setTitleColor(UIColor.grayColor(), forState: .Normal)
         loanNameOutlet.userInteractionEnabled = false
         editingPen.hidden = true
         if selectedLoan!.monthsUntilRepayment.integerValue < 0 {

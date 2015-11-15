@@ -22,6 +22,7 @@
 		B378D1BB1B65AB5500AD66F5 /* ParkedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B378D1BA1B65AB5500AD66F5 /* ParkedTextField.swift */; };
 		B378D1BD1B65AC3200AD66F5 /* ReverseParkedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B378D1BC1B65AC3200AD66F5 /* ReverseParkedTextField.swift */; };
 		B3942D661B531DA0005BCD2C /* GraphOfScenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3942D651B531DA0005BCD2C /* GraphOfScenario.swift */; };
+		B39862651BF8D8A500434BEE /* ScenarioSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39862641BF8D8A500434BEE /* ScenarioSettings.swift */; };
 		B39A494B1B1121C600707C56 /* CompareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A494A1B1121C600707C56 /* CompareViewController.swift */; };
 		B39A49581B1A9AA300707C56 /* Loan.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49571B1A9AA300707C56 /* Loan.swift */; };
 		B39A495B1B1B40D800707C56 /* Scenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49591B1B40D800707C56 /* Scenario.swift */; };
@@ -92,6 +93,7 @@
 		B378D1BA1B65AB5500AD66F5 /* ParkedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkedTextField.swift; sourceTree = "<group>"; };
 		B378D1BC1B65AC3200AD66F5 /* ReverseParkedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReverseParkedTextField.swift; sourceTree = "<group>"; };
 		B3942D651B531DA0005BCD2C /* GraphOfScenario.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphOfScenario.swift; sourceTree = "<group>"; };
+		B39862641BF8D8A500434BEE /* ScenarioSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenarioSettings.swift; sourceTree = "<group>"; };
 		B39A494A1B1121C600707C56 /* CompareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompareViewController.swift; sourceTree = "<group>"; };
 		B39A49571B1A9AA300707C56 /* Loan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loan.swift; sourceTree = "<group>"; };
 		B39A49591B1B40D800707C56 /* Scenario.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scenario.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				B39A49571B1A9AA300707C56 /* Loan.swift */,
+				B39862641BF8D8A500434BEE /* ScenarioSettings.swift */,
 				B39A49591B1B40D800707C56 /* Scenario.swift */,
 				B39A495A1B1B40D800707C56 /* MonthlyPayment.swift */,
 				B3F1C1E41B2FBB4B009283B0 /* CoreDataStack.swift */,
@@ -572,6 +575,7 @@
 				B3D0D18B1B09044E00BD0C0C /* LoanEntryViewController.swift in Sources */,
 				B3713F201B48A0E600C1ABEF /* EntryFormController.swift in Sources */,
 				B3C123F01BCC998B00C6FBDA /* PlanTypeViewController.swift in Sources */,
+				B39862651BF8D8A500434BEE /* ScenarioSettings.swift in Sources */,
 				B3F1C1F11B3B89FD009283B0 /* TypeModalVC.swift in Sources */,
 				B3C123F31BCF47AD00C6FBDA /* ScenarioTypeView.swift in Sources */,
 				B39A495E1B1DE6F200707C56 /* Scraps.swift in Sources */,
