@@ -61,7 +61,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
             BIView.interest.userInteractionEnabled = true
             BIView.balance.userInteractionEnabled = true
             loanNameOutlet.userInteractionEnabled = true
-            editingPen.hidden = false
+            //editingPen.hidden = false
             selectedLoan = nil 
             loanIsEnteredGraphIsShowing = !loanIsEnteredGraphIsShowing
         }
@@ -141,7 +141,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange,
         replacementString string: String) -> Bool
     {
-        let maxLength = 15
+        let maxLength = 18
         let currentString: NSString = textField.text
         let newString: NSString =
         currentString.stringByReplacingCharactersInRange(range, withString: string)

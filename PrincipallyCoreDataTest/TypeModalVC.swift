@@ -43,7 +43,7 @@ class TypeModalVC: UIViewController {
         case "Parent PLUS Loan":
             return "Parent PLUS"
         case "FFEL Program Loan":
-            return "FFELP"
+            return "FFEL"
         case "FFEL Parent Loan":
             return "FFELP Parent"
         default:

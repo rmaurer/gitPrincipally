@@ -126,13 +126,20 @@ class ScenarioTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        println("got into willSelectRowAtIndexPath")
+       
         
         let selectedIndexPaths = indexPathsForSelectedRowsInSection(indexPath.section)
         
-        if selectedIndexPaths?.count == 3 {
-            println("selectedIndexPaths count ==3")
-            tableView.deselectRowAtIndexPath(selectedIndexPaths!.first!, animated: true)
+        if selectedIndexPaths?.count == 6 {
+       
+            tableView.deselectRowAtIndexPath(selectedIndexPaths!.last!, animated: true)
+            for index in 0...compareScenarioArray.count-1 {
+                if compareScenarioArray[index].name == (myScenarios[selectedIndexPaths!.last!.row] as! Scenario).name {
+                    compareScenarioArray.removeAtIndex(index)
+                    break
+                }
+                
+            }
         }
         
         return indexPath

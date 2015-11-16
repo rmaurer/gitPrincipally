@@ -53,10 +53,27 @@ class Scenario: NSManagedObject {
     @NSManaged var nnewTotalPrincipal : NSNumber
     @NSManaged var forgivenBalance : NSNumber
     @NSManaged var repaymentType : String
+        @NSManaged var red : NSNumber
+        @NSManaged var green : NSNumber
+        @NSManaged var blue : NSNumber
     @NSManaged var settings: ScenarioSettings
     
     //add an object called "scenario variables" where you store all that information.  type, true fals / numbers, etc, so that you can call it again if need be. 
     //add capitalized interest variable? 
+    
+    func generateRandomButConstantColor(managedObjectContext:NSManagedObjectContext){
+        let RGBList : [(red:Double,green:Double,blue:Double)] = [(30,191,127),(249,154,0),(217, 56, 41),(9,64,116),(88,77,120),(211,73,49), (142,111,218),(114,194,56),(77,116,97), (214,137,160), (204,166,52),(139,91,48),(98,127,48),(100,167,189),(183,170,123),(195,76,154),(107,146,217),(203,68,103),(98,190,114),(209,82,213),(125,98,109),(111,188,166),(115,95,157),(186,167,195),(217,134,93)]
+        GlobalLoanCount.sharedGlobalLoanCount.count = GlobalLoanCount.sharedGlobalLoanCount.count + 1
+        let index = GlobalLoanCount.sharedGlobalLoanCount.count % 25
+        let RGB = RGBList[index]
+        self.red = RGB.red
+        self.green = RGB.green
+        self.blue = RGB.blue
+        var error: NSError?
+        if !managedObjectContext.save(&error) {
+            println("Could not save \(error), \(error?.userInfo)")}
+        
+    }
     
     func addTotalInterestAndPrincipalSoFarToConcatPayment(managedObjectContext:NSManagedObjectContext){
         let concatPayment = self.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
@@ -72,8 +89,8 @@ class Scenario: NSManagedObject {
         }
         
         self.nnewTotalScenarioMonths = concatPayment.count
-        self.nnewTotalPrincipal = totalPrincipalSoFar - self.nnewTotalCapitalizedInterest.doubleValue
-        self.nnewTotalScenarioInterest = NSNumber(double: totalInterestSoFar)
+        self.nnewTotalPrincipal = totalPrincipalSoFar
+        self.nnewTotalScenarioInterest = totalInterestSoFar
         
         self.concatenatedPayment = concatPayment.copy() as! NSOrderedSet
         var error: NSError?

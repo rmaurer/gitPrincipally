@@ -12,9 +12,12 @@ protocol PlanViewDelegate{
     func chooseTypeDidFinish(type:String)
 }
 
-class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
+class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextFieldDelegate {
+    
+    @IBOutlet weak var editingPen: UIImageView!
     
     @IBOutlet weak var planNameOutlet: UITextField!
+    
     @IBAction func planNameAction(sender: UITextField) {
     }
     var greenPrincipallyColor = UIColor(red: 30/255, green: 149/255, blue: 127/255, alpha: 1)
@@ -70,6 +73,7 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
         }
             //here is where the scenario is entered.
         else{
+            editingPen.hidden = true
             graphedScenarioView.name = planNameOutlet.text
             graphedScenarioView.repaymentType =
                 self.selectPlanTypeButtonOutlet.currentTitle!
@@ -107,12 +111,16 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
         }
         
     }
+    @IBAction func scenarioNameEditingChanged(sender: UITextField) {
+        editingPen.hidden = true
+    }
     
     func flipAroundGraphWithoutLoadingScenario(){
         loadChildViews()
         graphedScenarioView.currentScenario = selectedScenario
         graphedScenarioView.scenario_makeGraphVisibleWithWoundUpScenario()
-        
+        editingPen.hidden = true
+
         
         UIView.transitionFromView(tableContainer,
             toView: graphedScenarioContainer,
@@ -148,6 +156,12 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
         selectedLoanTypeView.interestLineColor = UIColor(red: 249/255.0, green: 154/255.0, blue: 0/255.0, alpha: 1)
         whiteBackgroundView.layer.borderWidth = 4
         whiteBackgroundView.layer.borderColor = greenPrincipallyColor.CGColor
+        planNameOutlet.delegate = self
+        
+        
+        let scenarioNum = CoreDataStack.getNumberofScenarios(CoreDataStack.sharedInstance)() + 1
+        planNameOutlet.text = "Repayment Plan #\(scenarioNum)"
+        
         if selectedScenario != nil {
             flipAroundGraphWithoutLoadingScenario()
             selectPlanTypeButtonOutlet.setTitle(selectedScenario!.repaymentType, forState: .Normal)
@@ -167,6 +181,17 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange,
+        replacementString string: String) -> Bool
+    {
+        let maxLength = 20
+        let currentString: NSString = textField.text
+        let newString: NSString =
+        currentString.stringByReplacingCharactersInRange(range, withString: string)
+        return newString.length <= maxLength
+    }
+    
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         self.loadChildViews()

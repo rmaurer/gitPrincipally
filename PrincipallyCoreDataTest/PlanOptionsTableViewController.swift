@@ -107,7 +107,7 @@ class PlanOptionsTableViewController: UITableViewController {
         extraPaymentNumberToLabeLText(extraPaymentSliderOutlet.value)
         //extraPaymentAmountLabel.text =
         extraAmountTextField.text = "$\(floor(settings.amountOfExtraPayments.doubleValue * 100) / 100)"
-        interestRateOnRefinanceLabel.text = "\(floor(settings.interestRateOnRefi.doubleValue * 1000) / 1000)%"
+        interestRateOnRefinanceTextFieldOutlet.text = "\(floor(settings.interestRateOnRefi.doubleValue * 1000) / 1000)%"
         variableInterestRateSwitchOutlet.setOn(settings.variableInterestRate.boolValue, animated:true)
         changeInRateSliderOutlet.value = lIBORnumbertoSliderValue(settings.changeInInterestRate.doubleValue)
         changeInRateAmountLabel.text = "\(settings.changeInInterestRate.integerValue)%"

@@ -267,7 +267,7 @@ class GraphOfScenario: UIView {
             //year line set up
             let yearSpacer = spacer * 12
             var firstSpacer = CGFloat(self.getMonthUntilJanuary()) * spacer
-            var numberOfYears = Int(floor(Float((maxWidth - self.getMonthUntilJanuary()))/12) - 1)
+            var numberOfYears = maxElement([Int(floor(Float((maxWidth - self.getMonthUntilJanuary()))/12) - 1), 1])
             var yearLineHeight = CGFloat(height - (height/20))
             
             //first year line

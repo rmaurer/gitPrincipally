@@ -15,7 +15,7 @@ class GlobalLoanCount{
         }
         return Singleton.instance
     }
-    var count : Int = 1
+    var count : Int = 0
 }
 
 class principallyApp{
@@ -139,6 +139,11 @@ class CoreDataStack {
         var defaultS : Scenario = self.getDefault()
         var loans = defaultS.allLoans.count
         return loans
+    }
+    
+    func getNumberofScenarios() -> Int {
+        var scenarios = self.getAllScenarios()
+        return scenarios.count
     }
     
     func getUnsaved() -> Scenario {

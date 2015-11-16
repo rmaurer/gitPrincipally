@@ -35,7 +35,9 @@ class GraphViewController: UIViewController {
    // var selectedScenario: Scenario!
     var currentScenario: Scenario!
 
+    @IBOutlet weak var principalSoFarLabel: UILabel!
     
+    @IBOutlet weak var interestSoFarLabel: UILabel!
     @IBOutlet weak var nameLabelOutlet: UILabel!
     //global Loan variable
 
@@ -74,10 +76,12 @@ class GraphViewController: UIViewController {
         principleLabel.text = "$\(mpPrincipal)"
         interestLabel.text = "$\(mpInterest)"
         totalLabel.text = "$\(mpTotal)"
+        principalSoFarLabel.text = "$\(mpPrincipalSoFar)"
+        interestSoFarLabel.text = "$\(mpInterestSoFar)"
         
         var monthAndYear = currentScenario.getStringOfYearAndMonthForPaymentNumber(Double(sender.value))
         
-        nameLabelOutlet.text = "In \(monthAndYear), you will make a payment of \(mpTotal).  \(mpPrincipal) will go towards principal, and \(mpInterest) will pay off interest.  At this point you'll have paid off \(mpPrincipalSoFar), and will have paid \(mpInterestSoFar) in interst so far"
+        //nameLabelOutlet.text = "In \(monthAndYear), you will make a payment of \(mpTotal).  \(mpPrincipal) will go towards principal, and \(mpInterest) will pay off interest.  At this point you'll have paid off \(mpPrincipalSoFar), and will have paid \(mpInterestSoFar) in interst so far"
         
         paymentDateLabel.text = "Payment for \(monthAndYear)"
         
@@ -375,6 +379,12 @@ class GraphViewController: UIViewController {
         if wasTheScenarioCreated{
             currentScenario.addTotalInterestAndPrincipalSoFarToConcatPayment(managedObjectContext)
             self.saveScenarioSettings()
+            currentScenario.scenarioDescription = currentScenario.settings.createDescription()
+            currentScenario.generateRandomButConstantColor(managedObjectContext)
+            println("COLORS")
+            println(currentScenario.red)
+                        println(currentScenario.green)
+                        println(currentScenario.blue)
         }
         
         
@@ -437,10 +447,18 @@ class GraphViewController: UIViewController {
         let mpInterest = round(currentPayment.interest.floatValue * 100) / 100
         let mpPrincipal = round(currentPayment.principal.floatValue * 100) / 100
         let mpTotal = round(currentPayment.totalPayment.floatValue * 100) / 100
+        let mpPrincipalSoFar = round(currentPayment.totalPrincipalSoFar.floatValue * 100) / 100
+        let mpInterestSoFar = round(currentPayment.totalInterestSoFar.floatValue * 100) / 100
+
+        
         
         principleLabel.text = "$\(mpPrincipal)"
         interestLabel.text = "$\(mpInterest)"
         totalLabel.text = "$\(mpTotal)"
+        principalSoFarLabel.text = "$\(mpPrincipalSoFar)"
+        interestSoFarLabel.text = "$\(mpInterestSoFar)"
+        
+        nameLabelOutlet.text = currentScenario.scenarioDescription
         
         var monthAndYear = currentScenario.getStringOfYearAndMonthForPaymentNumber(0)
         paymentDateLabel.text = "Payment for \(monthAndYear)"
