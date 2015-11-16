@@ -28,8 +28,8 @@ class CompareViewController: UIViewController, UIPageViewControllerDataSource {
             println(scenario.name)
         }
         
-        pageImages = ["screen1","screen2","screen3"]
-        pageColors = [UIColor.blueColor(), UIColor.purpleColor(), UIColor.lightGrayColor()]
+        pageImages = ["Total Amount Paid Back","Total Principal Paid","Total Interest Paid","Any Forgiven Amount","Initial Payment","Total Repayment Term"]
+        pageColors = [UIColor.whiteColor(), UIColor.whiteColor(), UIColor.whiteColor(), UIColor.whiteColor(), UIColor.whiteColor(), UIColor.whiteColor()]
         
         self.pageViewController = self.storyboard?.instantiateViewControllerWithIdentifier("PageViewController") as! UIPageViewController
         
@@ -80,11 +80,17 @@ class CompareViewController: UIViewController, UIPageViewControllerDataSource {
             pageContentViewController.add2()
             pageContentViewController.compareLabelText = "I was successfully changed"
         case 2:
-            pageContentViewController.add4()
+            pageContentViewController.add3()
             pageContentViewController.compareLabelText = "Time 2"
         case 3:
-            pageContentViewController.add3()
-            pageContentViewController.compareLabelText = "Time 3" 
+            pageContentViewController.add4()
+            pageContentViewController.compareLabelText = "Time 3"
+        case 4:
+            pageContentViewController.add5()
+            pageContentViewController.compareLabelText = "Time 3"
+        case 5:
+            pageContentViewController.add6()
+            pageContentViewController.compareLabelText = "Time 3"
         default:
             break
         }

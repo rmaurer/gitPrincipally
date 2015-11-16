@@ -64,7 +64,9 @@ class Scenario: NSManagedObject {
     func generateRandomButConstantColor(managedObjectContext:NSManagedObjectContext){
         let RGBList : [(red:Double,green:Double,blue:Double)] = [(30,191,127),(249,154,0),(217, 56, 41),(9,64,116),(88,77,120),(211,73,49), (142,111,218),(114,194,56),(77,116,97), (214,137,160), (204,166,52),(139,91,48),(98,127,48),(100,167,189),(183,170,123),(195,76,154),(107,146,217),(203,68,103),(98,190,114),(209,82,213),(125,98,109),(111,188,166),(115,95,157),(186,167,195),(217,134,93)]
         GlobalLoanCount.sharedGlobalLoanCount.count = GlobalLoanCount.sharedGlobalLoanCount.count + 1
-        let index = GlobalLoanCount.sharedGlobalLoanCount.count % 25
+        //this is still not working well.  I want to use each color in the colorspace once until all 25(!) colors are used. But GlobalLoanCount seems to reset when you start the app over again -- there's not sufficient persistence.  Seems like overkill to make a Core Data entity.  For now I have a workaround with also looking to the max number of scenarios out there.  Hopefully peopl
+        var count = maxElement([GlobalLoanCount.sharedGlobalLoanCount.count, CoreDataStack.getNumberofScenarios(CoreDataStack.sharedInstance)() + 1])
+        let index = (25 + count) % 25
         let RGB = RGBList[index]
         self.red = RGB.red
         self.green = RGB.green

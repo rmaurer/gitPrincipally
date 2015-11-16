@@ -561,7 +561,7 @@ class Loan: NSManagedObject {
                 var mpForThisMonth = Payment_NotCoreData()
                 //2.1: make sure there's enough balance left for the full payment
                 if (balance + interestThatWillBeCapitalized) > extraAmount {
-                    //starthere: you need to have it pay off accrued interest first.
+                    
                     if interestThatWillBeCapitalized > extraAmount {
                         mpForThisMonth.total = extraAmount
                         mpForThisMonth.interest = extraAmount

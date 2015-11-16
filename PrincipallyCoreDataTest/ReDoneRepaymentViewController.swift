@@ -225,7 +225,7 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
     
     func frequencySliderValueToMonthNumber(ssender:Float) -> Int {
         switch floor(ssender) {
-            //matching these up with with the months value seen in //RepaymentExtraTableViewController
+          
         case 0:
             return 0
         case 1,2,3,4,5,6,7,8,9,10,11:

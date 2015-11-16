@@ -81,13 +81,13 @@ class Compare_2_Principal: UIView {
                     thisScenariosColorFaded.CGColor)
                 CGContextFillRect(context, interestRectangle)
                 
-                
+                /*
                 let cancelledRectangle = CGRectMake(startX, height - (topPrincipalY + topInterestY + topWithCancelledY), lineWidth, topWithCancelledY)//CGRectMake(startX,topWithCancelledY,lineWidth,height-topWithCancelledY)
                 CGContextAddRect(context, cancelledRectangle)
                 CGContextStrokePath(context)
                 CGContextSetFillColorWithColor(context,
                     thisScenariosColorFaded.CGColor)
-                CGContextFillRect(context, cancelledRectangle)
+                CGContextFillRect(context, cancelledRectangle)*/
                 
                 
                 var roundPrincipal = floor(scenarioArray![index].nnewTotalPrincipal.doubleValue * 100) / 100

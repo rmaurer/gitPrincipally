@@ -906,7 +906,489 @@ defaultScenario.defaultScenarioMaxPayment = defaultScenario.getScenarioMaxPaymen
 
 if !managedObjectContext.save(&error) {
 println("Could not save: \(error)") }
+//
+//  EnteredViewController.swift
+//  PrincipallyCoreDataTest
+//
+//  Created by Rebecca Maurer on 6/25/15.
+//  Copyright (c) 2015 R.A. Maurer. All rights reserved.
+//
 
+import UIKit
+import CoreData
+
+class EnteredViewController: UIViewController {
+
+/* //TODO: Add storyboard and view with all the pertinent loan information
+//We aren't going to allow loans to be editable -- you can just delete and reenter.  if you're going to edit the repayment terms, that should be done through
+
+@IBOutlet weak var loanName: UILabel!
+
+@IBOutlet weak var loanType: UILabel!
+@IBOutlet weak var loanBalance: UILabel!
+@IBOutlet weak var loanInterest: UILabel!
+@IBOutlet weak var graphOfEnteredLoan: GraphOfEnteredLoan!
+
+@IBAction func graphSlider(sender: UISlider) {
+sender.value = floor(sender.value)
+let totalMonths = clickedLoan!.monthsInRepaymentTerm.floatValue - clickedLoan!.monthsUntilRepayment.floatValue
+//graphOfEnteredLoan.CAWhiteLine.timeOffset = CFTimeInterval(sender.value / totalMonths)
+
+let mpForThisLoan = clickedLoan!.mpForOneLoan.mutableCopy() as! NSMutableOrderedSet
+var thisLoan = mpForThisLoan[Int(sender.value)] as! MonthlyPayment
+var monthAndYear = clickedLoan!.getStringOfYearAndMonthForPaymentNumber(Double(sender.value))
+paymentDescription.text = "This is payment number #\(sender.value) to be paid in \(monthAndYear), which consist of principal $\(thisLoan.principal) and $\(thisLoan.interest) in interest, for a total of $\(thisLoan.totalPayment)"
+println(sender.value)
+}
+
+@IBOutlet weak var paymentDescription: UITextView!
+
+@IBOutlet weak var graphSliderOutlet: UISlider!
+
+var clickedLoan:Loan? = nil
+override func viewDidLoad() {
+super.viewDidLoad()
+loanName.text = clickedLoan?.name
+loanType.text = clickedLoan?.loanType
+loanBalance.text = "$\(clickedLoan!.balance.stringValue)"
+loanInterest.text = "\(clickedLoan!.interest.stringValue)%"
+let tenthOfTheWay = (clickedLoan!.monthsInRepaymentTerm.floatValue - clickedLoan!.monthsUntilRepayment.floatValue)/10
+graphOfEnteredLoan.enteredLoan = clickedLoan
+graphSliderOutlet.maximumValue = clickedLoan!.defaultTotalLoanMonths.floatValue - 1
+graphSliderOutlet.setValue(0, animated: true)
+//graphOfEnteredLoan.CAWhiteLine.duration = NSTimeInterval(clickedLoan!.monthsInRepaymentTerm.floatValue - clickedLoan!.monthsUntilRepayment.floatValue)
+}
+
+override func didReceiveMemoryWarning() {
+super.didReceiveMemoryWarning()
+// Dispose of any resources that can be recreated.
+}
+
+
+
+/*
+// MARK: - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+// Get the new view controller using segue.destinationViewController.
+// Pass the selected object to the new view controller.
+}
+*/
+*/
+}
+
+//Recall that you created this when you thought you were using JBBarChart to accomplish the charting process.  Now you're using Core Graphics and Core Animation because of the limitations in redrawing and dynamically redrawing the chart.  This is here temporarily in case you recide to revert.  New UIViewController sublass is PayExtraCreateScenarioViewController.
+
+//Recall that you might want to keep the Save Scenario button process.
+
+/*
+import UIKit
+import CoreData
+import JBChartView
+
+class PayExtraViewController: UIViewController, JBLineChartViewDataSource, JBLineChartViewDelegate {
+
+@IBOutlet weak var payExtraLineChart: JBLineChartView!
+
+
+override func viewDidLoad() {
+super.viewDidLoad()
+payExtraLineChart.delegate = self
+payExtraLineChart.dataSource = self
+payExtraLineChart.backgroundColor = UIColor.darkGrayColor()
+payExtraLineChart.minimumValue = 0 //mandatory and has to be a positive number
+let max = maxElement(chartData)
+payExtraLineChart.maximumValue = CGFloat(max)
+payExtraLineChart.reloadData()
+payExtraLineChart.setState(.Collapsed,animated:false)
+
+}
+
+override func didReceiveMemoryWarning() {
+super.didReceiveMemoryWarning()
+// Dispose of any resources that can be recreated.
+}
+
+var oArray = [NSManagedObject]()
+var sliderExtraNum : Int = 0
+var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
+var unsavedScenario: Scenario!
+var newInterest : Double = 0
+var chartData : [Double] = [0]
+var originalChartData :[Double] = [0]
+
+@IBOutlet weak var currentInterest: UILabel!
+
+@IBOutlet weak var wouldPayNumber: UILabel!
+
+@IBAction func saveScenarioButton(sender: UIButton) {
+//save the unsaved scenario for further access
+
+}
+
+override func viewDidAppear(animated: Bool) {
+//pull up the "unsaved" Scenario.
+//By unsaved I mean it's not stored for future reference by the user and is currently editable. TODO:When the user leaves this page but doesn't save the scenario, this "unsaved" scenario is saved to be available later.  But once the user quits the program, this should be deleted so the user can start fresh.
+let scenarioEntity = NSEntityDescription.entityForName("Scenario", inManagedObjectContext: managedObjectContext)
+let unsavedScenarioName = "unsaved"
+let scenarioFetch = NSFetchRequest(entityName: "Scenario")
+scenarioFetch.predicate = NSPredicate(format: "name == %@", unsavedScenarioName)
+var error: NSError?
+let result = managedObjectContext.executeFetchRequest(scenarioFetch, error: &error) as! [Scenario]?
+
+if let allScenarios = result {
+if allScenarios.count == 0 {
+unsavedScenario = Scenario(entity: scenarioEntity!, insertIntoManagedObjectContext: managedObjectContext)
+unsavedScenario.name = unsavedScenarioName
+}
+else {unsavedScenario = allScenarios[0]}
+}
+else {
+println("Coult not fetch \(error)")
+}
+//now pull up all the loans and save them as oArray
+let loanFetchRequest = NSFetchRequest(entityName:"Loan")
+let loanFetchedResults =
+managedObjectContext.executeFetchRequest(loanFetchRequest,
+error: &error) as? [NSManagedObject]
+
+if let results = loanFetchedResults {
+oArray = results
+} else {
+println("Coult not fetch \(error)")}
+if oArray.count == 0 {
+let alert = UIAlertView()
+alert.title = "Alert"
+alert.message = "You need to enter loans to explore repayment possibilities."
+alert.addButtonWithTitle("Understood")
+alert.show()
+}
+chartData = unsavedScenario.makeInterestArray()
+originalChartData = chartData
+//var timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target:self, selector:Selector("showChart"),userInfo:nil, repeats:false)
+payExtraLineChart.reloadData()
+self.showChart()
+
+}
+
+
+@IBOutlet weak var sliderExtra: UILabel!
+
+@IBAction func clickMeButton(sender: UIButton) {
+println("Slider extra number is")
+println("\(sliderExtraNum)")
+newInterest = unsavedScenario.makeNewExtraPaymentScenario(managedObjectContext, oArray: oArray,extra:sliderExtraNum)
+wouldPayNumber.text = "\(newInterest)"
+//JBBarChart
+chartData = unsavedScenario.makeInterestArray()
+//Additional Set Up
+// Do any additional setup after loading the view.
+payExtraLineChart.reloadData()
+payExtraLineChart.setState(.Collapsed, animated: false)
+}
+
+
+@IBOutlet weak var payExtraChartLegend: UILabel!
+
+@IBAction func paymentSlider(sender: UISlider) {
+sliderExtraNum = Int(sender.value/5) * 5//lroundf(sender.value)
+sliderExtra.text = "\(sliderExtraNum)"
+newInterest = unsavedScenario.makeNewExtraPaymentScenario(managedObjectContext, oArray: oArray,extra:sliderExtraNum)
+wouldPayNumber.text = "\(newInterest)"
+chartData = unsavedScenario.makeInterestArray()
+payExtraLineChart.reloadData()
+self.showChart()
+
+//unsavedScenario.makeNewExtraPaymentScenario(oArray,extra:sliderExtraNum)
+}
+
+
+//TODO: Start here tomorrow.  See if you can get a graph of the interest paid over the life of the loan
+//MARK: JBBarChartView data sourc methods to implement
+
+func hideChart(){
+self.payExtraLineChart.setState(.Collapsed, animated:true)
+}
+
+func showChart(){
+self.payExtraLineChart.setState(.Expanded, animated:true)}
+
+func numberOfLinesInLineChartView(lineChartView: JBLineChartView!) -> UInt {
+return 1
+}
+
+func lineChartView(lineChartView: JBLineChartView!, verticalValueForHorizontalIndex horizontalIndex: UInt, atLineIndex lineIndex: UInt) -> CGFloat {
+if (lineIndex == 0) {
+if (Int(horizontalIndex) <= chartData.count){
+return CGFloat(chartData[Int(horizontalIndex)])}
+else{return 0}
+}else{return 0}
+}
+
+func lineChartView(lineChartView: JBLineChartView!, colorForLineAtLineIndex lineIndex: UInt) -> UIColor! {
+if (lineIndex == 0){
+return UIColor.lightGrayColor()
+}
+else{return UIColor.lightGrayColor()}
+}
+
+func lineChartView(lineChartView: JBLineChartView!, smoothLineAtLineIndex lineIndex: UInt) -> Bool {
+return true
+}
+
+func lineChartView(lineChartView: JBLineChartView!, numberOfVerticalValuesAtLineIndex lineIndex: UInt) -> UInt {
+if (lineIndex == 0){
+return UInt(originalChartData.count)
+}else{return 0}
+}
+
+/* func numberOfBarsInBarChartView(barChartView: JBBarChartView!) -> UInt {
+return UInt(chartData.count)
+}
+
+func barChartView(barChartView: JBBarChartView!, heightForBarViewAtIndex index: UInt) -> CGFloat {
+return CGFloat(chartData[Int(index)])
+}
+
+func barChartView(barChartView: JBBarChartView!, colorForBarViewAtIndex index: UInt) -> UIColor! {
+return (index % 2 == 0) ? UIColor.lightGrayColor() : UIColor.whiteColor()
+}
+
+func barChartView(barChartView: JBBarChartView!, didSelectBarAtIndex index: UInt) {
+let data = chartData[Int(index)]
+let key = String(index)
+payExtraChartLegend.text = "Payment #\(key) was \(data)"
+}
+
+func didDeselectBarChartView(barChartView: JBBarChartView!) {
+payExtraChartLegend.text = ""
+} */
+}
+*/
+//
+//  LoanEntryViewController.swift
+//  PrincipallyCoreDataTest
+//
+//  Created by Rebecca Maurer on 5/17/15.
+//  Copyright (c) 2015 R.A. Maurer. All rights reserved.
+//
+
+import UIKit
+import CoreData
+
+/*protocol TypeViewDelegate{
+func chooseTypeDidFinish(type:String)
+} */
+
+/*class LoanEntryViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, TypeViewDelegate {
+
+//MARK: CoreData MOC
+var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
+
+//MARK: UI Buttons
+
+
+//Name / Balance / interest
+@IBOutlet weak var newName:UITextField! = UITextField()
+
+//TODO: programmatically set the number name with some incredmental counter?
+
+//Loan type and delegate stuff -- TypeModalVC
+@IBOutlet weak var loanTypeButton: UIButton!
+
+let loanVC = TypeModalVC(nibName: "TypeModalVC", bundle: nil)
+
+@IBAction func loanTypeButtonPressed(sender: UIButton) {
+loanVC.delegate = self
+loanVC.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
+presentViewController(loanVC, animated: true, completion: nil)
+}
+
+func chooseTypeDidFinish(type:String){
+self.loanTypeButton.setTitle(type, forState: .Normal)
+}
+
+@IBOutlet weak var balance:UITextField! = UITextField()
+
+@IBOutlet weak var interest:UITextField! = UITextField()
+
+//Segment 1 - paymentPicker
+
+@IBOutlet weak var paymentStartPicker: UIPickerView!
+
+//Segment 2 - monthly payment
+
+
+
+@IBOutlet weak var perMonth: UILabel!
+
+@IBOutlet weak var monthlyPaymentAmount: UITextField!
+
+@IBOutlet weak var segmentedEntryViewOutlet: UISegmentedControl!
+
+@IBOutlet weak var termSliderContainer: UIView!
+@IBOutlet weak var termLabel: UILabel!
+@IBOutlet weak var startingLabel: UILabel!
+@IBOutlet weak var termSliderLabel: UILabel!
+
+@IBAction func segmentedEntryView(sender: UISegmentedControl) {
+self.view.endEditing(true)
+switch sender.selectedSegmentIndex {
+case 0:
+//dollarSign.hidden = true
+monthlyPaymentAmount.hidden = true
+perMonth.hidden = true
+paymentStartPicker.hidden = false
+termSliderOutlet.hidden = false
+termLabel.hidden = false
+termSliderLabel.hidden = false
+termSliderContainer.hidden = false
+startingLabel.hidden = false
+case 1:
+//dollarSign.hidden = false
+monthlyPaymentAmount.hidden = false
+perMonth.hidden = false
+paymentStartPicker.hidden = true
+termSliderOutlet.hidden = true
+termLabel.hidden = true
+termSliderContainer.hidden = true
+termSliderLabel.hidden = true
+startingLabel.hidden = true
+default:
+break;
+}
+
+}
+
+@IBOutlet weak var termSliderOutlet: UISlider!
+
+@IBAction func termSlider(sender: UISlider) {
+var sliderByFives = Int(sender.value/5) * 5
+sender.value = Float(sliderByFives)
+termSliderLabel.text = "\(sliderByFives) years"
+}
+
+
+@IBAction func EnteredNewLoan(sender: UIBarButtonItem) {
+GlobalLoanCount.sharedGlobalLoanCount.count = GlobalLoanCount.sharedGlobalLoanCount.count + 1
+//resign first responders
+self.newName.resignFirstResponder()
+self.balance.resignFirstResponder()
+self.interest.resignFirstResponder()
+
+//pull names from the Outlets
+var name = newName.text
+
+//TODO: do some validating -- make sure these are strings and numbers
+var loanBalance = NSNumberFormatter().numberFromString(balance.text)!
+var loanInterest = NSNumberFormatter().numberFromString(interest.text)!
+
+//pull entity within the managedObjectContext of "loan"
+let entity = NSEntityDescription.entityForName("Loan", inManagedObjectContext: managedObjectContext)
+//set variable of what will be inserted into the entity "Loan"
+let firstLoan = Loan(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+
+//Set the characteristics of what will be added
+firstLoan.name = name as String
+firstLoan.balance = loanBalance as NSNumber
+firstLoan.interest = loanInterest as NSNumber
+firstLoan.loanType = loanTypeButton.currentTitle!
+
+switch segmentedEntryViewOutlet.selectedSegmentIndex {
+case 0:
+//start date picker
+//Got to calculate months until repayment.  Set the loans month
+let month = pickerData[0][paymentStartPicker.selectedRowInComponent(0)]
+let year = pickerData[1][paymentStartPicker.selectedRowInComponent(1)]
+firstLoan.monthsInRepaymentTerm = Int(termSliderOutlet.value) * 12
+firstLoan.monthsUntilRepayment = firstLoan.getMonthsUntilRepayment(month, year:year)
+if firstLoan.monthsUntilRepayment.integerValue + firstLoan.monthsInRepaymentTerm.integerValue < 1 {
+let alert = UIAlertView()
+alert.title = "Alert"
+alert.message = "Your loan should be paid off already based on the dates you entered"
+alert.addButtonWithTitle("Understood")
+alert.show()
+}else{
+firstLoan.enterLoanByDate(managedObjectContext)
+var error: NSError?
+if !managedObjectContext.save(&error) {
+println("Could not save \(error), \(error?.userInfo)")
+}
+self.navigationController?.popToRootViewControllerAnimated(true)
+}
+case 1:
+//using monthly payment
+var payment = NSNumberFormatter().numberFromString(monthlyPaymentAmount.text)!
+firstLoan.defaultMonthlyPayment = payment
+firstLoan.enteredLoanByPayment(managedObjectContext)
+firstLoan.monthsUntilRepayment = 0
+var error: NSError?
+if !managedObjectContext.save(&error) {
+println("Could not save \(error), \(error?.userInfo)")
+}
+self.navigationController?.popToRootViewControllerAnimated(true)
+default:
+break;
+}
+
+
+}
+
+
+override func viewDidLoad() {
+super.viewDidLoad()
+//more delegate bullshit for the picker
+paymentStartPicker.dataSource = self
+paymentStartPicker.delegate = self
+paymentStartPicker.selectRow(1, inComponent: 0, animated: true)
+paymentStartPicker.selectRow(25, inComponent: 1, animated: true)
+
+//ensure that at the beginning the monthly payment amount is hidden
+//dollarSign.hidden = true
+monthlyPaymentAmount.hidden = true
+perMonth.hidden = true
+
+// Do any additional setup after loading the view.
+newName.text = "Loan #" + String(GlobalLoanCount.sharedGlobalLoanCount.count)
+GlobalLoanCount.sharedGlobalLoanCount.count = GlobalLoanCount.sharedGlobalLoanCount.count + 1
+
+}
+
+override func didReceiveMemoryWarning() {
+super.didReceiveMemoryWarning()
+// Dispose of any resources that can be recreated.
+}
+
+//resign the first responder when you touch elsewhere on the screen
+override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+self.view.endEditing(true)
+}
+
+//MARK: - Picker Delegates and data sources
+//MARK: Data Sources
+let pickerData = [
+["January", "February","March","April","May","June","July","August","September","October","November","December"],
+["1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"]
+]
+
+func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+return pickerData.count
+}
+func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+return pickerData[component].count
+}
+//MARK: Delegates
+func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+return pickerData[component][row]
+}
+
+func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+//updateLabel()
+}
+
+
+} */
 
 
 */

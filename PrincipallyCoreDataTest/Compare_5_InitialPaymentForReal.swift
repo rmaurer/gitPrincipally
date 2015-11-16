@@ -1,25 +1,32 @@
+
 //
-//  Compare_3_InitialPayment.swift
+//  Compare_5_InitialPaymentForReal.swift
 //  PrincipallyCoreDataTest
 //
-//  Created by Rebecca Maurer on 11/1/15.
+//  Created by Rebecca Maurer on 11/15/15.
 //  Copyright (c) 2015 R.A. Maurer. All rights reserved.
 //
 
 import UIKit
+import CoreData
 
-class Compare_3_InitialPayment: UIView {
+class Compare_5_InitialPaymentForReal: UIView {
+
+    
+    
     var scenarioArray : [Scenario]? = nil
     
-    func getTotalPayment(sArray:[Scenario])->[Double]{
+    func getInitialPaymentsArray(sArray:[Scenario])->[Double]{
         var returnArray = [Double]()
         for scenario in sArray{
-            //let concatPayment = scenario.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
-            //let lastPayment = concatPayment.lastObject as! MonthlyPayment
-            let vvalue = scenario.nnewTotalScenarioInterest.doubleValue + scenario.nnewTotalPrincipal.doubleValue + scenario.forgivenBalance.doubleValue
-            returnArray.append(vvalue)
-            
-            //lastPayment.totalPrincipalSoFar.doubleValue + lastPayment.totalInterestSoFar.doubleValue + scenario.forgivenBalance.doubleValue)
+            let concatPayment = scenario.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet
+            for payment in concatPayment {
+                var ppayment = payment as! MonthlyPayment
+                if ppayment.totalPayment.doubleValue > 0 {
+                    returnArray.append(ppayment.totalPayment.doubleValue)
+                    break
+                }
+            }
         }
         return returnArray
     }
@@ -29,12 +36,13 @@ class Compare_3_InitialPayment: UIView {
     // An empty implementation adversely affects performance during animation.
     override func drawRect(rect: CGRect) {
         println("COMPARE 1 Draw Rect was called")
+        
         if scenarioArray != nil {
             let height = rect.height
             var blockWidth = rect.width / CGFloat(scenarioArray!.count)
             var lineWidth = blockWidth / 3
-            
-            let maxHeightInDollars = maxElement(self.getTotalPayment(scenarioArray!)) * 1.1
+            var initialpaymentArray = self.getInitialPaymentsArray(scenarioArray!)
+            let maxHeightInDollars = maxElement(initialpaymentArray) * 1.1
             
             var convertNumberToYCoordinate = { (graphPoint:Double) -> CGFloat in
                 var y:CGFloat =  height * (CGFloat(graphPoint) /
@@ -52,9 +60,7 @@ class Compare_3_InitialPayment: UIView {
                 
                 let startX = CGFloat(lineWidth) + (blockWidth * CGFloat(index))
                 //let endX = CGFloat(lineWidth * 2) + (blockWidth * CGFloat(index))
-                let topPrincipalY = convertNumberToYCoordinate(scenarioArray![index].nnewTotalPrincipal.doubleValue)
-                let topInterestY = convertNumberToYCoordinate(scenarioArray![index].nnewTotalScenarioInterest.doubleValue)
-                let topWithCancelledY = convertNumberToYCoordinate(scenarioArray![index].forgivenBalance.doubleValue)
+                let topPayment = convertNumberToYCoordinate(initialpaymentArray[index])
                 
                 let context = UIGraphicsGetCurrentContext()
                 CGContextSetLineWidth(context, 4.0)
@@ -62,32 +68,19 @@ class Compare_3_InitialPayment: UIView {
                     thisScenariosColorFaded.CGColor)
                 
                 
-                let principalRectangle = CGRectMake(startX, height - topPrincipalY, lineWidth, topPrincipalY)//CGRectMake(startX,topPrincipalY,lineWidth,height-topPrincipalY)
+                let principalRectangle = CGRectMake(startX, height - topPayment, lineWidth, topPayment)//CGRectMake(startX,topPrincipalY,lineWidth,height-topPrincipalY)
                 CGContextAddRect(context, principalRectangle)
                 CGContextStrokePath(context)
                 CGContextSetFillColorWithColor(context,
-                    thisScenariosColorFaded.CGColor)
+                    thisScenariosColor.CGColor)
                 CGContextFillRect(context, principalRectangle)
                 
-                let interestRectangle = CGRectMake(startX, height - (topPrincipalY + topInterestY), lineWidth, topInterestY)//CGRectMake(startX,topInterestY,lineWidth,(height - topInterestY))
-                CGContextAddRect(context, interestRectangle)
-                CGContextStrokePath(context)
-                CGContextSetFillColorWithColor(context,
-                    thisScenariosColor.CGColor)
-                CGContextFillRect(context, interestRectangle)
+               
                 
-                /*
-                let cancelledRectangle = CGRectMake(startX, height - (topPrincipalY + topInterestY + topWithCancelledY), lineWidth, topWithCancelledY)//CGRectMake(startX,topWithCancelledY,lineWidth,height-topWithCancelledY)
-                CGContextAddRect(context, cancelledRectangle)
-                CGContextStrokePath(context)
-                CGContextSetFillColorWithColor(context,
-                    thisScenariosColorFaded.CGColor)
-                CGContextFillRect(context, cancelledRectangle)
-                */
+                var roundInitialPayment = floor(initialpaymentArray[index] * 100) / 100
                 
-                var roundInterest = floor(scenarioArray![index].nnewTotalScenarioInterest.doubleValue * 100) / 100
                 
-                var s: NSString = "\(scenarioArray![index].name): $\(roundInterest) in interest"
+                var s: NSString = "\(scenarioArray![index].name): $\(roundInitialPayment) initial payment"
                 let fieldFont = UIFont(name: "Helvetica Neue", size: 14)
                 s.drawWithBasePoint(CGPointMake(startX+lineWidth, bounds.height-20), angle: CGFloat(-M_PI_2), font: fieldFont!)
                 
@@ -95,5 +88,6 @@ class Compare_3_InitialPayment: UIView {
             
         }
     }
-
+    
+    
 }

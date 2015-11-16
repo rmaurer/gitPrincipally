@@ -75,20 +75,20 @@ class Compare_1_Interest: UIView {
                     thisScenariosColor.CGColor)
                 CGContextFillRect(context, principalRectangle)
                 
-                let interestRectangle = CGRectMake(startX, height - (topPrincipalY + topInterestY), lineWidth, topInterestY)//CGRectMake(startX,topInterestY,lineWidth,(height - topInterestY))
+                let interestRectangle = CGRectMake(startX, height - (topPrincipalY + topInterestY), lineWidth, topInterestY-4)//CGRectMake(startX,topInterestY,lineWidth,(height - topInterestY))
                 CGContextAddRect(context, interestRectangle)
                 CGContextStrokePath(context)
                 CGContextSetFillColorWithColor(context,
                     thisScenariosColor.CGColor)
                 CGContextFillRect(context, interestRectangle)
-                
+                /*
                 
                 let cancelledRectangle = CGRectMake(startX, height - (topPrincipalY + topInterestY + topWithCancelledY), lineWidth, topWithCancelledY)//CGRectMake(startX,topWithCancelledY,lineWidth,height-topWithCancelledY)
                 CGContextAddRect(context, cancelledRectangle)
                 CGContextStrokePath(context)
                 CGContextSetFillColorWithColor(context,
                     thisScenariosColor.CGColor)
-                CGContextFillRect(context, cancelledRectangle)
+                CGContextFillRect(context, cancelledRectangle)*/
                 
                 let vvalue = scenarioArray![index].nnewTotalScenarioInterest.doubleValue + scenarioArray![index].nnewTotalPrincipal.doubleValue + scenarioArray![index].forgivenBalance.doubleValue
 

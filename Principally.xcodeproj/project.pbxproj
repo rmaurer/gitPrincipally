@@ -11,12 +11,10 @@
 		B31DD0041BC1967300F97C30 /* NewScenarioContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31DD0031BC1967300F97C30 /* NewScenarioContainerViewController.swift */; };
 		B32299BB1B10F14B00AAD0F0 /* linkingfile.c in Sources */ = {isa = PBXBuildFile; fileRef = B32299B91B10F14B00AAD0F0 /* linkingfile.c */; };
 		B32344F91B3E041900B1709C /* LoanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32344F81B3E041900B1709C /* LoanTableViewCell.swift */; };
-		B32344FF1B3F6A4900B1709C /* PayExtraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32344FE1B3F6A4900B1709C /* PayExtraViewController.swift */; };
 		B336CF721BB224C5005B59AD /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B336CF711BB224C5005B59AD /* GraphViewController.swift */; };
 		B354A45E1BD6F0F90051C1C0 /* EditAddAnotherScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B354A45D1BD6F0F90051C1C0 /* EditAddAnotherScreenViewController.swift */; };
 		B3713F1A1B48500C00C1ABEF /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3713F191B48500C00C1ABEF /* Media.xcassets */; };
 		B3713F1E1B4864B500C1ABEF /* NavController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3713F1D1B4864B500C1ABEF /* NavController.swift */; };
-		B3713F201B48A0E600C1ABEF /* EntryFormController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3713F1F1B48A0E600C1ABEF /* EntryFormController.swift */; };
 		B378D1B71B65268E00AD66F5 /* TestLoanEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B378D1B61B65268E00AD66F5 /* TestLoanEntryViewController.swift */; };
 		B378D1B91B65619200AD66F5 /* SelectLoanTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B378D1B81B65619200AD66F5 /* SelectLoanTypeView.swift */; };
 		B378D1BB1B65AB5500AD66F5 /* ParkedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B378D1BA1B65AB5500AD66F5 /* ParkedTextField.swift */; };
@@ -27,7 +25,6 @@
 		B39A49581B1A9AA300707C56 /* Loan.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49571B1A9AA300707C56 /* Loan.swift */; };
 		B39A495B1B1B40D800707C56 /* Scenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49591B1B40D800707C56 /* Scenario.swift */; };
 		B39A495C1B1B40D800707C56 /* MonthlyPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A495A1B1B40D800707C56 /* MonthlyPayment.swift */; };
-		B39A495E1B1DE6F200707C56 /* Scraps.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A495D1B1DE6F200707C56 /* Scraps.swift */; };
 		B3C123E81BCC97F600C6FBDA /* ReDoneRepaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C123E71BCC97F500C6FBDA /* ReDoneRepaymentViewController.swift */; };
 		B3C123EA1BCC98E300C6FBDA /* PlanOptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C123E91BCC98E300C6FBDA /* PlanOptionsTableViewController.swift */; };
 		B3C123EC1BCC990300C6FBDA /* PlanOptionsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C123EB1BCC990300C6FBDA /* PlanOptionsInfo.swift */; };
@@ -39,27 +36,24 @@
 		B3C495721BE6D2EC0097D30A /* Compare_2_Principal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C495711BE6D2EC0097D30A /* Compare_2_Principal.swift */; };
 		B3C495741BE6D3060097D30A /* Compare_3_InitialPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C495731BE6D3060097D30A /* Compare_3_InitialPayment.swift */; };
 		B3C495761BE6D3700097D30A /* Compare_4_TotalPaid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C495751BE6D3700097D30A /* Compare_4_TotalPaid.swift */; };
-		B3CD91171BBDECCC007A5EA2 /* RepaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CD91161BBDECCC007A5EA2 /* RepaymentViewController.swift */; };
 		B3CD91191BBDECE6007A5EA2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CD91181BBDECE6007A5EA2 /* SettingsViewController.swift */; };
 		B3CD911B1BBDF064007A5EA2 /* SecnarioNavController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CD911A1BBDF064007A5EA2 /* SecnarioNavController.swift */; };
-		B3CD911D1BBE005C007A5EA2 /* RepaymentExtraTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CD911C1BBE005C007A5EA2 /* RepaymentExtraTableViewController.swift */; };
 		B3D0D1681B08F6DC00BD0C0C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D0D1671B08F6DC00BD0C0C /* AppDelegate.swift */; };
 		B3D0D16B1B08F6DC00BD0C0C /* PrincipallyCoreDataTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B3D0D1691B08F6DC00BD0C0C /* PrincipallyCoreDataTest.xcdatamodeld */; };
 		B3D0D1701B08F6DC00BD0C0C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3D0D16E1B08F6DC00BD0C0C /* Main.storyboard */; };
 		B3D0D1751B08F6DC00BD0C0C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3D0D1731B08F6DC00BD0C0C /* LaunchScreen.xib */; };
 		B3D0D1811B08F6DC00BD0C0C /* PrincipallyCoreDataTestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D0D1801B08F6DC00BD0C0C /* PrincipallyCoreDataTestTests.swift */; };
-		B3D0D18B1B09044E00BD0C0C /* LoanEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D0D18A1B09044E00BD0C0C /* LoanEntryViewController.swift */; };
-		B3D0D18D1B09311500BD0C0C /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D0D18C1B09311500BD0C0C /* PaymentViewController.swift */; };
 		B3D3A8461B4DE8C800B89D67 /* GraphOfEnteredLoan.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D3A8451B4DE8C800B89D67 /* GraphOfEnteredLoan.swift */; };
 		B3D3A8491B51728C00B89D67 /* FlatLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D3A8481B51728C00B89D67 /* FlatLabel.swift */; };
 		B3D3A84B1B51876C00B89D67 /* FlatTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D3A84A1B51876C00B89D67 /* FlatTextField.swift */; };
+		B3D77F511BF97E0300B05CAD /* Compare_5_InitialPaymentForReal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D77F501BF97E0300B05CAD /* Compare_5_InitialPaymentForReal.swift */; };
+		B3D77F531BF97E1B00B05CAD /* Compare_6_RepaymentTerm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D77F521BF97E1B00B05CAD /* Compare_6_RepaymentTerm.swift */; };
 		B3DEF8FE1B7C09100033837C /* BalanceInterestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DEF8FD1B7C090F0033837C /* BalanceInterestTableViewController.swift */; };
 		B3DEF9011B7D872F0033837C /* PaymentContainerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DEF9001B7D872F0033837C /* PaymentContainerTableViewController.swift */; };
 		B3E65F5E1BBCA57B00EC0AF1 /* ScenarioTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E65F5D1BBCA57B00EC0AF1 /* ScenarioTableViewController.swift */; };
 		B3F1C1E51B2FBB4B009283B0 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F1C1E41B2FBB4B009283B0 /* CoreDataStack.swift */; };
 		B3F1C1F11B3B89FD009283B0 /* TypeModalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F1C1EF1B3B89FD009283B0 /* TypeModalVC.swift */; };
 		B3F1C1F21B3B89FD009283B0 /* TypeModalVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3F1C1F01B3B89FD009283B0 /* TypeModalVC.xib */; };
-		B3F1C1F61B3CCFA3009283B0 /* EnteredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F1C1F51B3CCFA3009283B0 /* EnteredViewController.swift */; };
 		B3F1C1F81B3CD73F009283B0 /* LoanEntryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F1C1F71B3CD73F009283B0 /* LoanEntryTableViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -82,12 +76,10 @@
 		B32299B91B10F14B00AAD0F0 /* linkingfile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = linkingfile.c; path = PrincipallyCoreDataTest/linkingfile.c; sourceTree = "<group>"; };
 		B32299BA1B10F14B00AAD0F0 /* linkingfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = linkingfile.h; path = PrincipallyCoreDataTest/linkingfile.h; sourceTree = "<group>"; };
 		B32344F81B3E041900B1709C /* LoanTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoanTableViewCell.swift; sourceTree = "<group>"; };
-		B32344FE1B3F6A4900B1709C /* PayExtraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayExtraViewController.swift; sourceTree = "<group>"; };
 		B336CF711BB224C5005B59AD /* GraphViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
 		B354A45D1BD6F0F90051C1C0 /* EditAddAnotherScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditAddAnotherScreenViewController.swift; sourceTree = "<group>"; };
 		B3713F191B48500C00C1ABEF /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		B3713F1D1B4864B500C1ABEF /* NavController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavController.swift; sourceTree = "<group>"; };
-		B3713F1F1B48A0E600C1ABEF /* EntryFormController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryFormController.swift; sourceTree = "<group>"; };
 		B378D1B61B65268E00AD66F5 /* TestLoanEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestLoanEntryViewController.swift; sourceTree = "<group>"; };
 		B378D1B81B65619200AD66F5 /* SelectLoanTypeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectLoanTypeView.swift; sourceTree = "<group>"; };
 		B378D1BA1B65AB5500AD66F5 /* ParkedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkedTextField.swift; sourceTree = "<group>"; };
@@ -98,7 +90,6 @@
 		B39A49571B1A9AA300707C56 /* Loan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loan.swift; sourceTree = "<group>"; };
 		B39A49591B1B40D800707C56 /* Scenario.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scenario.swift; sourceTree = "<group>"; };
 		B39A495A1B1B40D800707C56 /* MonthlyPayment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonthlyPayment.swift; sourceTree = "<group>"; };
-		B39A495D1B1DE6F200707C56 /* Scraps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scraps.swift; sourceTree = "<group>"; };
 		B3C123E71BCC97F500C6FBDA /* ReDoneRepaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReDoneRepaymentViewController.swift; sourceTree = "<group>"; };
 		B3C123E91BCC98E300C6FBDA /* PlanOptionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanOptionsTableViewController.swift; sourceTree = "<group>"; };
 		B3C123EB1BCC990300C6FBDA /* PlanOptionsInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanOptionsInfo.swift; sourceTree = "<group>"; };
@@ -110,31 +101,28 @@
 		B3C495711BE6D2EC0097D30A /* Compare_2_Principal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compare_2_Principal.swift; sourceTree = "<group>"; };
 		B3C495731BE6D3060097D30A /* Compare_3_InitialPayment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compare_3_InitialPayment.swift; sourceTree = "<group>"; };
 		B3C495751BE6D3700097D30A /* Compare_4_TotalPaid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compare_4_TotalPaid.swift; sourceTree = "<group>"; };
-		B3CD91161BBDECCC007A5EA2 /* RepaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepaymentViewController.swift; sourceTree = "<group>"; };
 		B3CD91181BBDECE6007A5EA2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		B3CD911A1BBDF064007A5EA2 /* SecnarioNavController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecnarioNavController.swift; sourceTree = "<group>"; };
-		B3CD911C1BBE005C007A5EA2 /* RepaymentExtraTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepaymentExtraTableViewController.swift; sourceTree = "<group>"; };
-		B3D0D1621B08F6DC00BD0C0C /* PrincipallyCoreDataTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrincipallyCoreDataTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3D0D1621B08F6DC00BD0C0C /* Principally.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Principally.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3D0D1661B08F6DC00BD0C0C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B3D0D1671B08F6DC00BD0C0C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B3D0D16A1B08F6DC00BD0C0C /* PrincipallyCoreDataTest.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PrincipallyCoreDataTest.xcdatamodel; sourceTree = "<group>"; };
 		B3D0D16F1B08F6DC00BD0C0C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B3D0D1741B08F6DC00BD0C0C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		B3D0D17A1B08F6DC00BD0C0C /* PrincipallyCoreDataTestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PrincipallyCoreDataTestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3D0D17A1B08F6DC00BD0C0C /* PrincipallyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PrincipallyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3D0D17F1B08F6DC00BD0C0C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B3D0D1801B08F6DC00BD0C0C /* PrincipallyCoreDataTestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrincipallyCoreDataTestTests.swift; sourceTree = "<group>"; };
-		B3D0D18A1B09044E00BD0C0C /* LoanEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoanEntryViewController.swift; sourceTree = "<group>"; };
-		B3D0D18C1B09311500BD0C0C /* PaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
 		B3D3A8451B4DE8C800B89D67 /* GraphOfEnteredLoan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphOfEnteredLoan.swift; sourceTree = "<group>"; };
 		B3D3A8481B51728C00B89D67 /* FlatLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlatLabel.swift; sourceTree = "<group>"; };
 		B3D3A84A1B51876C00B89D67 /* FlatTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlatTextField.swift; sourceTree = "<group>"; };
+		B3D77F501BF97E0300B05CAD /* Compare_5_InitialPaymentForReal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compare_5_InitialPaymentForReal.swift; sourceTree = "<group>"; };
+		B3D77F521BF97E1B00B05CAD /* Compare_6_RepaymentTerm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compare_6_RepaymentTerm.swift; sourceTree = "<group>"; };
 		B3DEF8FD1B7C090F0033837C /* BalanceInterestTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalanceInterestTableViewController.swift; sourceTree = "<group>"; };
 		B3DEF9001B7D872F0033837C /* PaymentContainerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentContainerTableViewController.swift; sourceTree = "<group>"; };
 		B3E65F5D1BBCA57B00EC0AF1 /* ScenarioTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenarioTableViewController.swift; sourceTree = "<group>"; };
 		B3F1C1E41B2FBB4B009283B0 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		B3F1C1EF1B3B89FD009283B0 /* TypeModalVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeModalVC.swift; sourceTree = "<group>"; };
 		B3F1C1F01B3B89FD009283B0 /* TypeModalVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TypeModalVC.xib; sourceTree = "<group>"; };
-		B3F1C1F51B3CCFA3009283B0 /* EnteredViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnteredViewController.swift; sourceTree = "<group>"; };
 		B3F1C1F71B3CD73F009283B0 /* LoanEntryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoanEntryTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -188,17 +176,9 @@
 			name = DataStructures;
 			sourceTree = "<group>";
 		};
-		B39A494D1B17F35F00707C56 /* Compare */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Compare;
-			sourceTree = "<group>";
-		};
 		B39A494E1B17F37400707C56 /* Scenario */ = {
 			isa = PBXGroup;
 			children = (
-				B3D0D18C1B09311500BD0C0C /* PaymentViewController.swift */,
 			);
 			name = Scenario;
 			sourceTree = "<group>";
@@ -255,8 +235,8 @@
 		B3D0D1631B08F6DC00BD0C0C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B3D0D1621B08F6DC00BD0C0C /* PrincipallyCoreDataTest.app */,
-				B3D0D17A1B08F6DC00BD0C0C /* PrincipallyCoreDataTestTests.xctest */,
+				B3D0D1621B08F6DC00BD0C0C /* Principally.app */,
+				B3D0D17A1B08F6DC00BD0C0C /* PrincipallyTests.xctest */,
 			);
 			name = Products;
 			path = ..;
@@ -280,7 +260,6 @@
 		B3D0D1651B08F6DC00BD0C0C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				B3713F1F1B48A0E600C1ABEF /* EntryFormController.swift */,
 				B3E65F5C1BBCA51E00EC0AF1 /* Scraps */,
 				B3D0D1731B08F6DC00BD0C0C /* LaunchScreen.xib */,
 				B32299B81B10F14A00AAD0F0 /* PrincipallyCoreDataTest-Bridging-Header.h */,
@@ -327,6 +306,8 @@
 				B3C495711BE6D2EC0097D30A /* Compare_2_Principal.swift */,
 				B3C495731BE6D3060097D30A /* Compare_3_InitialPayment.swift */,
 				B3C495751BE6D3700097D30A /* Compare_4_TotalPaid.swift */,
+				B3D77F501BF97E0300B05CAD /* Compare_5_InitialPaymentForReal.swift */,
+				B3D77F521BF97E1B00B05CAD /* Compare_6_RepaymentTerm.swift */,
 			);
 			name = "Design Subclasses";
 			sourceTree = "<group>";
@@ -345,14 +326,7 @@
 		B3E65F5C1BBCA51E00EC0AF1 /* Scraps */ = {
 			isa = PBXGroup;
 			children = (
-				B3CD911C1BBE005C007A5EA2 /* RepaymentExtraTableViewController.swift */,
-				B3CD91161BBDECCC007A5EA2 /* RepaymentViewController.swift */,
-				B39A494D1B17F35F00707C56 /* Compare */,
 				B39A494E1B17F37400707C56 /* Scenario */,
-				B3F1C1F51B3CCFA3009283B0 /* EnteredViewController.swift */,
-				B3D0D18A1B09044E00BD0C0C /* LoanEntryViewController.swift */,
-				B32344FE1B3F6A4900B1709C /* PayExtraViewController.swift */,
-				B39A495D1B1DE6F200707C56 /* Scraps.swift */,
 			);
 			name = Scraps;
 			sourceTree = "<group>";
@@ -383,9 +357,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B3D0D1611B08F6DC00BD0C0C /* PrincipallyCoreDataTest */ = {
+		B3D0D1611B08F6DC00BD0C0C /* Principally */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B3D0D1841B08F6DC00BD0C0C /* Build configuration list for PBXNativeTarget "PrincipallyCoreDataTest" */;
+			buildConfigurationList = B3D0D1841B08F6DC00BD0C0C /* Build configuration list for PBXNativeTarget "Principally" */;
 			buildPhases = (
 				903908BDA35125F1553A9B02 /* Check Pods Manifest.lock */,
 				B3D0D15E1B08F6DC00BD0C0C /* Sources */,
@@ -398,14 +372,14 @@
 			);
 			dependencies = (
 			);
-			name = PrincipallyCoreDataTest;
+			name = Principally;
 			productName = PrincipallyCoreDataTest;
-			productReference = B3D0D1621B08F6DC00BD0C0C /* PrincipallyCoreDataTest.app */;
+			productReference = B3D0D1621B08F6DC00BD0C0C /* Principally.app */;
 			productType = "com.apple.product-type.application";
 		};
-		B3D0D1791B08F6DC00BD0C0C /* PrincipallyCoreDataTestTests */ = {
+		B3D0D1791B08F6DC00BD0C0C /* PrincipallyTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B3D0D1871B08F6DC00BD0C0C /* Build configuration list for PBXNativeTarget "PrincipallyCoreDataTestTests" */;
+			buildConfigurationList = B3D0D1871B08F6DC00BD0C0C /* Build configuration list for PBXNativeTarget "PrincipallyTests" */;
 			buildPhases = (
 				B3D0D1761B08F6DC00BD0C0C /* Sources */,
 				B3D0D1771B08F6DC00BD0C0C /* Frameworks */,
@@ -416,9 +390,9 @@
 			dependencies = (
 				B3D0D17C1B08F6DC00BD0C0C /* PBXTargetDependency */,
 			);
-			name = PrincipallyCoreDataTestTests;
+			name = PrincipallyTests;
 			productName = PrincipallyCoreDataTestTests;
-			productReference = B3D0D17A1B08F6DC00BD0C0C /* PrincipallyCoreDataTestTests.xctest */;
+			productReference = B3D0D17A1B08F6DC00BD0C0C /* PrincipallyTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -439,7 +413,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B3D0D15D1B08F6DB00BD0C0C /* Build configuration list for PBXProject "PrincipallyCoreDataTest" */;
+			buildConfigurationList = B3D0D15D1B08F6DB00BD0C0C /* Build configuration list for PBXProject "Principally" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -452,8 +426,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B3D0D1611B08F6DC00BD0C0C /* PrincipallyCoreDataTest */,
-				B3D0D1791B08F6DC00BD0C0C /* PrincipallyCoreDataTestTests */,
+				B3D0D1611B08F6DC00BD0C0C /* Principally */,
+				B3D0D1791B08F6DC00BD0C0C /* PrincipallyTests */,
 			);
 		};
 /* End PBXProject section */
@@ -544,16 +518,13 @@
 				B39A495C1B1B40D800707C56 /* MonthlyPayment.swift in Sources */,
 				B3D3A84B1B51876C00B89D67 /* FlatTextField.swift in Sources */,
 				B3DEF8FE1B7C09100033837C /* BalanceInterestTableViewController.swift in Sources */,
+				B3D77F531BF97E1B00B05CAD /* Compare_6_RepaymentTerm.swift in Sources */,
 				B3CD911B1BBDF064007A5EA2 /* SecnarioNavController.swift in Sources */,
-				B32344FF1B3F6A4900B1709C /* PayExtraViewController.swift in Sources */,
 				B378D1B71B65268E00AD66F5 /* TestLoanEntryViewController.swift in Sources */,
 				B3E65F5E1BBCA57B00EC0AF1 /* ScenarioTableViewController.swift in Sources */,
-				B3F1C1F61B3CCFA3009283B0 /* EnteredViewController.swift in Sources */,
-				B3CD91171BBDECCC007A5EA2 /* RepaymentViewController.swift in Sources */,
 				B3D3A8461B4DE8C800B89D67 /* GraphOfEnteredLoan.swift in Sources */,
 				B3D0D16B1B08F6DC00BD0C0C /* PrincipallyCoreDataTest.xcdatamodeld in Sources */,
 				B3F1C1E51B2FBB4B009283B0 /* CoreDataStack.swift in Sources */,
-				B3CD911D1BBE005C007A5EA2 /* RepaymentExtraTableViewController.swift in Sources */,
 				B3C495741BE6D3060097D30A /* Compare_3_InitialPayment.swift in Sources */,
 				B32344F91B3E041900B1709C /* LoanTableViewCell.swift in Sources */,
 				B3C123EC1BCC990300C6FBDA /* PlanOptionsInfo.swift in Sources */,
@@ -561,7 +532,7 @@
 				B3942D661B531DA0005BCD2C /* GraphOfScenario.swift in Sources */,
 				B378D1BB1B65AB5500AD66F5 /* ParkedTextField.swift in Sources */,
 				B354A45E1BD6F0F90051C1C0 /* EditAddAnotherScreenViewController.swift in Sources */,
-				B3D0D18D1B09311500BD0C0C /* PaymentViewController.swift in Sources */,
+				B3D77F511BF97E0300B05CAD /* Compare_5_InitialPaymentForReal.swift in Sources */,
 				B3713F1E1B4864B500C1ABEF /* NavController.swift in Sources */,
 				B3C495721BE6D2EC0097D30A /* Compare_2_Principal.swift in Sources */,
 				B39A494B1B1121C600707C56 /* CompareViewController.swift in Sources */,
@@ -572,13 +543,10 @@
 				B3C4956E1BE57CE70097D30A /* ContentViewController.swift in Sources */,
 				B3C495761BE6D3700097D30A /* Compare_4_TotalPaid.swift in Sources */,
 				B3C495701BE6D2D40097D30A /* Compare_1_Interest.swift in Sources */,
-				B3D0D18B1B09044E00BD0C0C /* LoanEntryViewController.swift in Sources */,
-				B3713F201B48A0E600C1ABEF /* EntryFormController.swift in Sources */,
 				B3C123F01BCC998B00C6FBDA /* PlanTypeViewController.swift in Sources */,
 				B39862651BF8D8A500434BEE /* ScenarioSettings.swift in Sources */,
 				B3F1C1F11B3B89FD009283B0 /* TypeModalVC.swift in Sources */,
 				B3C123F31BCF47AD00C6FBDA /* ScenarioTypeView.swift in Sources */,
-				B39A495E1B1DE6F200707C56 /* Scraps.swift in Sources */,
 				B3F1C1F81B3CD73F009283B0 /* LoanEntryTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -596,7 +564,7 @@
 /* Begin PBXTargetDependency section */
 		B3D0D17C1B08F6DC00BD0C0C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = B3D0D1611B08F6DC00BD0C0C /* PrincipallyCoreDataTest */;
+			target = B3D0D1611B08F6DC00BD0C0C /* Principally */;
 			targetProxy = B3D0D17B1B08F6DC00BD0C0C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -710,7 +678,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = PrincipallyCoreDataTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Principally;
 				SWIFT_OBJC_BRIDGING_HEADER = "PrincipallyCoreDataTest/PrincipallyCoreDataTest-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -724,7 +692,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = PrincipallyCoreDataTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Principally;
 				SWIFT_OBJC_BRIDGING_HEADER = "PrincipallyCoreDataTest/PrincipallyCoreDataTest-Bridging-Header.h";
 			};
 			name = Release;
@@ -743,7 +711,7 @@
 				);
 				INFOPLIST_FILE = PrincipallyCoreDataTestTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = PrincipallyTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PrincipallyCoreDataTest.app/PrincipallyCoreDataTest";
 			};
 			name = Debug;
@@ -758,7 +726,7 @@
 				);
 				INFOPLIST_FILE = PrincipallyCoreDataTestTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = PrincipallyTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PrincipallyCoreDataTest.app/PrincipallyCoreDataTest";
 			};
 			name = Release;
@@ -766,7 +734,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B3D0D15D1B08F6DB00BD0C0C /* Build configuration list for PBXProject "PrincipallyCoreDataTest" */ = {
+		B3D0D15D1B08F6DB00BD0C0C /* Build configuration list for PBXProject "Principally" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B3D0D1821B08F6DC00BD0C0C /* Debug */,
@@ -775,7 +743,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B3D0D1841B08F6DC00BD0C0C /* Build configuration list for PBXNativeTarget "PrincipallyCoreDataTest" */ = {
+		B3D0D1841B08F6DC00BD0C0C /* Build configuration list for PBXNativeTarget "Principally" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B3D0D1851B08F6DC00BD0C0C /* Debug */,
@@ -784,7 +752,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B3D0D1871B08F6DC00BD0C0C /* Build configuration list for PBXNativeTarget "PrincipallyCoreDataTestTests" */ = {
+		B3D0D1871B08F6DC00BD0C0C /* Build configuration list for PBXNativeTarget "PrincipallyTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B3D0D1881B08F6DC00BD0C0C /* Debug */,
