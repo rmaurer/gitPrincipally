@@ -30,7 +30,7 @@ class GraphOfScenario: UIView {
 
     
     override func drawRect(rect: CGRect) {
-        println("DrawRect was called")
+        //println("DrawRect was called")
         
         if graphedScenario != nil {
             
@@ -127,11 +127,10 @@ class GraphOfScenario: UIView {
             principalLineColor.setStroke()//whiteColor().setStroke()
             
             var totalGraphPath = UIBezierPath()
-            println(graphedScenario!.name)
-            println(totalGraphPoints)
-            println(columnXPoint(0)
-                )
-            println(columnYPoint(0))
+            //println(graphedScenario!.name)
+            //println(totalGraphPoints)
+            //println(columnXPoint(0))
+            //println(columnYPoint(0))
             totalGraphPath.moveToPoint(CGPoint(x:columnXPoint(0),y:columnYPoint(totalGraphPoints[0])))
             
             //This is the TOTAL PAYMENTS line

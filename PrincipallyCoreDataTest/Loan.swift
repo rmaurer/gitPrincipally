@@ -41,10 +41,10 @@ class Loan: NSManagedObject {
         var monthsLeftInTerm :Int = totalMonths
         
         if refinanceTerm > numberOfInterestIncreases {
-            println("refinance term is greater than the number of interest increases")
+            //println("refinance term is greater than the number of interest increases")
             while numberOfInterestIncreases > 0 {
                 for month in 1...12{
-                    println(monthsLeftInTerm)
+                    //println(monthsLeftInTerm)
                     var paymentToAdd = Payment_NotCoreData()
                     paymentToAdd.interest = balance * rate
                     paymentToAdd.principal = monthlyPayment - (balance * rate)
@@ -54,7 +54,7 @@ class Loan: NSManagedObject {
                     monthsLeftInTerm = monthsLeftInTerm - 1
             }
                 self.interest = self.interest.doubleValue + 1
-                println(self.interest)
+               // println(self.interest)
                 rate = (self.interest.doubleValue / 12 ) / 100
                 numberOfInterestIncreases -= 1
                 monthlyPayment = self.getStandardMonthlyPayment(monthsLeftInTerm, balance: balance)
@@ -87,7 +87,7 @@ class Loan: NSManagedObject {
             paymentToAdd.total = monthlyPayment
             balance = balance - paymentToAdd.principal
             paymentArrayToReturn.append(paymentToAdd)
-            println(self.interest)
+            //println(self.interest)
         }
         
         var lastPaymentToAdd = Payment_NotCoreData()
@@ -225,7 +225,7 @@ class Loan: NSManagedObject {
             case "December":
                 return 12
         default:
-            println("Month didn't match")
+            //println("Month didn't match")
             return 1
         }
     }
@@ -257,7 +257,7 @@ class Loan: NSManagedObject {
         case 12:
             return "December"
         default:
-            println("Month didn't match")
+            //println("Month didn't match")
             return "January"
         }
     }
@@ -392,12 +392,12 @@ class Loan: NSManagedObject {
     */
 
     func standardFlat_ExtraPayment_WindUpLoan(managedObjectContext:NSManagedObjectContext,extraAmount:Double, extraStart:Int, extraEnd:Int, paymentTerm:Int) -> (parray: [Payment_NotCoreData], monthNumber: Int, description:String) {
-        println("extrapayment was called")
-        println(self.name)
-        println(self.monthsUntilRepayment.integerValue)
-        println(extraAmount)
-        println(extraStart)
-        println(extraEnd)
+        //println("extrapayment was called")
+        //println(self.name)
+        //println(self.monthsUntilRepayment.integerValue)
+        //println(extraAmount)
+        //println(extraStart)
+        //println(extraEnd)
         
         
         var monthlyPayment = self.getStandardMonthlyPayment(paymentTerm, balance: self.balance.doubleValue)

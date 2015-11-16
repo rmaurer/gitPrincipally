@@ -8,7 +8,7 @@
         <!--Repayment Options-->
         <scene sceneID="TY0-B4-SgN">
             <objects>
-                <tableViewController title="Repayment Options" id="z7p-Nd-fEj" customClass="ScenarioTableViewController" customModule="PrincipallyCoreDataTest" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Repayment Options" id="z7p-Nd-fEj" customClass="ScenarioTableViewController" customModule="Principally" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="huY-Bp-4hD">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -51,7 +51,7 @@
         <!--Re Done Repayment View Controller-->
         <scene sceneID="eDb-IP-iEY">
             <objects>
-                <viewController id="P5m-vm-kJa" customClass="ReDoneRepaymentViewController" customModule="PrincipallyCoreDataTest" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="P5m-vm-kJa" customClass="ReDoneRepaymentViewController" customModule="Principally" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Aev-lV-R2h"/>
                         <viewControllerLayoutGuide type="bottom" id="ZO4-YK-vci"/>
@@ -111,10 +111,10 @@
                                     <constraint firstAttribute="centerY" secondItem="dtJ-PQ-ORT" secondAttribute="centerY" id="vuD-Zh-DgM"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="43q-br-z9n" customClass="ScenarioTypeView" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="43q-br-z9n" customClass="ScenarioTypeView" customModule="Principally" customModuleProvider="target">
                                 <rect key="frame" x="90" y="66" width="140" height="43"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3rG-en-9aL" customClass="SelectLoanTypeView" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3rG-en-9aL" customClass="SelectLoanTypeView" customModule="Principally" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="140" height="43"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a6A-TU-aaZ">
@@ -177,18 +177,18 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="uIR-tG-14m" firstAttribute="leading" secondItem="zSm-Q6-xJb" secondAttribute="leadingMargin" constant="-16" id="0iV-EB-qA8"/>
-                            <constraint firstItem="SBJ-M4-Fem" firstAttribute="leading" secondItem="zSm-Q6-xJb" secondAttribute="leadingMargin" constant="-16" id="54Y-ZW-mik"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="SBJ-M4-Fem" secondAttribute="trailing" constant="-16" id="8xw-N2-Pqv"/>
+                            <constraint firstAttribute="trailing" secondItem="GyD-m3-FHe" secondAttribute="trailing" id="CQ3-8C-VVI"/>
                             <constraint firstItem="3d0-Z1-VrK" firstAttribute="top" secondItem="SBJ-M4-Fem" secondAttribute="bottom" constant="-4" id="EPo-dj-I5c"/>
                             <constraint firstItem="ZO4-YK-vci" firstAttribute="top" secondItem="uIR-tG-14m" secondAttribute="bottom" id="GxY-Jb-IDo"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="GyD-m3-FHe" secondAttribute="trailing" constant="-16" id="Pzg-pI-JOY"/>
+                            <constraint firstItem="GyD-m3-FHe" firstAttribute="leading" secondItem="zSm-Q6-xJb" secondAttribute="leading" id="JSs-Nx-zji"/>
                             <constraint firstItem="3d0-Z1-VrK" firstAttribute="leading" secondItem="zSm-Q6-xJb" secondAttribute="leadingMargin" constant="-20" id="QDA-gC-5OS"/>
+                            <constraint firstItem="SBJ-M4-Fem" firstAttribute="leading" secondItem="zSm-Q6-xJb" secondAttribute="leading" id="QbD-Kn-O19"/>
                             <constraint firstAttribute="centerX" secondItem="43q-br-z9n" secondAttribute="centerX" id="YA0-pF-McT"/>
                             <constraint firstItem="4Xp-Qc-j7f" firstAttribute="top" secondItem="3rG-en-9aL" secondAttribute="bottom" constant="3" id="diJ-g4-EHz"/>
+                            <constraint firstAttribute="trailing" secondItem="SBJ-M4-Fem" secondAttribute="trailing" id="eNd-xd-6yt"/>
                             <constraint firstItem="GyD-m3-FHe" firstAttribute="top" secondItem="3d0-Z1-VrK" secondAttribute="bottom" id="hVK-2n-Lnu"/>
                             <constraint firstAttribute="trailingMargin" secondItem="3d0-Z1-VrK" secondAttribute="trailing" constant="-20" id="hcw-im-shO"/>
                             <constraint firstItem="43q-br-z9n" firstAttribute="top" secondItem="3d0-Z1-VrK" secondAttribute="bottom" constant="-21" id="i46-aK-GYq"/>
-                            <constraint firstItem="GyD-m3-FHe" firstAttribute="leading" secondItem="zSm-Q6-xJb" secondAttribute="leadingMargin" constant="-16" id="khb-2i-v9k"/>
                             <constraint firstItem="SBJ-M4-Fem" firstAttribute="top" secondItem="Aev-lV-R2h" secondAttribute="bottom" id="pZ6-bg-KY1"/>
                             <constraint firstAttribute="trailingMargin" secondItem="uIR-tG-14m" secondAttribute="trailing" constant="-16" id="tdV-BG-WgF"/>
                         </constraints>
@@ -220,7 +220,7 @@
         <!--Plan Options Table View Controller-->
         <scene sceneID="JN3-LI-Hcq">
             <objects>
-                <tableViewController id="uVh-vc-fgi" customClass="PlanOptionsTableViewController" customModule="PrincipallyCoreDataTest" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="uVh-vc-fgi" customClass="PlanOptionsTableViewController" customModule="Principally" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="MZA-kj-Gsu">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="343"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -347,7 +347,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="%" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jEZ-i4-ZAx" customClass="ParkedTextField" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="%" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jEZ-i4-ZAx" customClass="ParkedTextField" customModule="Principally" customModuleProvider="target">
                                                     <rect key="frame" x="218" y="7" width="80" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
@@ -514,7 +514,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="%" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jpu-Dl-ZCI" customClass="ParkedTextField" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="%" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jpu-Dl-ZCI" customClass="ParkedTextField" customModule="Principally" customModuleProvider="target">
                                                     <rect key="frame" x="187" y="7" width="77" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
@@ -1033,7 +1033,7 @@
         <!--Plan Options Info-->
         <scene sceneID="57n-ea-Rn1">
             <objects>
-                <viewController modalTransitionStyle="crossDissolve" modalPresentationStyle="overCurrentContext" id="Sp5-oh-1Me" customClass="PlanOptionsInfo" customModule="PrincipallyCoreDataTest" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalTransitionStyle="crossDissolve" modalPresentationStyle="overCurrentContext" id="Sp5-oh-1Me" customClass="PlanOptionsInfo" customModule="Principally" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ymP-0u-DdT"/>
                         <viewControllerLayoutGuide type="bottom" id="UwE-nT-3tH"/>
@@ -1092,7 +1092,7 @@
         <!--Compare View Controller-->
         <scene sceneID="hVu-LA-YdK">
             <objects>
-                <viewController id="FP7-VE-qkm" customClass="CompareViewController" customModule="PrincipallyCoreDataTest" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="FP7-VE-qkm" customClass="CompareViewController" customModule="Principally" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="4Kh-fm-99J"/>
                         <viewControllerLayoutGuide type="bottom" id="6BL-ci-Upj"/>
@@ -1100,22 +1100,7 @@
                     <view key="view" contentMode="scaleToFill" id="XjN-xe-iwt">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rbB-bI-9td">
-                                <rect key="frame" x="137" y="417" width="46" height="30"/>
-                                <state key="normal" title="Button">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="RestartButton:" destination="FP7-VE-qkm" eventType="touchUpInside" id="M0g-xY-SqX"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" red="0.79226005077362061" green="0.7181098461151123" blue="0.48854580521583557" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="centerX" secondItem="rbB-bI-9td" secondAttribute="centerX" id="KWB-cM-JQe"/>
-                            <constraint firstItem="6BL-ci-Upj" firstAttribute="top" secondItem="rbB-bI-9td" secondAttribute="bottom" constant="8" id="tGv-kz-ptg"/>
-                        </constraints>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="F3C-aA-wxk"/>
                 </viewController>
@@ -1136,13 +1121,13 @@
         <!--Loans-->
         <scene sceneID="RxR-Mu-P94">
             <objects>
-                <tableViewController title="Your Loans" id="U5Z-oY-hoU" userLabel="Loans" customClass="LoanEntryTableViewController" customModule="PrincipallyCoreDataTest" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Your Loans" id="U5Z-oY-hoU" userLabel="Loans" customClass="LoanEntryTableViewController" customModule="Principally" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OJr-aY-xIT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="LoanCellRedux" id="k4g-uK-5HU" customClass="LoanTableViewCell" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="LoanCellRedux" id="k4g-uK-5HU" customClass="LoanTableViewCell" customModule="Principally" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="k4g-uK-5HU" id="lwb-T7-wZU">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -1191,7 +1176,7 @@
         <!--Loans-->
         <scene sceneID="dUc-da-yEy">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="HTK-Sk-kDb" customClass="NavController" customModule="PrincipallyCoreDataTest" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="HTK-Sk-kDb" customClass="NavController" customModule="Principally" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Loans" image="LoansRedux" id="Ntu-7M-wjX"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="J60-cP-AWK">
@@ -1210,7 +1195,7 @@
         <!--Test Loan Entry View Controller-->
         <scene sceneID="SN3-A4-DLA">
             <objects>
-                <viewController id="yPz-Dl-BYC" customClass="TestLoanEntryViewController" customModule="PrincipallyCoreDataTest" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="yPz-Dl-BYC" customClass="TestLoanEntryViewController" customModule="Principally" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bOh-Fv-bm5"/>
                         <viewControllerLayoutGuide type="bottom" id="Zk4-Kx-G9s"/>
@@ -1244,10 +1229,10 @@
                                     <constraint firstAttribute="height" constant="4" id="Et7-pw-AR9"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ihh-pm-6z1" customClass="ScenarioTypeView" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ihh-pm-6z1" customClass="ScenarioTypeView" customModule="Principally" customModuleProvider="target">
                                 <rect key="frame" x="90" y="67" width="140" height="43"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1il-Ip-Fvk" customClass="SelectLoanTypeView" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1il-Ip-Fvk" customClass="SelectLoanTypeView" customModule="Principally" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="140" height="43"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="taw-dP-xzN">
@@ -1380,7 +1365,7 @@
         <!--Balance Interest Table View Controller-->
         <scene sceneID="FrH-y6-wMB">
             <objects>
-                <tableViewController id="2cm-Ey-HaN" customClass="BalanceInterestTableViewController" customModule="PrincipallyCoreDataTest" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="2cm-Ey-HaN" customClass="BalanceInterestTableViewController" customModule="Principally" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="N5p-Go-9r0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1428,7 +1413,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="e6S-ZU-d5W" id="mfV-sc-zxD">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QQ6-TV-nDu" customClass="ParkedTextField" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QQ6-TV-nDu" customClass="ParkedTextField" customModule="Principally" customModuleProvider="target">
                                                     <rect key="frame" x="165" y="12" width="133" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="2AI-mK-592"/>
@@ -1479,7 +1464,7 @@
         <!--Payment Container Table View Controller-->
         <scene sceneID="XHm-bS-Iel">
             <objects>
-                <tableViewController id="LTU-Cf-wn4" customClass="PaymentContainerTableViewController" customModule="PrincipallyCoreDataTest" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="LTU-Cf-wn4" customClass="PaymentContainerTableViewController" customModule="Principally" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="cXr-uU-PLx">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="252"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1647,7 +1632,7 @@
         <!--Edit Add Another Screen View Controller-->
         <scene sceneID="RuG-6f-963">
             <objects>
-                <viewController id="NkJ-Ye-flW" customClass="EditAddAnotherScreenViewController" customModule="PrincipallyCoreDataTest" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="NkJ-Ye-flW" customClass="EditAddAnotherScreenViewController" customModule="Principally" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Esd-AL-nxq"/>
                         <viewControllerLayoutGuide type="bottom" id="Kjb-g3-6Ka"/>
@@ -1716,7 +1701,7 @@
         <!--Content View Controller-->
         <scene sceneID="07E-RI-dRh">
             <objects>
-                <viewController storyboardIdentifier="ContentViewController" id="PbA-WZ-bfr" customClass="ContentViewController" customModule="PrincipallyCoreDataTest" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ContentViewController" id="PbA-WZ-bfr" customClass="ContentViewController" customModule="Principally" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="mlP-Kz-umd"/>
                         <viewControllerLayoutGuide type="bottom" id="dNu-dU-UjR"/>
@@ -1725,14 +1710,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, World" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E43-YP-r6S">
-                                <rect key="frame" x="26" y="28" width="94" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E43-YP-r6S">
+                                <rect key="frame" x="26" y="28" width="64" height="28"/>
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="23"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iod-3z-0UT">
-                                <rect key="frame" x="16" y="86" width="288" height="462"/>
+                                <rect key="frame" x="16" y="93" width="288" height="455"/>
                                 <color key="backgroundColor" red="0.57823938129999997" green="0.81487834449999996" blue="0.82746112350000001" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </subviews>
@@ -1758,7 +1743,7 @@
         <!--Graph View Controller-->
         <scene sceneID="Pm0-mR-ZZK">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="67K-z5-R83" customClass="GraphViewController" customModule="PrincipallyCoreDataTest" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="67K-z5-R83" customClass="GraphViewController" customModule="Principally" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="WKS-If-oX0"/>
                         <viewControllerLayoutGuide type="bottom" id="k9d-OY-Ddf"/>
@@ -1767,7 +1752,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="343"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aUI-FI-mJJ" customClass="GraphOfScenario" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aUI-FI-mJJ" customClass="GraphOfScenario" customModule="Principally" customModuleProvider="target">
                                 <rect key="frame" x="21" y="31" width="278" height="145"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l2k-Qx-Tq1">
@@ -1955,7 +1940,7 @@
         <!--Repayment-->
         <scene sceneID="bqd-l8-GaY">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="AQf-9C-hhY" customClass="NavController" customModule="PrincipallyCoreDataTest" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="AQf-9C-hhY" customClass="NavController" customModule="Principally" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Repayment" image="KnobsRedux" id="pnj-JK-qnp"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="95I-RT-Bs4">

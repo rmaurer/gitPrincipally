@@ -266,7 +266,7 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
     func getNSNumberFromExtraPaymentString(input:String) -> NSNumber {
         var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
         cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
-        println(cleaninput)
+        //println(cleaninput)
         if NSString(string: cleaninput).length == 0 {
             return 0
         }
@@ -286,7 +286,7 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
     func getNSNumberFromInterestRateString(input:String) -> NSNumber {
         var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
         cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
-        println(cleaninput)
+        //println(cleaninput)
         if NSString(string: cleaninput).length == 0 {
             return 0
         }
@@ -307,7 +307,7 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
     func getNSNumberFromAGIString(input:String) -> NSNumber {
         var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
         cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
-        println(cleaninput)
+        //println(cleaninput)
         if NSString(string: cleaninput).length == 0 {
             return 0
         }
@@ -327,7 +327,7 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
     func getNSNumberFromFamilySizeString(input:String) -> NSNumber {
         var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
         cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
-        println(cleaninput)
+        //println(cleaninput)
         if NSString(string: cleaninput).length == 0 {
             return 0
         }
@@ -347,7 +347,7 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
     func getNSNumberFromAnnualSalaryIncreaseString(input:String) -> NSNumber {
         var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
         cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
-        println(cleaninput)
+        //println(cleaninput)
         if NSString(string: cleaninput).length == 0 {
             return 0
         }
@@ -368,7 +368,7 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
     func getNSNumberFromOneTimePayoffString(input:String) -> NSNumber {
         var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
         cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
-        println(cleaninput)
+        //println(cleaninput)
         if NSString(string: cleaninput).length == 0 {
             return 0
         }

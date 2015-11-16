@@ -16,17 +16,10 @@ class CompareViewController: UIViewController, UIPageViewControllerDataSource {
     var pageViewController:UIPageViewController!
     var scenarioArray:[Scenario]!
     
-    @IBAction func RestartButton(sender: AnyObject) {
-        println("restartbutton worked") 
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        for scenario in scenarioArray {
-            println("some scenarios got passed to the compareViewController")
-            println(scenario.name)
-        }
+
         
         pageImages = ["Total Amount Paid Back","Total Principal Paid","Total Interest Paid","Any Forgiven Amount","Initial Payment","Total Repayment Term"]
         pageColors = [UIColor.whiteColor(), UIColor.whiteColor(), UIColor.whiteColor(), UIColor.whiteColor(), UIColor.whiteColor(), UIColor.whiteColor()]

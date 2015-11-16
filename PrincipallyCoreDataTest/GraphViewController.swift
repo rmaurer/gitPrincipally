@@ -62,7 +62,7 @@ class GraphViewController: UIViewController {
             self.graphLine.frame = graphLineFrame
             
             }, completion: nil)
-        println(graphLine.frame.origin.x)
+        //println(graphLine.frame.origin.x)
         //graphOfEnteredLoan.CAWhiteLine.timeOffset = CFTimeInterval(sender.value / totalMonths)
         
         var currentPayment = concatPayment[Int(sender.value)] as! MonthlyPayment
@@ -98,7 +98,7 @@ class GraphViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        println("graphView viewdidload was run") 
+        //println("graphView viewdidload was run")
         
         // Do any additional setup after loading the view.
     }
@@ -135,7 +135,7 @@ class GraphViewController: UIViewController {
             else {
                 println("yes, extra payments")
                 currentScenario.standardFlatExtraPayment_WindUp(managedObjectContext, extra:amountOfExtraPayments, MWEPTotal: frequencyOfExtraPayments, paymentTerm:120)
-                println(currentScenario.scenarioDescription)
+                //println(currentScenario.scenarioDescription)
                 wasTheScenarioCreated = true
             }
 
@@ -152,7 +152,7 @@ class GraphViewController: UIViewController {
             else {
                 println("yes, extra payments")
                 currentScenario.standardFlatExtraPayment_WindUp(managedObjectContext, extra:amountOfExtraPayments, MWEPTotal: frequencyOfExtraPayments, paymentTerm:300)
-                println(currentScenario.scenarioDescription)
+                //println(currentScenario.scenarioDescription)
                 wasTheScenarioCreated = true
 
             }
@@ -165,7 +165,7 @@ class GraphViewController: UIViewController {
         case "Refi":
             println("refi")
             if interestRateOnRefi == -1 || oneTimePayoff == -1 {
-                println("there was an error in loading interest and nothing should be fun. Variable bool, increase in interest, and refinance term are switch calculations so should not through an error")
+                //println("there was an error in loading interest and nothing should be fun. Variable bool, increase in interest, and refinance term are switch calculations so should not through an error")
                 wasTheScenarioCreated = false
             }
             
@@ -381,10 +381,6 @@ class GraphViewController: UIViewController {
             self.saveScenarioSettings()
             currentScenario.scenarioDescription = currentScenario.settings.createDescription()
             currentScenario.generateRandomButConstantColor(managedObjectContext)
-            println("COLORS")
-            println(currentScenario.red)
-                        println(currentScenario.green)
-                        println(currentScenario.blue)
         }
         
         

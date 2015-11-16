@@ -283,6 +283,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0640;
+				TargetAttributes = {
+					D3D9825F035415D1A5460418 = {
+						DevelopmentTeam = 5L7W935GL3;
+					};
+				};
 			};
 			buildConfigurationList = 37F6D6D318239A6F1B6DAC90 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -379,6 +384,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CAD0B3702A8855254C6AA1D3 /* Pods-PrincipallyCoreDataTest-ChameleonFramework-Private.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -394,6 +400,7 @@
 				MODULEMAP_FILE = "Target Support Files/Pods-PrincipallyCoreDataTest-ChameleonFramework/Pods-PrincipallyCoreDataTest-ChameleonFramework.modulemap";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = ChameleonFramework;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -498,6 +505,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CAD0B3702A8855254C6AA1D3 /* Pods-PrincipallyCoreDataTest-ChameleonFramework-Private.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -513,6 +521,7 @@
 				MODULEMAP_FILE = "Target Support Files/Pods-PrincipallyCoreDataTest-ChameleonFramework/Pods-PrincipallyCoreDataTest-ChameleonFramework.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = ChameleonFramework;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";

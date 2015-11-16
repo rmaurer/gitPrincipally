@@ -338,11 +338,11 @@ class Scenario: NSManagedObject {
         
         for year in 1...term{
             var monthlyPAYEpayment = self.percentageOfDiscretionaryIncome(Double(cappedPercentOfDiscretionaryIncome), AGI:AGI, familySize:familySize, year:year, increase:increase)
-            println("we got into IBR Loan wind up Unsubdizied and the year is \(year)")
-            println("the standard payment would be ")
-            println(monthlyStandardPayment)
-            println("the PAYE payment is")
-            println(monthlyPAYEpayment)
+            //println("we got into IBR Loan wind up Unsubdizied and the year is \(year)")
+            //println("the standard payment would be ")
+            //println(monthlyStandardPayment)
+            //println("the PAYE payment is")
+            //println(monthlyPAYEpayment)
             
             if monthlyStandardPayment > monthlyPAYEpayment {
                 var proRataPAYEPayment = monthlyPAYEpayment * (loan.balance.doubleValue / PAYE_EligibleLoanBalance)
@@ -613,10 +613,10 @@ class Scenario: NSManagedObject {
         for loan in eligible_lArray{
             ICR_Eligible_Interest += loan.interest.doubleValue * (loan.balance.doubleValue / ICR_Eligible_Balance)
         }
-        println("we are in ICR limited term and the interest/balance is")
-        println(ICR_Eligible_Balance)
-        println(ICR_Eligible_Interest)
-        println("ICR will fun for \(term) number of years")
+        //println("we are in ICR limited term and the interest/balance is")
+        //println(ICR_Eligible_Balance)
+        //println(ICR_Eligible_Interest)
+        //println("ICR will fun for \(term) number of years")
         var woundUpLoan = self.ICR_LimitedTerm_LoanWindUp(ICR_Eligible_Balance, interest: ICR_Eligible_Interest, AGI:AGI, familySize:familySize, percentageincrease:percentageincrease, term:term, headOfHousehold:headOfHousehold)
         
         //take into account if you aren't going into repyament just yet
@@ -667,9 +667,9 @@ class Scenario: NSManagedObject {
         for loan in eligible_lArray{
             ICR_Eligible_Interest += loan.interest.doubleValue * (loan.balance.doubleValue / ICR_Eligible_Balance)
         }
-        println("we are in ICR with PILF and the interest/balance is")
-        println(ICR_Eligible_Balance)
-        println(ICR_Eligible_Interest)
+        //println("we are in ICR with PILF and the interest/balance is")
+        //println(ICR_Eligible_Balance)
+        //println(ICR_Eligible_Interest)
         var woundUpLoan = self.ICR_Standard_Or_PILF_OneLoan_WindUp(ICR_Eligible_Balance, interest: ICR_Eligible_Interest, AGI:AGI, familySize:familySize, percentageincrease:percentageincrease, term:term, headOfHousehold:headOfHousehold)
         
         while monthsUntilRepayment > 0 {
@@ -809,10 +809,10 @@ class Scenario: NSManagedObject {
                 bbalance = cap
             }
         }
-        println("here is the capitalized interest")
-        println(capitalizedInterestToReturn)
-        println("here is the cancelled balance")
-        println(bbalance)
+        //println("here is the capitalized interest")
+        //println(capitalizedInterestToReturn)
+        //println("here is the cancelled balance")
+        //println(bbalance)
         return (paymentArrayToReturn, capitalizedInterestToReturn, bbalance)
     }
     
@@ -831,20 +831,20 @@ class Scenario: NSManagedObject {
         
         //second, calculate 20% of discretionary income 
         let twentyPercentOfDiscretionaryIncomeMonthly = self.ICR_percentageOfDiscretionaryIncome(20, AGI:AGI, familySize:familySize, year:year, increase:percentageIncrease)
-        println("here's the twelve year amortaized monthly")
-            println(twelveYearMonthlyPayment)
-            println("here's the percent")
-            println(percentmultiplier)
-            println("here's the 12year times percent")
-            println(twelveYearTimesIncomePercentage)
-            println("here's the 20% of the discretionary income")
-            println(twentyPercentOfDiscretionaryIncomeMonthly)
+        //println("here's the twelve year amortaized monthly")
+          //  println(twelveYearMonthlyPayment)
+           // println("here's the percent")
+           // println(percentmultiplier)
+           // println("here's the 12year times percent")
+           // println(twelveYearTimesIncomePercentage)
+           // println("here's the 20% of the discretionary income")
+           // println(twentyPercentOfDiscretionaryIncomeMonthly)
         //return the lesser of the two
         return minElement([twelveYearTimesIncomePercentage,twentyPercentOfDiscretionaryIncomeMonthly])
     }
     
     func ICR_getIncomePercentage(income:Double, headOfHousehold:Bool) -> Double {
-        println("got into getIncomePercentage")
+        //println("got into getIncomePercentage")
         
         let singleArray : [(income:Double, percent:Double)] = [(income:11150, percent:0.5500),
         (income:15342, percent:0.5779),
@@ -877,9 +877,9 @@ class Scenario: NSManagedObject {
         
         if headOfHousehold {
             for index in 1...hoHArray.count-1 {
-                println("got into the for loop in getIncomePercentage")
-                println(income)
-                println( hoHArray[index].income)
+                //println("got into the for loop in getIncomePercentage")
+                //println(income)
+                //println( hoHArray[index].income)
                 if income <= hoHArray[index].income {
                     let i2 = hoHArray[index].income
                     let i1 = hoHArray[index-1].income
@@ -911,7 +911,7 @@ class Scenario: NSManagedObject {
     }
     
     func ICR_percentageOfDiscretionaryIncome(percentOfDI: Double, AGI:Double, familySize:Int, year:Int, increase:Double) -> Double {
-        println([percentOfDI, AGI, familySize, year, increase])
+        //println([percentOfDI, AGI, familySize, year, increase])
         //if all eligible laons were on a standard 10-year repayment plan, it would exceed 15 percent of their discretionary income
         //this will return
         //ASSUMPTION: Federal poverty guidelines for 48 continguous states
@@ -1173,7 +1173,7 @@ class Scenario: NSManagedObject {
     func PAYE_Standard_Or_PILF_Wrapper(managedObjectContext: NSManagedObjectContext, AGI:Double, familySize:Int, percentageincrease:Double, term:Int){
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         
-        println("we are in PAYE standard")
+        //println("we are in PAYE standard")
         
         let oSet = defaultScenario.allLoans
         var cappedPercentage = 10
@@ -1189,7 +1189,7 @@ class Scenario: NSManagedObject {
         
         for loan in lArray{
             if loan.loanType == "Direct, Unsubs."  || loan.loanType == "Grad PLUS" {
-                println("It properly realized that the loan is unsubsidized")
+                //println("It properly realized that the loan is unsubsidized")
                 var woundUpLoan = self.IBR_Standard_Limited_LoanWindUp_Unsubsidized(loan, cappedPercentOfDiscretionaryIncome:cappedPercentage, AGI:AGI, familySize:familySize, increase:percentageincrease, term:term, isIBR:false)
                 
                 self.addPaymentsForOneLoan(managedObjectContext, loansPayments: woundUpLoan.pArray)
@@ -1276,7 +1276,7 @@ class Scenario: NSManagedObject {
     
     
     func percentageOfDiscretionaryIncome(percentOfDI: Double, AGI:Double, familySize:Int, year:Int, increase:Double) -> Double {
-        println([percentOfDI, AGI, familySize, year, increase])
+        //println([percentOfDI, AGI, familySize, year, increase])
         //if all eligible laons were on a standard 10-year repayment plan, it would exceed 15 percent of their discretionary income
         //this will return
         //ASSUMPTION: Federal poverty guidelines for 48 continguous states
@@ -1284,6 +1284,28 @@ class Scenario: NSManagedObject {
         var adjustedGrossIncome : Double = AGI
         println("the AGI is \(AGI)")
         switch familySize{
+        
+        case 1:
+            FPG = 11770
+        case 2:
+            FPG = 15930
+        case 3:
+            FPG = 20090
+        case 4:
+            FPG = 24250
+        case 5:
+            FPG = 28410
+        case 6:
+            FPG = 32570
+        case 7:
+            FPG = 36730
+        case 8:
+            FPG = 40890
+        default:
+            FPG = 11770
+}
+        /*
+        //old federal poverty guidelines for testing
         case 1:
             FPG = 11670
         case 2:
@@ -1303,9 +1325,9 @@ class Scenario: NSManagedObject {
         default:
             FPG = 11670
 }
-        println("after the switch, the correct federal poverty guideline is \(FPG)")
+        //println("after the switch, the correct federal poverty guideline is \(FPG)")
 
-        /*case 1:
+        case 1:
             FPG = 11770
         case 2:
             FPG = 15930
@@ -1329,16 +1351,16 @@ class Scenario: NSManagedObject {
         let OneHundredFiftyPercentOfFPG = FPG * 1.5
         
         adjustedGrossIncome = adjustedGrossIncome * pow(1 + (increase/100),Double(year - 1))
-        println("the AGI adjusted for the yearly increase is \(adjustedGrossIncome)")
+        //println("the AGI adjusted for the yearly increase is \(adjustedGrossIncome)")
         let discretionaryIncome = maxElement([(adjustedGrossIncome - OneHundredFiftyPercentOfFPG), 0])
         
-        println("your discretionary income is \(discretionaryIncome)")
+        //println("your discretionary income is \(discretionaryIncome)")
 
         let percentOfDiscretionaryIncome = (percentOfDI/100) * discretionaryIncome
         let percentOfDiscretionaryIncomeForEachMonth = percentOfDiscretionaryIncome / 12
         
-        println(percentOfDiscretionaryIncome)
-                println(percentOfDiscretionaryIncomeForEachMonth)
+        //println(percentOfDiscretionaryIncome)
+          //      println(percentOfDiscretionaryIncomeForEachMonth)
         return percentOfDiscretionaryIncomeForEachMonth
         
     }
@@ -1538,12 +1560,12 @@ class Scenario: NSManagedObject {
         //initial variables
         let clearColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
         let linePoints = self.makeArrayOfAllInterestPayments()
-        println("this is scenario:")
-        println(self.name)
-        println("Here's the number of line points in the array")
-        println(linePoints.count)
-        println("and here is hte array itself")
-        println(linePoints)
+        //println("this is scenario:")
+        //println(self.name)
+        //println("Here's the number of line points in the array")
+        //println(linePoints.count)
+        //println("and here is hte array itself")
+        //println(linePoints)
         let width = rect.width
         let height = rect.height
         let newCALayer = CALayer()
@@ -1713,7 +1735,7 @@ class Scenario: NSManagedObject {
         case "December":
             return 12
         default:
-            println("Month didn't match")
+            //println("Month didn't match")
             return 1
         }
     }
@@ -1745,7 +1767,7 @@ class Scenario: NSManagedObject {
         case 12:
             return "December"
         default:
-            println("Month didn't match")
+            //println("Month didn't match")
             return "January"
         }
     }

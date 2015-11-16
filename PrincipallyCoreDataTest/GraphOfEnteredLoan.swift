@@ -29,7 +29,7 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
 
         override func drawRect(rect: CGRect) {
             
-            println("got into drawRect")
+            //println("got into drawRect")
             
             if enteredLoan != nil {
             
@@ -172,7 +172,7 @@ class GraphOfEnteredLoan: UIView { //add IBDesignable if you want to see updates
                 let nextPoint = CGPoint(x:columnXPoint(i),
                     y:columnYPoint(interestGraphPoints[i]))
                 graphPath.addLineToPoint(nextPoint)
-                println(interestGraphPoints[i])
+                //println(interestGraphPoints[i])
             }
 
             

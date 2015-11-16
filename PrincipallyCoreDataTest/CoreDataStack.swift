@@ -20,10 +20,9 @@ class GlobalLoanCount{
 
 class principallyApp{
     func printAllScenariosAndLoans() {
-        println("This is a print out of all Scenarios and all Loans attached to each scenario.  The numbers in parentheses are the number of MPs in the concatenated repayment and the individual loan repayments")
-        println("---")
-        println("---")
-        println("---")
+        //println("This is a print out of all Scenarios and all Loans attached to each scenario.  The numbers in parentheses are the number of MPs in the concatenated repayment and the individual loan repayments")
+       // println("---")
+       // println("---")
         
         var managedObjectContext = CoreDataStack.sharedInstance.context as NSManagedObjectContext!
         //2 - Create the Fetch Request

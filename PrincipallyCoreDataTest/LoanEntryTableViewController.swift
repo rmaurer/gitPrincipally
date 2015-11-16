@@ -37,23 +37,24 @@ class LoanEntryTableViewController: UITableViewController {
         let width = self.tableView.frame.width
         var dynamicView = firstUseOfTableViewReminder(frame:CGRectMake(0,0,width,height))
         dynamicView.tag = 10112
-        println("viewDidAppear was used")
+        //println("viewDidAppear was used")
         
         if myLoans.count == 0 {
-            println("myloans - 0")
+            //println("myloans - 0")
             dynamicView.backgroundColor=UIColor.whiteColor()
-            var label = UILabel(frame: CGRectMake(0, 0, 300, 400))
+            var label = UILabel(frame: CGRectMake(0, 0, 250, 400))
             label.center = CGPointMake(width/2, height/2)
-            label.textAlignment = NSTextAlignment.Center
-            label.text = "Welcome! To get started, you will need to enter information on your federal loans.  If you are not sure how much you owe, talk to your financial aid office, your servicers, or try going to the Department of Education's National Student Loan Data System.  Once you have all the information, get started by using the plus button above.  Once you've entered all of your loans, switch over to the repayment half of the app to find out more about your repayment options."
-             label.numberOfLines = 0
+            //label.textAlignment = NSTextAlignment.Center
+            label.text = "Welcome! To get started, you will need to enter information on your federal loans.  If you are not sure how much you owe, talk to your loan servicers, or try going to the Department of Education's National Student Loan Data System.  Once you have all the information, get started by using the plus button above.  Then, switch over to the repayment half of the program to find out more about your repayment options.  Remember, this program cannot guarantee your repayment plans.  We make various assumptions, and this program is only meant to provide an estimate."
+            label.font = UIFont(name: label.font.fontName, size: 13)
+            label.numberOfLines = 0
             label.textColor = UIColor.lightGrayColor()
             dynamicView.addSubview(label)
             dynamicView.hidden = false
             self.view.addSubview(dynamicView)
         }
         else {
-            println("myloans don't equal 0")
+            //println("myloans don't equal 0")
             for child in self.view.subviews {
                 if child.tag == 10112 {
                     child.removeFromSuperview()
@@ -82,12 +83,12 @@ class LoanEntryTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        println("got into cell for Row at Index Path")
+        //println("got into cell for Row at Index Path")
         var cell = tableView.dequeueReusableCellWithIdentifier("loanCellRedux") as? UITableViewCell
         if cell == nil {
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "loanCellRedux")}
         let newLoan = myLoans[indexPath.row] as! Loan
-        println(indexPath.row)
+        //println(indexPath.row)
         cell!.textLabel!.text = newLoan.valueForKey("name") as? String
         return cell!
     }

@@ -35,7 +35,7 @@ class Compare_5_InitialPaymentForReal: UIView {
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func drawRect(rect: CGRect) {
-        println("COMPARE 1 Draw Rect was called")
+        //println("COMPARE 1 Draw Rect was called")
         
         if scenarioArray != nil {
             let height = rect.height

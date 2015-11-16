@@ -209,7 +209,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
     func getNSNumberFromString(input:String) -> NSNumber {
         var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
         cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
-        println(cleaninput)
+        //println(cleaninput)
         if NSString(string: cleaninput).length == 0 {
             let alert = UIAlertView()
             alert.title = "Alert"

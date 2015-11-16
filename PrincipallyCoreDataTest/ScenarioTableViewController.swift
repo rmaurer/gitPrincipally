@@ -60,14 +60,14 @@ class ScenarioTableViewController: UITableViewController {
             //we clear out compareScenario
             self.tableView.setEditing(false, animated: true)
             compareScenarioArray.removeAll(keepCapacity: true)
-            println("you cleaned out the compareScenarioArray")
+            //println("you cleaned out the compareScenarioArray")
             compareButtonOutlet.title = "Compare"
             tableIsNotInSelectionMode = !tableIsNotInSelectionMode
         }
         defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         myScenarios = CoreDataStack.getAllScenarios(CoreDataStack.sharedInstance)()
         self.tableView.reloadData()
-        println("tableViewDidAppear was called")
+        //println("tableViewDidAppear was called")
     }
 
     
@@ -89,16 +89,16 @@ class ScenarioTableViewController: UITableViewController {
         else {
             compareScenarioArray.append(myScenarios[indexPath.row] as! Scenario)
             compareButtonOutlet.title = "Compare (\(compareScenarioArray.count))"
-            println("multiple selections?? here is the length \(compareScenarioArray.count)")
+            //println("multiple selections?? here is the length \(compareScenarioArray.count)")
         }
         
     }
     
     override func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
         for index in 0...compareScenarioArray.count-1 {
-            println("here is the information in didDeselect")
-            println(compareScenarioArray.count)
-            println(index)
+            //println("here is the information in didDeselect")
+            //println(compareScenarioArray.count)
+            //println(index)
             if compareScenarioArray[index].name == (myScenarios[indexPath.row] as! Scenario).name {
                 compareScenarioArray.removeAtIndex(index)
                 break
@@ -112,7 +112,7 @@ class ScenarioTableViewController: UITableViewController {
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        println("cell for row at index path has been called") 
+        //println("cell for row at index path has been called")
         var cell = tableView.dequeueReusableCellWithIdentifier("scenarioCell", forIndexPath: indexPath) as? UITableViewCell
         
         if cell == nil {

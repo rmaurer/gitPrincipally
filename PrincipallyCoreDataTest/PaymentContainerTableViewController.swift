@@ -111,7 +111,9 @@ class PaymentContainerTableViewController: UITableViewController, UIPickerViewDa
                 return 0}
         case 2:
             if segmentedOutlet.selectedSegmentIndex == 0 {
+                self.tableView.scrollEnabled = false
                 return 0
+
             }
             else{
                 TermLabel.hidden = true
@@ -119,7 +121,15 @@ class PaymentContainerTableViewController: UITableViewController, UIPickerViewDa
                 alreadyPaidStepper.hidden = true
                 dateLabel.hidden = false
                 pickerOutlet.hidden = false
-                return tableView.frame.size.height - 120}
+                var amount = maxElement([125, tableView.frame.size.height - 120])
+                if 125 > tableView.frame.size.height - 120 {
+                    self.tableView.scrollEnabled = true
+                }
+                else {
+                    self.tableView.scrollEnabled = false
+                }
+                return amount
+            }
         case 3:
             return 60
         case 4:
