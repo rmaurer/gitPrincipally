@@ -461,8 +461,6 @@ class GraphViewController: UIViewController {
         let numberFormatter = NSNumberFormatter()
         numberFormatter.numberStyle = .CurrencyStyle
         
-        numberFormatter.stringFromNumber(currentPayment.interest)
-        
         let mpInterest = numberFormatter.stringFromNumber(currentPayment.interest)!//round(currentPayment.interest.floatValue * 100) / 100
         let mpPrincipal = numberFormatter.stringFromNumber(currentPayment.principal)!//round(currentPayment.principal.floatValue * 100) / 100
         let mpTotal = numberFormatter.stringFromNumber(currentPayment.totalPayment)!//round(currentPayment.totalPayment.floatValue * 100) / 100

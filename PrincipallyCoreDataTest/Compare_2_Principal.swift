@@ -90,14 +90,19 @@ class Compare_2_Principal: UIView {
                 CGContextFillRect(context, cancelledRectangle)*/
                 
                 
-                var roundPrincipal = floor(scenarioArray![index].nnewTotalPrincipal.doubleValue * 100) / 100
+                var roundPrincipal = scenarioArray![index].nnewTotalPrincipal
+                let numberFormatter = NSNumberFormatter()
+                numberFormatter.numberStyle = .CurrencyStyle
+                
+                //numberFormatter.stringFromNumber(roundPrincipal)
+                
                 
                 var description : String = "principal"
                 if scenarioArray![index].nnewTotalCapitalizedInterest.doubleValue > 0 {
                     description = "principal and capitalized interest"
                 }
                 
-                var s: NSString = "\(scenarioArray![index].name): $\(roundPrincipal) in \(description)"
+                var s: NSString = "\(scenarioArray![index].name): \(numberFormatter.stringFromNumber(roundPrincipal)!) in \(description)"
                 let fieldFont = UIFont(name: "Helvetica Neue", size: 14)
                 s.drawWithBasePoint(CGPointMake(startX+lineWidth, bounds.height-20), angle: CGFloat(-M_PI_2), font: fieldFont!)
                 

@@ -124,10 +124,22 @@ class ScenarioSettings: NSManagedObject {
         }
         
         var listofLoans : String = ""
-        for index in 0...eligible.count-2 {
-            listofLoans += " \(eligible[index].name),"
+        
+        if eligible.count > 2 {
+            for index in 0...eligible.count-2 {
+                listofLoans += " \(eligible[index].name),"
+            }
+            listofLoans += " and \(eligible[eligible.count-1].name)"
         }
-        listofLoans += " and \(eligible[eligible.count-1].name)"
+            
+        else if eligible.count == 2 {
+            listofLoans = "\(eligible[0].name) and \(eligible[1].name)"
+        }
+            
+        else if eligible.count == 1{
+            listofLoans = "\(eligible[0].name)"
+        }
+
         
         return listofLoans
         
@@ -192,7 +204,7 @@ class ScenarioSettings: NSManagedObject {
             return " All your loans are eligible to enter PAYE repayment."
         }
         else if eligible.count == 1 {
-            return " One of your loans, \(eligible[0].name), is eligible for PAYE repayment and cancellation in 10 years.  The rest of the loans are entered here on a 10-year repayment plan."
+            return " One of your loans, \(eligible[0].name), is eligible for PAYE repayment and cancellation in 10 years.  The rest of the loans are entered on a 10-year repayment plan."
         }
         else if eligible.count > 1{
             var listofLoans : String = ""
@@ -200,7 +212,7 @@ class ScenarioSettings: NSManagedObject {
                 listofLoans += " \(eligible[index].name),"
             }
             listofLoans += " and \(eligible[eligible.count-1].name)"
-            return "\(listofLoans) are eligible to enter PAYE repayment. The remaining balance on these loans will be cancelled after 10 years. The rest of the loans are entered here on a 10-year repayment plan."
+            return "\(listofLoans) are eligible to enter PAYE repayment. The remaining balance on these loans will be cancelled after 10 years. The rest of the loans are entered on a 10-year repayment plan."
             
         }
         else {return ""}
@@ -229,7 +241,7 @@ class ScenarioSettings: NSManagedObject {
             return " All your loans are eligible to enter ICR repayment."
         }
         else if eligible.count == 1 {
-            return " One of your loans, \(eligible[0].name), is eligible for ICR repayment and cancellation in 10 years.  The rest of the loans are entered here on a 10-year repayment plan."
+            return " One of your loans, \(eligible[0].name), is eligible for ICR repayment and cancellation in 10 years.  The rest of the loans are entered on a 10-year repayment plan."
         }
         else if eligible.count > 1{
             var listofLoans : String = ""
@@ -237,7 +249,7 @@ class ScenarioSettings: NSManagedObject {
                 listofLoans += " \(eligible[index].name),"
             }
             listofLoans += " and \(eligible[eligible.count-1].name)"
-            return "\(listofLoans) are eligible to enter ICR repayment. The remaining balance on these loans will be cancelled after 10 years. The rest of the loans are entered here on a 10-year repayment plan."
+            return "\(listofLoans) are eligible to enter ICR repayment. The remaining balance on these loans will be cancelled after 10 years. The rest of the loans are entered on a 10-year repayment plan."
             
         }
         else {return ""}
@@ -272,7 +284,7 @@ class ScenarioSettings: NSManagedObject {
             string = " All your loans are eligible to enter IBR repayment and be forgiven in 10 years."
         }
         else if eligible.count == 1 {
-            string = " One of your loans, \(eligible[0].name), is eligible for IBR repayment and cancellation in 10 years.  The rest of the loans are entered here on a 10-year repayment plan."
+            string = " One of your loans, \(eligible[0].name), is eligible for IBR repayment and cancellation in 10 years.  The rest of the loans are entered on a 10-year repayment plan."
         }
         else if eligible.count > 1{
             var listofLoans : String = ""
@@ -280,7 +292,7 @@ class ScenarioSettings: NSManagedObject {
                 listofLoans += " \(eligible[index].name),"
             }
             listofLoans += " and \(eligible[eligible.count-1].name)"
-            string = " \(listofLoans) are eligible to enter IBR repayment. The remaining balance on these loans will be cancelled after 10 years.  The rest of the loans are entered here on standard 10-year repayment plan."
+            string = " \(listofLoans) are eligible to enter IBR repayment. The remaining balance on these loans will be cancelled after 10 years.  The rest of the loans are entered on a standard 10-year repayment plan."
             
         }
         
@@ -314,7 +326,7 @@ class ScenarioSettings: NSManagedObject {
             return " All your loans are eligible to enter IBR repayment."
         }
         else if eligible.count == 1 {
-            return " One of your loans, \(eligible[0].name), is eligible to enter IBR repayment.  The rest of the loans are entered here on a 10-year repayment plan."
+            return " One of your loans, \(eligible[0].name), is eligible to enter IBR repayment.  The rest of the loans are entered on a 10-year repayment plan."
         }
         else if eligible.count > 1{
             var listofLoans : String = ""
@@ -322,7 +334,7 @@ class ScenarioSettings: NSManagedObject {
                 listofLoans += " \(eligible[index].name),"
             }
             listofLoans += " and \(eligible[eligible.count-1].name)"
-            return "\(listofLoans) are eligible to enter IBR repayment. The rest of the loans are entered here on a 10-year repayment plan."
+            return "\(listofLoans) are eligible to enter IBR repayment. The rest of the loans are entered on a 10-year repayment plan."
         
         }
         else {return ""}
@@ -357,7 +369,7 @@ class ScenarioSettings: NSManagedObject {
                 listofLoans += " \(eligible[index].name),"
             }
             listofLoans += " and \(eligible[eligible.count-1].name)"
-            return "\(listofLoans) are eligible to enter ICR repayment. The rest of the loans are entered here on a 10-year repayment plan."
+            return "\(listofLoans) are eligible to enter ICR repayment. The rest of the loans are entered on a 10-year repayment plan."
             
         }
         else {return ""}
@@ -384,7 +396,7 @@ class ScenarioSettings: NSManagedObject {
             return " All your loans are eligible to enter PAYE repayment."
         }
         else if eligible.count == 1 {
-            return " One of your loans, \(eligible[0].name), is eligible to enter PAYE repayment.  The rest of the loans are entered here on a 10-year repayment plan."
+            return " One of your loans, \(eligible[0].name), is eligible to enter PAYE repayment.  The rest of the loans are entered on a 10-year repayment plan."
         }
         else if eligible.count > 1{
             var listofLoans : String = ""
@@ -392,7 +404,7 @@ class ScenarioSettings: NSManagedObject {
                 listofLoans += " \(eligible[index].name),"
             }
             listofLoans += " and \(eligible[eligible.count-1].name)"
-            return "\(listofLoans) are eligible to enter PAYE repayment. The rest of the loans are entered here on a 10-year repayment plan."
+            return "\(listofLoans) are eligible to enter PAYE repayment. The rest of the loans are entered on a 10-year repayment plan."
             
         }
         else {return ""}

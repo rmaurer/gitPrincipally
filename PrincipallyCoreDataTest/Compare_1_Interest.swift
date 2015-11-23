@@ -92,14 +92,21 @@ class Compare_1_Interest: UIView {
                 
                 let vvalue = scenarioArray![index].nnewTotalScenarioInterest.doubleValue + scenarioArray![index].nnewTotalPrincipal.doubleValue + scenarioArray![index].forgivenBalance.doubleValue
 
-                var roundTotalPayment = floor(vvalue * 100) / 100
+                let numberFormatter = NSNumberFormatter()
+                numberFormatter.numberStyle = .CurrencyStyle
+                
+                numberFormatter.stringFromNumber(vvalue)
+                
+                
+                
+                //var roundTotalPayment = floor(vvalue * 100) / 100
                 
                 var description : String = "principal"
                 if scenarioArray![index].nnewTotalCapitalizedInterest.doubleValue > 0 {
                     description = "principal and capitalized interest"
                 }
                 
-                var s: NSString = "\(scenarioArray![index].name): $\(roundTotalPayment) paid in total"
+                var s: NSString = "\(scenarioArray![index].name): \(numberFormatter.stringFromNumber(vvalue)!) paid in total"
                 let fieldFont = UIFont(name: "Helvetica Neue", size: 14)
                 s.drawWithBasePoint(CGPointMake(startX+lineWidth, bounds.height-20), angle: CGFloat(-M_PI_2), font: fieldFont!)
                 

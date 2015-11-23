@@ -85,9 +85,19 @@ class Compare_3_InitialPayment: UIView {
                 CGContextFillRect(context, cancelledRectangle)
                 */
                 
-                var roundInterest = floor(scenarioArray![index].nnewTotalScenarioInterest.doubleValue * 100) / 100
                 
-                var s: NSString = "\(scenarioArray![index].name): $\(roundInterest) in interest"
+                
+                var roundInterest = scenarioArray![index].nnewTotalScenarioInterest.doubleValue
+                
+                let numberFormatter = NSNumberFormatter()
+                numberFormatter.numberStyle = .CurrencyStyle
+                
+               // numberFormatter.stringFromNumber(roundInterest)
+                
+                
+                
+                
+                var s: NSString = "\(scenarioArray![index].name): \(numberFormatter.stringFromNumber(roundInterest)!) in interest"
                 let fieldFont = UIFont(name: "Helvetica Neue", size: 14)
                 s.drawWithBasePoint(CGPointMake(startX+lineWidth, bounds.height-20), angle: CGFloat(-M_PI_2), font: fieldFont!)
                 

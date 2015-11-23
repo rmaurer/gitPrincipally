@@ -53,9 +53,10 @@ class Scenario: NSManagedObject {
     @NSManaged var nnewTotalPrincipal : NSNumber
     @NSManaged var forgivenBalance : NSNumber
     @NSManaged var repaymentType : String
-        @NSManaged var red : NSNumber
-        @NSManaged var green : NSNumber
-        @NSManaged var blue : NSNumber
+    @NSManaged var red : NSNumber
+    @NSManaged var green : NSNumber
+    @NSManaged var blue : NSNumber
+    @NSManaged var loansChanged: NSNumber
     @NSManaged var settings: ScenarioSettings
     
     //add an object called "scenario variables" where you store all that information.  type, true fals / numbers, etc, so that you can call it again if need be. 
@@ -119,7 +120,7 @@ class Scenario: NSManagedObject {
         
         for loan in lArray{
             if loan.loanType == "Perkins" {
-                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: loan.standardFlat_WindUpLoan(120)
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: loan.standardFlat_WindUpLoan(120))
             }
             else {
                 self.addPaymentsForOneLoan(managedObjectContext, loansPayments: loan.standardFlat_WindUpLoan(paymentTerm))
@@ -156,6 +157,7 @@ class Scenario: NSManagedObject {
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         let oSet = defaultScenario.allLoans
         //var cumulativePayment : Double = 0
+        println("getEligibleExtendedBalance was called")
         var totalEligibleDirectBalance : Double = 0
         var totalFFELPBalance : Double = 0
         
@@ -172,10 +174,13 @@ class Scenario: NSManagedObject {
                 totalEligibleDirectBalance += loan.balance.doubleValue
             }
         }
-        if totalEligibleDirectBalance >= 30000 && totalFFELPBalance == 0 {
+        
+        println(totalFFELPBalance)
+        println(totalEligibleDirectBalance)
+        if totalEligibleDirectBalance <= 30000 && totalFFELPBalance == 0 {
             return true
         }
-        else if totalEligibleDirectBalance >= 30000 && totalFFELPBalance >= 30000{
+        else if totalEligibleDirectBalance <= 30000 && totalFFELPBalance <= 30000{
             return true
         }
         else {
@@ -309,6 +314,7 @@ class Scenario: NSManagedObject {
         while monthsUntilRepayment > 0 {
             var paymentToAdd = Payment_NotCoreData()
             paymentArrayToReturn.append(paymentToAdd)
+            balance = balance + loan.capitalizedOneMonthOfInterest(balance)
             monthsUntilRepayment -= 1
         }
         
@@ -390,6 +396,7 @@ class Scenario: NSManagedObject {
         while monthsUntilRepayment > 0 {
             var paymentToAdd = Payment_NotCoreData()
             paymentArrayToReturn.append(paymentToAdd)
+            balance = balance + loan.capitalizedOneMonthOfInterest(balance)
             monthsUntilRepayment -= 1
         }
         
@@ -464,6 +471,7 @@ class Scenario: NSManagedObject {
         while monthsUntilRepayment > 0 {
             var paymentToAdd = Payment_NotCoreData()
             paymentArrayToReturn.append(paymentToAdd)
+            balance = balance + loan.capitalizedOneMonthOfInterest(balance)
             monthsUntilRepayment -= 1
         }
         
@@ -534,10 +542,16 @@ class Scenario: NSManagedObject {
         
         balance += excessInterest
         capitalizedInterestToReturn += excessInterest
-        let remainingYears = 10 - numberOfYearsInProgram
+        
+        var paymentsLeft = 120 - (numberOfYearsInProgram * 12)
+        if loan.monthsUntilRepayment.integerValue < 0 {
+            paymentsLeft += loan.monthsUntilRepayment.integerValue
+        }
+        
+        
         var r = rate
         var PV = balance
-        var n:Double = -1 * Double(remainingYears) * 12
+        var n:Double = -1 * Double(paymentsLeft)
         var paymentToBeDoneIn10Years = (r * PV) / (1 - pow((1+r),n))
         
         while balance > paymentToBeDoneIn10Years{
@@ -574,6 +588,7 @@ class Scenario: NSManagedObject {
         while monthsUntilRepayment > 0 {
             var paymentToAdd = Payment_NotCoreData()
             paymentArrayToReturn.append(paymentToAdd)
+            balance = balance + loan.capitalizedOneMonthOfInterest(balance)
             monthsUntilRepayment -= 1
         }
         
@@ -600,6 +615,7 @@ class Scenario: NSManagedObject {
                 capitalizedInterestToReturn += excessInterest
                 balance = balance + excessInterest
                 excessInterest = 0
+
                 var payment = loan.getStandardMonthlyPayment(120, balance: loan.balance.doubleValue)
                 for month in 1...12{
                     var paymentToAdd = Payment_NotCoreData()
@@ -616,10 +632,16 @@ class Scenario: NSManagedObject {
         
         balance += excessInterest
         capitalizedInterestToReturn += excessInterest
-        let remainingYears = 10 - numberOfYearsInProgram
+
+        var paymentsLeft = 120 - (numberOfYearsInProgram * 12)
+        if loan.monthsUntilRepayment.integerValue < 0 {
+            paymentsLeft += loan.monthsUntilRepayment.integerValue
+        }
+        
+        
         var r = rate
         var PV = balance
-        var n:Double = -1 * Double(remainingYears) * 12
+        var n:Double = -1 * Double(paymentsLeft)
         var paymentToBeDoneIn10Years = (r * PV) / (1 - pow((1+r),n))
         
         while balance > paymentToBeDoneIn10Years{
@@ -645,8 +667,8 @@ class Scenario: NSManagedObject {
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         let oSet = defaultScenario.allLoans
         var totalBalance : Double = 0
-        var monthsUntilRepayment = 0
-        
+        var monthsUntilRepayment = 99
+        var monthsAlreadyPaid : Int = 0
         
         var ICR_Eligible_Balance : Double = 0
         var ICR_Eligible_Interest : Double = 0
@@ -654,17 +676,37 @@ class Scenario: NSManagedObject {
         var eligible_lArray = [Loan]()
         var ineligible_lArray = [Loan]()
         
+        
         for object in oSet {
             var oldLoan = object as! Loan
-            if oldLoan.loanType == "Direct, Unsubs."  || oldLoan.loanType == "Grad PLUS" || oldLoan.loanType == "Direct, Subs."{
+            monthsUntilRepayment = minElement([monthsUntilRepayment, oldLoan.monthsInRepaymentTerm.integerValue])
+        }
+        //get the minimum months until repayment 
+        
+        monthsUntilRepayment = maxElement([monthsUntilRepayment,0]) // just in case it's a negative number
+        monthsAlreadyPaid = minElement([monthsUntilRepayment,0]) //this is just really buggy.  You need to split this out so that ICR limited term wind-up is happening loan by loan, so we are not estimating how many months have already been paid.
+        
+        
+        for object in oSet {
+            var oldLoan = object as! Loan
+            if oldLoan.loanType == "Direct, Unsubs."  || oldLoan.loanType == "Grad PLUS" {
+                var toAdd = oldLoan.balance.doubleValue + (oldLoan.capitalizedOneMonthOfInterest(oldLoan.balance.doubleValue) * Double(monthsUntilRepayment))
+                ICR_Eligible_Balance += toAdd
+                eligible_lArray.append(oldLoan)
+            }
+            
+            if oldLoan.loanType == "Direct, Subs."{
                 ICR_Eligible_Balance += oldLoan.balance.doubleValue
                 eligible_lArray.append(oldLoan)
-                monthsUntilRepayment  = oldLoan.monthsInRepaymentTerm.integerValue
+                //monthsUntilRepayment  = oldLoan.monthsInRepaymentTerm.integerValue
             }
             else {
                 ineligible_lArray.append(oldLoan)
             }
         }
+        
+        //BUG: right now this doesn't take into account interest that accrues
+        
         
         //get balance and weighted interest for all ICR eligible loans
         for loan in eligible_lArray{
@@ -674,7 +716,8 @@ class Scenario: NSManagedObject {
         //println(ICR_Eligible_Balance)
         //println(ICR_Eligible_Interest)
         //println("ICR will fun for \(term) number of years")
-        var woundUpLoan = self.ICR_LimitedTerm_LoanWindUp(ICR_Eligible_Balance, interest: ICR_Eligible_Interest, AGI:AGI, familySize:familySize, percentageincrease:percentageincrease, term:term, headOfHousehold:headOfHousehold)
+        
+        var woundUpLoan = self.ICR_LimitedTerm_LoanWindUp(ICR_Eligible_Balance, interest: ICR_Eligible_Interest, AGI:AGI, familySize:familySize, percentageincrease:percentageincrease, term:term, headOfHousehold:headOfHousehold, monthsAlreadyPaid:monthsAlreadyPaid)
         
         //take into account if you aren't going into repyament just yet
         //assumption: All ICR-eligible loans will enter repayment at the same time
@@ -682,6 +725,7 @@ class Scenario: NSManagedObject {
             var paymentToAdd = Payment_NotCoreData()
             woundUpLoan.pArray.insert(paymentToAdd, atIndex: 0)
             monthsUntilRepayment -= 1
+            //balance = balance + loan.capitalizedOneMonthOfInterest(balance)
         }
         
         
@@ -700,7 +744,7 @@ class Scenario: NSManagedObject {
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         let oSet = defaultScenario.allLoans
         var totalBalance : Double = 0
-        var monthsUntilRepayment = 0
+        var monthsUntilRepayment = 99
         
         var ICR_Eligible_Balance : Double = 0
         var ICR_Eligible_Interest : Double = 0
@@ -710,7 +754,19 @@ class Scenario: NSManagedObject {
         
         for object in oSet {
             var oldLoan = object as! Loan
-            if oldLoan.loanType == "Direct, Unsubs."  || oldLoan.loanType == "Grad PLUS" || oldLoan.loanType == "Direct, Subs."{
+            monthsUntilRepayment = minElement([monthsUntilRepayment, oldLoan.monthsInRepaymentTerm.integerValue])
+        }
+        
+        monthsUntilRepayment = maxElement([monthsUntilRepayment,0]) // just in case it's a negative number
+        
+        for object in oSet {
+            var oldLoan = object as! Loan
+            if oldLoan.loanType == "Direct, Unsubs."  || oldLoan.loanType == "Grad PLUS" {
+                var toAdd = oldLoan.balance.doubleValue + (oldLoan.capitalizedOneMonthOfInterest(oldLoan.balance.doubleValue) * Double(monthsUntilRepayment))
+                ICR_Eligible_Balance += toAdd
+                eligible_lArray.append(oldLoan)
+            }
+            if oldLoan.loanType == "Direct, Subs."{
                 ICR_Eligible_Balance += oldLoan.balance.doubleValue
                 eligible_lArray.append(oldLoan)
                 monthsUntilRepayment = oldLoan.monthsUntilRepayment.integerValue
@@ -735,6 +791,7 @@ class Scenario: NSManagedObject {
             monthsUntilRepayment -= 1
         }
         
+        
         self.addPaymentsForOneLoan(managedObjectContext, loansPayments: woundUpLoan.pArray)
         self.nnewTotalCapitalizedInterest = NSNumber(double: woundUpLoan.capitalizedInterest)
         self.forgivenBalance = NSNumber(double: woundUpLoan.forgivenBalance)
@@ -745,7 +802,7 @@ class Scenario: NSManagedObject {
 
     }
     
-    func ICR_LimitedTerm_LoanWindUp(balance:Double, interest: Double, AGI:Double, familySize:Int, percentageincrease:Double, term:Int, headOfHousehold:Bool) -> (pArray:[Payment_NotCoreData], capitalizedInterest:Double){
+    func ICR_LimitedTerm_LoanWindUp(balance:Double, interest: Double, AGI:Double, familySize:Int, percentageincrease:Double, term:Int, headOfHousehold:Bool, monthsAlreadyPaid:Int) -> (pArray:[Payment_NotCoreData], capitalizedInterest:Double){
         
         var bbalance = balance
         var rate = ((interest / 100) / 12)
@@ -795,10 +852,12 @@ class Scenario: NSManagedObject {
         //now we exit IBR, so in the remaining interest compounds
         bbalance += excessInterest
         capitalizedInterestToReturn += excessInterest
-        let remainingYears = 10 - term
+        
+        var paymentsLeft = 120 - ((term * 12) + monthsAlreadyPaid)
+
         var r = (interest / 100) / 12
         var PV = bbalance
-        var n:Double = -1 * Double(remainingYears) * 12
+        var n:Double = -1 * Double(paymentsLeft)
         var paymentToBeDoneIn10Years = (r * PV) / (1 - pow((1+r),n))
         
         while bbalance > paymentToBeDoneIn10Years{
@@ -1562,7 +1621,7 @@ class Scenario: NSManagedObject {
         
         var MWEPSoFar : Int = 0
         var newScenarioMonths : Int = 0
-        
+        var paymentTerm2 = paymentTerm
         let entity = NSEntityDescription.entityForName("Loan", inManagedObjectContext: managedObjectContext)
         
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
@@ -1577,15 +1636,20 @@ class Scenario: NSManagedObject {
         lArray.sort {$0.interest.doubleValue > $1.interest.doubleValue}
         
         for loan in lArray {
-
+            if loan.loanType == "Perkins" {
+                paymentTerm2 = 120
+            }
+            else {
+                paymentTerm2 = paymentTerm
+            }
 
             //this is standard, so each loan has 120 payments.  If it hasn't enetered repayment yet, we add the positive number of months until repayment.  if it's already in repayment, we add the negative number of months already paid.
-            var loansTotalMonths = paymentTerm + loan.monthsUntilRepayment.integerValue
+            var loansTotalMonths = paymentTerm2 + loan.monthsUntilRepayment.integerValue
             
             //if we've already enough exta payments that we are past the months in the loan overall, we would never be adding extra payments to this loan, so we just add it straight away
             if MWEPSoFar >= MWEPTotal {
                 //load up the loan just like normal doNothing
-                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: loan.standardFlat_WindUpLoan(paymentTerm))
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: loan.standardFlat_WindUpLoan(paymentTerm2))
                 description += "No supplemental payments were made on \(loan.name), which has an interest rate of %\(loan.interest)"
             }
                 
@@ -1593,7 +1657,7 @@ class Scenario: NSManagedObject {
             else if MWEPSoFar < MWEPTotal {
                 //know whether
                 let endMonthForExtraPayment = minElement([MWEPTotal, loansTotalMonths])
-                let enteredLoanWithExtra = loan.standardFlat_ExtraPayment_WindUpLoan(managedObjectContext, extraAmount:extra, extraStart:MWEPSoFar, extraEnd:endMonthForExtraPayment, paymentTerm: paymentTerm)
+                let enteredLoanWithExtra = loan.standardFlat_ExtraPayment_WindUpLoan(managedObjectContext, extraAmount:extra, extraStart:MWEPSoFar, extraEnd:endMonthForExtraPayment, paymentTerm: paymentTerm2)
                 MWEPSoFar = enteredLoanWithExtra.monthNumber
                 self.addPaymentsForOneLoan(managedObjectContext, loansPayments: enteredLoanWithExtra.parray)
                 description += enteredLoanWithExtra.description
@@ -1603,7 +1667,7 @@ class Scenario: NSManagedObject {
 
         //return self.interestOverLife.doubleValue
             }
-    
+
     func makeInterestArray() -> [Double]{
         var interestArray = [Double]()
         let mpForAllLoans = self.concatenatedPayment.mutableCopy() as! NSMutableOrderedSet

@@ -33,6 +33,7 @@
         <attribute name="forgivenBalance" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="green" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="interestOverLife" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="loansChanged" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nnewTotalCapitalizedInterest" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="nnewTotalPrincipal" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -68,7 +69,7 @@
     <elements>
         <element name="Loan" positionX="-306" positionY="-243" width="128" height="255"/>
         <element name="MonthlyPayment" positionX="-461" positionY="-7" width="128" height="165"/>
-        <element name="Scenario" positionX="-551" positionY="-288" width="128" height="300"/>
+        <element name="Scenario" positionX="-551" positionY="-288" width="128" height="315"/>
         <element name="ScenarioSettings" positionX="-432" positionY="-135" width="128" height="315"/>
     </elements>
 </model>

@@ -1369,7 +1369,7 @@
             <objects>
                 <tableViewController id="2cm-Ey-HaN" customClass="BalanceInterestTableViewController" customModule="Principally" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="N5p-Go-9r0">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
@@ -1985,6 +1985,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="zrI-ZB-f8a"/>
         <segue reference="Qsm-z5-Cgz"/>
-        <segue reference="5zI-Ad-9rc"/>
+        <segue reference="gMK-tz-ZfQ"/>
     </inferredMetricsTieBreakers>
 </document>

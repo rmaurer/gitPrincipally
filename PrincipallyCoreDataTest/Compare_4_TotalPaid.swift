@@ -87,9 +87,12 @@ class Compare_4_TotalPaid: UIView {
                 CGContextFillRect(context, cancelledRectangle)
                 
                 
-                var roundInterest = floor(scenarioArray![index].forgivenBalance.doubleValue * 100) / 100
+                let numberFormatter = NSNumberFormatter()
+                numberFormatter.numberStyle = .CurrencyStyle
                 
-                var s: NSString = "\(scenarioArray![index].name): $\(roundInterest) forgiven balance"
+                var forgivenBalance = scenarioArray![index].forgivenBalance
+                
+                var s: NSString = "\(scenarioArray![index].name): \(numberFormatter.stringFromNumber(forgivenBalance)!) forgiven balance"
                 let fieldFont = UIFont(name: "Helvetica Neue", size: 14)
                 s.drawWithBasePoint(CGPointMake(startX+lineWidth, bounds.height-20), angle: CGFloat(-M_PI_2), font: fieldFont!)
                 

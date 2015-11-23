@@ -77,10 +77,14 @@ class Compare_5_InitialPaymentForReal: UIView {
                 
                
                 
-                var roundInitialPayment = floor(initialpaymentArray[index] * 100) / 100
+                var roundInitialPayment = initialpaymentArray[index]
                 
                 
-                var s: NSString = "\(scenarioArray![index].name): $\(roundInitialPayment) initial payment"
+                let numberFormatter = NSNumberFormatter()
+                numberFormatter.numberStyle = .CurrencyStyle
+                
+                
+                var s: NSString = "\(scenarioArray![index].name): \(numberFormatter.stringFromNumber(roundInitialPayment)!) initial payment"
                 let fieldFont = UIFont(name: "Helvetica Neue", size: 14)
                 s.drawWithBasePoint(CGPointMake(startX+lineWidth, bounds.height-20), angle: CGFloat(-M_PI_2), font: fieldFont!)
                 
