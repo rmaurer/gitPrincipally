@@ -119,7 +119,7 @@ class PlanOptionsTableViewController: UITableViewController {
         PAYEDatesSwtich12.setOn(settings.payeReqs.boolValue, animated:true)
         repaymentTermSlider.value = self.getSliderValueFromRefiTermYears(settings.refiTerm.doubleValue)
         RepaymentTermYearLabel.text = "\(Int(settings.refiTerm.integerValue)) years"
-        yearsInProgramLabel.text = "\(settings.yearsInProgram.integerValue)"
+        stepperYearsOutlet.text = "\(settings.yearsInProgram.integerValue)"
         stepperOutlet.value = settings.yearsInProgram.doubleValue
         oneTimePayoffTextFieldOutlet.text = "$\(floor(settings.oneTimePayoff.doubleValue * 100) / 100)"
         headOfHouseholdSwitch.setOn(settings.headOfHousehold.boolValue, animated:true)
@@ -498,7 +498,7 @@ class PlanOptionsTableViewController: UITableViewController {
                 return 0
             }
         case 6, 7, 8:
-            if selectedRepaymentPlan == "IBR with PILF" || selectedRepaymentPlan == "ICR with PILF" || selectedRepaymentPlan == "PAYE with PILF" || selectedRepaymentPlan == "IBR" || selectedRepaymentPlan == "ICR" || selectedRepaymentPlan == "PAYE" || selectedRepaymentPlan == "IBR Limited" || selectedRepaymentPlan == "PAYE Limited" || selectedRepaymentPlan == "ICR Limited" {
+            if selectedRepaymentPlan == "IBR with PSLF" || selectedRepaymentPlan == "ICR with PSLF" || selectedRepaymentPlan == "PAYE with PSLF" || selectedRepaymentPlan == "IBR" || selectedRepaymentPlan == "ICR" || selectedRepaymentPlan == "PAYE" || selectedRepaymentPlan == "IBR Limited" || selectedRepaymentPlan == "PAYE Limited" || selectedRepaymentPlan == "ICR Limited" {
                 adjustedGrossIncomeLabel6.hidden = false
                 adjustedGrossIncomeTextField6.hidden = false
                 annualSalaryIncreaseLabel7.hidden = false
@@ -526,7 +526,7 @@ class PlanOptionsTableViewController: UITableViewController {
             }
 
         case 9:
-            if selectedRepaymentPlan == "IBR with PILF" || selectedRepaymentPlan == "ICR with PILF" || selectedRepaymentPlan == "PAYE with PILF" {
+            if selectedRepaymentPlan == "IBR with PSLF" || selectedRepaymentPlan == "ICR with PSLF" || selectedRepaymentPlan == "PAYE with PSLF" {
                 qualifyingJobLabel.hidden = false
                 qualifyingJobSwitch.hidden = false
                 infoButton_Job_9.hidden = false
@@ -540,7 +540,7 @@ class PlanOptionsTableViewController: UITableViewController {
             }
             
         case 10:
-            if selectedRepaymentPlan == "IBR" || selectedRepaymentPlan == "IBR with PILF" || selectedRepaymentPlan == "IBR Limited" {
+            if selectedRepaymentPlan == "IBR" || selectedRepaymentPlan == "IBR with PSLF" || selectedRepaymentPlan == "IBR Limited" {
                 IBRDatesLabel10.hidden = false
                 IBRDatesSwitch10.hidden = false
                 infoButton_IBR_10.hidden = false
@@ -553,7 +553,7 @@ class PlanOptionsTableViewController: UITableViewController {
                 return 0
             }
         case 11:
-            if selectedRepaymentPlan == "ICR" || selectedRepaymentPlan == "ICR with PILF" || selectedRepaymentPlan == "ICR Limited"{
+            if selectedRepaymentPlan == "ICR" || selectedRepaymentPlan == "ICR with PSLF" || selectedRepaymentPlan == "ICR Limited"{
                 ICRDatesLabel10.hidden = true
                 ICRDatesSwitch10.hidden = true
                 infoButton_ICR_11.hidden = true
@@ -567,7 +567,7 @@ class PlanOptionsTableViewController: UITableViewController {
                 return 0
             }
         case 12:
-            if selectedRepaymentPlan == "PAYE" || selectedRepaymentPlan == "PAYE with PILF" ||  selectedRepaymentPlan == "PAYE Limited" {
+            if selectedRepaymentPlan == "PAYE" || selectedRepaymentPlan == "PAYE with PSLF" ||  selectedRepaymentPlan == "PAYE Limited" {
                 PAYEDatesLabel12.hidden = false
                 PAYEDatesSwtich12.hidden = false
                 infoButton_PAYE_12.hidden = false
@@ -630,7 +630,7 @@ class PlanOptionsTableViewController: UITableViewController {
                 return 0 
             }
         case 17:
-             if selectedRepaymentPlan == "ICR" || selectedRepaymentPlan == "ICR with PILF" || selectedRepaymentPlan == "ICR Limited"{
+             if selectedRepaymentPlan == "ICR" || selectedRepaymentPlan == "ICR with PSLF" || selectedRepaymentPlan == "ICR Limited"{
                 headOfHouseholdLabel.hidden = false
                 headOfHouseholdSwitch.hidden = false
                 return 45}

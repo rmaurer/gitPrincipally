@@ -67,7 +67,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
         }
         else {
          let testinterest = getNSNumberFromString(BIView.interest.text)
-         let testbalance = getNSNumberFromString(BIView.balance.text)
+         let testbalance = getNSBalanceNumberFromString(BIView.balance.text)
          let testname = getLoanName()
          let testtype = getLoanType()
             
@@ -80,6 +80,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
                     options: UIViewAnimationOptions.TransitionFlipFromRight
                         | UIViewAnimationOptions.ShowHideTransitionViews, completion: nil)
                 //sender.title = ""
+                resetAllTextFields()
                 selectLoantype.enabled = false
                 BIView.interest.userInteractionEnabled = false
                 BIView.balance.userInteractionEnabled = false
@@ -92,7 +93,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
     
     }
     
-    @IBOutlet weak var doneButtonOutlet: UIBarButtonItem!
+   // @IBOutlet weak var doneButtonOutlet: UIBarButtonItem!
     
     func flipAroundWithoutLoadingLoan(){
         loadChildViews()
@@ -205,31 +206,104 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    func resetAllTextFields(){
+       BIView.interest.layer.borderColor = UIColor.clearColor().CGColor
+       BIView.balance.layer.borderColor = UIColor.clearColor().CGColor
+    }
+    
+    
+    func shakeTextField (textField : UITextField, numberOfShakes : Int, direction: CGFloat, maxShakes : Int) {
+        
+        textField.layer.borderColor = UIColor.redColor().CGColor
+        textField.layer.borderWidth = 2
+        
+        let interval : NSTimeInterval = 0.03
+        
+        UIView.animateWithDuration(interval, animations: { () -> Void in
+            textField.transform = CGAffineTransformMakeTranslation(5 * direction, 0)
+            
+            }, completion: { (aBool :Bool) -> Void in
+                
+                if (numberOfShakes >= maxShakes) {
+                    textField.transform = CGAffineTransformIdentity
+                    textField.becomeFirstResponder()
+                    return
+                }
+                
+                self.shakeTextField(textField, numberOfShakes: numberOfShakes + 1, direction: direction * -1, maxShakes: maxShakes )
+                
+        })
+        
+    }
+    
     
     func getNSNumberFromString(input:String) -> NSNumber {
         var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
         cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString(",", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString(" ", withString: "", options: .allZeros, range:nil)
         //println(cleaninput)
         if NSString(string: cleaninput).length == 0 {
-            let alert = UIAlertView()
+            /*let alert = UIAlertView()
             alert.title = "Alert"
             alert.message = "Please enter a number for your current balance and interest rate"
             alert.addButtonWithTitle("Understood")
             alert.show()
+            return -1*/
+            //shakeTextField
+            shakeTextField(BIView.interest, numberOfShakes:0, direction:1, maxShakes:5)
             return -1
         }
         else if let number = NSNumberFormatter().numberFromString(cleaninput){
             return number
         }
         else {
-            let alert = UIAlertView()
+           /* let alert = UIAlertView()
             alert.title = "Alert"
             alert.message = "Please make sure your current balance and interest rate are decimal numbers "
             alert.addButtonWithTitle("Understood")
             alert.show()
+            return -1*/
+            shakeTextField(BIView.interest, numberOfShakes:0, direction:1, maxShakes:5)
             return -1
+        }
     }
-}
+    
+    func getNSBalanceNumberFromString(input:String) -> NSNumber {
+        var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString(",", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString(" ", withString: "", options: .allZeros, range:nil)
+        //println(cleaninput)
+        if NSString(string: cleaninput).length == 0 {
+            /*let alert = UIAlertView()
+            alert.title = "Alert"
+            alert.message = "Please enter a number for your current balance and interest rate"
+            alert.addButtonWithTitle("Understood")
+            alert.show()
+            return -1*/
+            //shakeTextField
+            shakeTextField(BIView.balance, numberOfShakes:0, direction:1, maxShakes:5)
+            return -1
+        }
+        else if let number = NSNumberFormatter().numberFromString(cleaninput){
+            return number
+        }
+        else {
+            /* let alert = UIAlertView()
+            alert.title = "Alert"
+            alert.message = "Please make sure your current balance and interest rate are decimal numbers "
+            alert.addButtonWithTitle("Understood")
+            alert.show()
+            return -1*/
+            shakeTextField(BIView.balance, numberOfShakes:0, direction:1, maxShakes:5)
+            return -1
+        }
+    }
+    
+    
+    
+    
     func getLoanType() -> String {
         if selectLoantype.currentTitle! != "Select Loan Type" {
             return selectLoantype.currentTitle!
@@ -278,7 +352,7 @@ class TestLoanEntryViewController: UIViewController,UITextFieldDelegate, TypeVie
 
         //Set the characteristics of what will be added
         firstLoan.name = getLoanName() as String
-        firstLoan.balance = getNSNumberFromString(BIView.balance.text)
+        firstLoan.balance = getNSBalanceNumberFromString(BIView.balance.text)
         firstLoan.interest = getNSNumberFromString(BIView.interest.text)
         firstLoan.loanType = getLoanType() as String
         var defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()

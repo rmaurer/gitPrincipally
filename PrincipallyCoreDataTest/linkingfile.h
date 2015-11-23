@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 R.A. Maurer. All rights reserved.
 //
 
-#ifndef __PrincipallyCoreDataTest__linkingfile__
-#define __PrincipallyCoreDataTest__linkingfile__
+#ifndef __Principally__linkingfile__
+#define __Principally__linkingfile__
 
 #include <stdio.h>
 

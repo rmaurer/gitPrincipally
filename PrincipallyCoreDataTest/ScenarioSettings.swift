@@ -34,7 +34,7 @@ class ScenarioSettings: NSManagedObject {
         var description : String = ""
         switch self.repaymentType{
             case "Standard":
-                description = "Under a standard plan, your payments are based on the amount it will take off all loans in full in 120 payments."
+                description = "Under a standard plan, your payments are based on the amount it will take to pay off all loans in full in 120 payments."
                 if frequencyOfExtraPayments.doubleValue > 0 && frequencyOfExtraPayments.doubleValue < 999 {
                     description += " You are also making \(frequencyOfExtraPayments) extra payments of $\(amountOfExtraPayments) each"
             }
@@ -42,7 +42,7 @@ class ScenarioSettings: NSManagedObject {
                     description += " You are also making extra payments of $\(amountOfExtraPayments) each month until everything is paid off"
             }
             case "Extended":
-                    description = "Under an extended plan, your payments are based on the amount it will take off all loans in full in 300 payments."
+                    description = "Under an extended plan, your payments are based on the amount it will take to pay off all loans in full in 300 payments."
                     if frequencyOfExtraPayments.doubleValue > 0 && frequencyOfExtraPayments.doubleValue < 999 {
                         description += " You are also making \(frequencyOfExtraPayments) extra payments of $\(amountOfExtraPayments) each"
                     }
@@ -50,9 +50,9 @@ class ScenarioSettings: NSManagedObject {
                         description += " You are also making extra payments of $\(amountOfExtraPayments) each month until everything is paid off"
             }
             case "Refi":
-                description = "You are refinancing your loan with a private company.  Under this program, we considered all of your loans eligible for refinance."
+                description = "You are refinancing your loan with a private company.  Under this program, we considered all of your loans eligible for refinance, and assumed that the refinance would take place immediately"
                 if self.oneTimePayoff.doubleValue > 0 {
-                   description += " The refinance company will make a one-timep payoff of $\(oneTimePayoff)."
+                   description += " The refinance company will make a one-time payoff of $\(oneTimePayoff)."
                 }
                  description += "Your refinanced loans will be paid back over a \(refiTerm) year term."
                 
@@ -82,17 +82,17 @@ class ScenarioSettings: NSManagedObject {
                     description = "Under the Pay As You Earn plan, your payments are based on your income, not the amount you owe.  You only pay up to 10% of your discretionary income, so long as you have financial hardship.  Any remaining balance after 20 years is cancelled."
                     description += PAYEEligibleLoans()
                     description += " These calculations are based on an adjusted gross income of $\(agi) and an annual salary increase of \(annualSalaryIncrease)%."
-            case "IBR with PILF":
+            case "IBR with PSLF":
                     description = "Under this plan, you make payments under IBR while in qualifying employment.  After 10 years, any remaining balance is cancelled. "
-                    description += IBR_PILFEligibleLoans()
+                    description += IBR_PSLFEligibleLoans()
                     description += " These calculations are based on an adjusted gross income of $\(agi) and an annual salary increase of \(annualSalaryIncrease)%."
-            case "ICR with PILF":
-                    description = "Under the Income-Contingent Repayment plan, your payments are limited to a maximum of 20% of your discretionary income.  However, the payments may be lower than that, depending on how much you owe.  By combining ICR with PILF, you are eligible for cancellation in 10 years."
-                    description += ICR_PILFEligibleLoans()
+            case "ICR with PSLF":
+                    description = "Under the Income-Contingent Repayment plan, your payments are limited to a maximum of 20% of your discretionary income.  However, the payments may be lower than that, depending on how much you owe.  By combining ICR with PSLF, you are eligible for cancellation in 10 years."
+                    description += ICR_PSLFEligibleLoans()
                     description += " These calculations are based on an adjusted gross income of $\(agi) and an annual salary increase of \(annualSalaryIncrease)%."
-            case "PAYE with PILF":
-                    description = "Under the Pay As You Earn plan, your payments are based on your income, not the amount you owe.  You only pay up to 10% of your discretionary income, so long as you have financial hardship.  By combining PAYE with PILF, you are eligible for cancellation in 10 years."
-                    description += PAYE_PILFEligibleLoans()
+            case "PAYE with PSLF":
+                    description = "Under the Pay As You Earn plan, your payments are based on your income, not the amount you owe.  You only pay up to 10% of your discretionary income, so long as you have financial hardship.  By combining PAYE with PSLF, you are eligible for cancellation in 10 years."
+                    description += PAYE_PSLFEligibleLoans()
                     description += " These calculations are based on an adjusted gross income of $\(agi) and an annual salary increase of \(annualSalaryIncrease)%."
             case "IBR Limited":
                     description = "Under this plan, \(IBR_LimitedEligibleLoans()) will enter IBR repayment for \(yearsInProgram) years.  Then they will return to the standard 10-year plan for the remaining years."
@@ -172,7 +172,7 @@ class ScenarioSettings: NSManagedObject {
     }
     
     
-    func PAYE_PILFEligibleLoans() -> String{
+    func PAYE_PSLFEligibleLoans() -> String{
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         let oSet = defaultScenario.allLoans
         var eligible = [Loan]()
@@ -209,7 +209,7 @@ class ScenarioSettings: NSManagedObject {
     
     
     
-    func ICR_PILFEligibleLoans() -> String{
+    func ICR_PSLFEligibleLoans() -> String{
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         let oSet = defaultScenario.allLoans
         var eligible = [Loan]()
@@ -245,7 +245,7 @@ class ScenarioSettings: NSManagedObject {
     }
     
     
-    func IBR_PILFEligibleLoans() -> String{
+    func IBR_PSLFEligibleLoans() -> String{
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         let oSet = defaultScenario.allLoans
         var eligible = [Loan]()
@@ -285,7 +285,7 @@ class ScenarioSettings: NSManagedObject {
         }
         
         if FFEL.count > 0 {
-            string += " You have some FFEL Program loans that are usually eligible for IBR repayment.  However, they are not eligible for PILF loan forgiveness after 10 years.  Because of this, we have entered these loans on a standard 10-year repayment plan.  As with other types of ineligible loans, you can look into consolidating these loans to make them eligible for cancellation."
+            string += " You have some FFEL Program loans that are usually eligible for IBR repayment.  However, they are not eligible for PSLF loan forgiveness after 10 years.  Because of this, we have entered these loans on a standard 10-year repayment plan.  As with other types of ineligible loans, you can look into consolidating these loans to make them eligible for cancellation."
         }
         return string
     }

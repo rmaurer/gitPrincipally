@@ -101,6 +101,32 @@ class Scenario: NSManagedObject {
             println("Could not save: \(error)") }
     }
     
+    func standardFlatExtendedWindUp(managedObjectContext:NSManagedObjectContext, paymentTerm:Int){
+        //initialize things
+        self.interestOverLife = 0
+        
+        //get all the loans as objects
+        let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
+        let oSet = defaultScenario.allLoans
+        
+        var lArray = [Loan]()
+        for object in oSet {
+            var oldLoan = object as! Loan
+            lArray.append(oldLoan)
+        }
+        
+        lArray.sort {$0.interest.doubleValue > $1.interest.doubleValue}
+        
+        for loan in lArray{
+            if loan.loanType == "Perkins" {
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: loan.standardFlat_WindUpLoan(120)
+            }
+            else {
+                self.addPaymentsForOneLoan(managedObjectContext, loansPayments: loan.standardFlat_WindUpLoan(paymentTerm))
+            }
+        }
+}
+
     
     func standardFlat_WindUp(managedObjectContext:NSManagedObjectContext, paymentTerm:Int) {
     
@@ -126,7 +152,38 @@ class Scenario: NSManagedObject {
         
     }
     
-    func getAllEligibleLoansPayment(isIBR:Bool, isPILF:Bool) -> (monthly: Double, balance:Double) {
+    func getEligibleExtendedBalance() -> Bool {
+        let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
+        let oSet = defaultScenario.allLoans
+        //var cumulativePayment : Double = 0
+        var totalEligibleDirectBalance : Double = 0
+        var totalFFELPBalance : Double = 0
+        
+        var lArray = [Loan]()
+        for object in oSet {
+            var loan = object as! Loan
+            if loan.loanType == "FFEL" {
+                totalFFELPBalance += loan.balance.doubleValue
+            }
+            else if loan.loanType == "Perkins" {
+                totalFFELPBalance = totalFFELPBalance + 0 //placeholder
+            }
+            else {
+                totalEligibleDirectBalance += loan.balance.doubleValue
+            }
+        }
+        if totalEligibleDirectBalance >= 30000 && totalFFELPBalance == 0 {
+            return true
+        }
+        else if totalEligibleDirectBalance >= 30000 && totalFFELPBalance >= 30000{
+            return true
+        }
+        else {
+            return false 
+        }
+    }
+    
+    func getAllEligibleLoansPayment(isIBR:Bool, isPSLF:Bool) -> (monthly: Double, balance:Double) {
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         let oSet = defaultScenario.allLoans
         var cumulativePayment : Double = 0
@@ -139,7 +196,7 @@ class Scenario: NSManagedObject {
                 cumulativePayment += oldLoan.getStandardMonthlyPayment(120, balance: oldLoan.balance.doubleValue)
                 totalBalance += oldLoan.balance.doubleValue
             }
-            else if isIBR == true && isPILF == false && oldLoan.loanType == "FFEL"{
+            else if isIBR == true && isPSLF == false && oldLoan.loanType == "FFEL"{
                 cumulativePayment += oldLoan.getStandardMonthlyPayment(120, balance: oldLoan.balance.doubleValue)
                 totalBalance += oldLoan.balance.doubleValue
             }
@@ -239,13 +296,13 @@ class Scenario: NSManagedObject {
         var paymentArrayToReturn = [Payment_NotCoreData]()
         var excessInterest : Double = 0
         var capitalizedInterestToReturn :Double = 0
-        var isPILF : Bool = false
+        var isPSLF : Bool = false
         if term < 19 {
-            isPILF = true
+            isPSLF = true
         }
         
-        var monthlyStandardPayment = self.getAllEligibleLoansPayment(isIBR, isPILF:isPILF).monthly
-        var PAYE_EligibleLoanBalance = self.getAllEligibleLoansPayment(isIBR, isPILF:isPILF).balance
+        var monthlyStandardPayment = self.getAllEligibleLoansPayment(isIBR, isPSLF:isPSLF).monthly
+        var PAYE_EligibleLoanBalance = self.getAllEligibleLoansPayment(isIBR, isPSLF:isPSLF).balance
         var monthsUntilRepayment = loan.monthsUntilRepayment.integerValue
         
         
@@ -325,8 +382,8 @@ class Scenario: NSManagedObject {
         var paymentArrayToReturn = [Payment_NotCoreData]()
         var excessInterest : Double = 0
         var capitalizedInterestToReturn :Double = 0
-        var monthlyStandardPayment = self.getAllEligibleLoansPayment(isIBR, isPILF:false).monthly
-        var PAYE_EligibleLoanBalance = self.getAllEligibleLoansPayment(isIBR, isPILF:false).balance
+        var monthlyStandardPayment = self.getAllEligibleLoansPayment(isIBR, isPSLF:false).monthly
+        var PAYE_EligibleLoanBalance = self.getAllEligibleLoansPayment(isIBR, isPSLF:false).balance
         var monthsUntilRepayment = loan.monthsUntilRepayment.integerValue
         
         
@@ -399,8 +456,8 @@ class Scenario: NSManagedObject {
         var balance = loan.balance.doubleValue
         var rate = (loan.interest.doubleValue / 12 ) / 100
         var excessInterest : Double = 0
-        var monthlyStandardPayment = self.getAllEligibleLoansPayment(isIBR, isPILF:false).monthly //monthly payment for all PAYE_eligible laons if they were on a standard 10 year repayment plan.
-        var PAYE_EligibleLoanBalance = self.getAllEligibleLoansPayment(isIBR, isPILF:false).balance
+        var monthlyStandardPayment = self.getAllEligibleLoansPayment(isIBR, isPSLF:false).monthly //monthly payment for all PAYE_eligible laons if they were on a standard 10 year repayment plan.
+        var PAYE_EligibleLoanBalance = self.getAllEligibleLoansPayment(isIBR, isPSLF:false).balance
         var newBalance : Double = balance
         var capitalizedInterestToReturn : Double = 0
         
@@ -509,8 +566,8 @@ class Scenario: NSManagedObject {
         var balance = loan.balance.doubleValue
         var rate = (loan.interest.doubleValue / 12 ) / 100
         var excessInterest : Double = 0
-        var monthlyStandardPayment = self.getAllEligibleLoansPayment(isIBR, isPILF:false).monthly //monthly payment for all PAYE_eligible laons if they were on a standard 10 year repayment plan.
-        var PAYE_EligibleLoanBalance = self.getAllEligibleLoansPayment(isIBR, isPILF:false).balance
+        var monthlyStandardPayment = self.getAllEligibleLoansPayment(isIBR, isPSLF:false).monthly //monthly payment for all PAYE_eligible laons if they were on a standard 10 year repayment plan.
+        var PAYE_EligibleLoanBalance = self.getAllEligibleLoansPayment(isIBR, isPSLF:false).balance
         var newBalance : Double = balance
         var capitalizedInterestToReturn : Double = 0
         
@@ -639,7 +696,7 @@ class Scenario: NSManagedObject {
 
     }
     
-    func ICR_PILF_or_Standard_Wrapper(managedObjectContext: NSManagedObjectContext, AGI:Double, familySize:Int, percentageincrease:Double, headOfHousehold:Bool, term:Int){
+    func ICR_PSLF_or_Standard_Wrapper(managedObjectContext: NSManagedObjectContext, AGI:Double, familySize:Int, percentageincrease:Double, headOfHousehold:Bool, term:Int){
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         let oSet = defaultScenario.allLoans
         var totalBalance : Double = 0
@@ -667,10 +724,10 @@ class Scenario: NSManagedObject {
         for loan in eligible_lArray{
             ICR_Eligible_Interest += loan.interest.doubleValue * (loan.balance.doubleValue / ICR_Eligible_Balance)
         }
-        //println("we are in ICR with PILF and the interest/balance is")
+        //println("we are in ICR with PSLF and the interest/balance is")
         //println(ICR_Eligible_Balance)
         //println(ICR_Eligible_Interest)
-        var woundUpLoan = self.ICR_Standard_Or_PILF_OneLoan_WindUp(ICR_Eligible_Balance, interest: ICR_Eligible_Interest, AGI:AGI, familySize:familySize, percentageincrease:percentageincrease, term:term, headOfHousehold:headOfHousehold)
+        var woundUpLoan = self.ICR_Standard_Or_PSLF_OneLoan_WindUp(ICR_Eligible_Balance, interest: ICR_Eligible_Interest, AGI:AGI, familySize:familySize, percentageincrease:percentageincrease, term:term, headOfHousehold:headOfHousehold)
         
         while monthsUntilRepayment > 0 {
             var paymentToAdd = Payment_NotCoreData()
@@ -762,7 +819,7 @@ class Scenario: NSManagedObject {
         return (paymentArrayToReturn,capitalizedInterestToReturn)
     }
 
-    func ICR_Standard_Or_PILF_OneLoan_WindUp(balance:Double, interest: Double, AGI:Double, familySize:Int, percentageincrease:Double, term:Int, headOfHousehold:Bool) -> (pArray:[Payment_NotCoreData], capitalizedInterest:Double, forgivenBalance:Double){
+    func ICR_Standard_Or_PSLF_OneLoan_WindUp(balance:Double, interest: Double, AGI:Double, familySize:Int, percentageincrease:Double, term:Int, headOfHousehold:Bool) -> (pArray:[Payment_NotCoreData], capitalizedInterest:Double, forgivenBalance:Double){
         
         var bbalance = balance
         var rate = ((interest / 100) / 12)
@@ -949,13 +1006,13 @@ class Scenario: NSManagedObject {
     }
     
     /*
-    func IBR_WindUp(managedObjectContext: NSManagedObjectContext, AGI:Double, familySize:Int, percentageincrease:Double, term:Int, percent:Double, hasPILF:Bool, hasLimitedTimeInProgram:Bool, yearsInProgram:Int){
+    func IBR_WindUp(managedObjectContext: NSManagedObjectContext, AGI:Double, familySize:Int, percentageincrease:Double, term:Int, percent:Double, hasPSLF:Bool, hasLimitedTimeInProgram:Bool, yearsInProgram:Int){
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         let oSet = defaultScenario.allLoans
         var totalBalance : Double = 0
         var directLoanTerm = term
         
-        if hasPILF{
+        if hasPSLF{
             directLoanTerm = 10
         }
         
@@ -1002,12 +1059,12 @@ class Scenario: NSManagedObject {
         
     }
     */
-    /*func PAYE_WindUp(managedObjectContext: NSManagedObjectContext, AGI:Double, familySize:Int, percentageincrease:Double, hasPILF:Bool, hasLimitedTimeInProgram:Bool, yearsInProgram:Int){
+    /*func PAYE_WindUp(managedObjectContext: NSManagedObjectContext, AGI:Double, familySize:Int, percentageincrease:Double, hasPSLF:Bool, hasLimitedTimeInProgram:Bool, yearsInProgram:Int){
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         let oSet = defaultScenario.allLoans
         var totalBalance : Double = 0
         var PAYETerm = 20
-        if hasPILF{
+        if hasPSLF{
             PAYETerm = 10
         }
         
@@ -1170,7 +1227,7 @@ class Scenario: NSManagedObject {
         
     }
 */
-    func PAYE_Standard_Or_PILF_Wrapper(managedObjectContext: NSManagedObjectContext, AGI:Double, familySize:Int, percentageincrease:Double, term:Int){
+    func PAYE_Standard_Or_PSLF_Wrapper(managedObjectContext: NSManagedObjectContext, AGI:Double, familySize:Int, percentageincrease:Double, term:Int){
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         
         //println("we are in PAYE standard")
@@ -1216,7 +1273,7 @@ class Scenario: NSManagedObject {
         
     }
     
-    func IBR_Standard_Or_PILF_Wrapper(managedObjectContext: NSManagedObjectContext, AGI:Double, familySize:Int, percentageincrease:Double, term:Int, newBorrower:Bool){
+    func IBR_Standard_Or_PSLF_Wrapper(managedObjectContext: NSManagedObjectContext, AGI:Double, familySize:Int, percentageincrease:Double, term:Int, newBorrower:Bool){
         let defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         let oSet = defaultScenario.allLoans
         var cappedPercentage = 15
@@ -1244,7 +1301,7 @@ class Scenario: NSManagedObject {
             }
             else if loan.loanType == "FFEL"{
                 if term < 19 {
-                    //if we are in PILF, we will pay off FFEL with the rest of the non-eligible things, since FFEL isn't eliegible for cancellation with PILF.  if we are in extended repayment 20 or 25 years then we'll do it
+                    //if we are in PSLF, we will pay off FFEL with the rest of the non-eligible things, since FFEL isn't eliegible for cancellation with PSLF.  if we are in extended repayment 20 or 25 years then we'll do it
                     self.addPaymentsForOneLoan(managedObjectContext, loansPayments: loan.standardFlat_WindUpLoan(120))
                 }
                 else {
@@ -1282,7 +1339,7 @@ class Scenario: NSManagedObject {
         //ASSUMPTION: Federal poverty guidelines for 48 continguous states
         let FPG : Double!
         var adjustedGrossIncome : Double = AGI
-        println("the AGI is \(AGI)")
+        //println("the AGI is \(AGI)")
         switch familySize{
         
         case 1:
@@ -1471,11 +1528,12 @@ class Scenario: NSManagedObject {
 
         temporaryWindUpLoan.balance = NSNumber(double: totalPrincipalBalance)
         temporaryWindUpLoan.interest = NSNumber(double: interest)
+        temporaryWindUpLoan.loanType = "Direct, Subs." //this is just temporary -- we just don't want it to be adding cany capitalized interest
         temporaryWindUpLoan.monthsUntilRepayment = 0
         
         if variableBool == false {
             //there's no variation in interest, so we just wind up the one loan we have at the correct interest rate
-            self.addPaymentsForOneLoan(managedObjectContext, loansPayments: temporaryWindUpLoan.standardFlat_WindUpLoan(refinanceTerm))
+            self.addPaymentsForOneLoan(managedObjectContext, loansPayments: temporaryWindUpLoan.standardFlat_WindUpLoan(refinanceTerm*12))
         }
         
         else {
@@ -1519,6 +1577,8 @@ class Scenario: NSManagedObject {
         lArray.sort {$0.interest.doubleValue > $1.interest.doubleValue}
         
         for loan in lArray {
+
+
             //this is standard, so each loan has 120 payments.  If it hasn't enetered repayment yet, we add the positive number of months until repayment.  if it's already in repayment, we add the negative number of months already paid.
             var loansTotalMonths = paymentTerm + loan.monthsUntilRepayment.integerValue
             
@@ -1554,7 +1614,7 @@ class Scenario: NSManagedObject {
         }
         return interestArray
     }
-    
+    /*
     //toDelete
     func makeCALayerWithInterestLine(rect:CGRect, color:CGColor, maxValue:Double) -> CALayer {
         //initial variables
@@ -1611,7 +1671,7 @@ class Scenario: NSManagedObject {
         newCALayer.addSublayer(interestLineLayer)
         return newCALayer
         
-    }
+    }*/
     
     func getScenarioMaxPayment() -> Double {
         

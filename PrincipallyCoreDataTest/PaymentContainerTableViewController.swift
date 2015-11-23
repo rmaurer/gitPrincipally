@@ -101,23 +101,32 @@ class PaymentContainerTableViewController: UITableViewController, UIPickerViewDa
             if segmentedOutlet.selectedSegmentIndex == 0 {
                 TermLabel.hidden = false
                 monthsAlreadyPaidLabel.hidden = false
+                infoButtonMonthsAlreadyPaidOutlet.hidden = false
                 alreadyPaidStepper.hidden = false
                 dateLabel.hidden = true
                 pickerOutlet.hidden = true
-              
+            if tableView.frame.size.height - 130 < 60 {
+                    self.tableView.scrollEnabled = true
+                }
+                else {
+                    self.tableView.scrollEnabled = false
+                }
+
                 return 120
             }
             else{
+                //self.tableView.scrollEnabled = false
                 return 0}
         case 2:
             if segmentedOutlet.selectedSegmentIndex == 0 {
-                self.tableView.scrollEnabled = false
+                //self.tableView.scrollEnabled = false
                 return 0
 
             }
             else{
                 TermLabel.hidden = true
                 monthsAlreadyPaidLabel.hidden = true
+                infoButtonMonthsAlreadyPaidOutlet.hidden = true
                 alreadyPaidStepper.hidden = true
                 dateLabel.hidden = false
                 pickerOutlet.hidden = false
@@ -133,12 +142,19 @@ class PaymentContainerTableViewController: UITableViewController, UIPickerViewDa
         case 3:
             return 60
         case 4:
-            return tableView.frame.size.height - 120
+            return maxElement([tableView.frame.size.height - 180, 0])
         default:
             return 0
         }
     }
 
+    @IBOutlet weak var infoButtonMonthsAlreadyPaidOutlet: UIButton!
+    
+    @IBAction func infoButtonMonthsAlreadyPaidAction(sender: UIButton) {
+        self.performSegueWithIdentifier("modalInfoSegue2", sender:"Loan Payment Information")
+    }
+    
+    
     override func tableView(tableView:UITableView, estimatedHeightForRowAtIndexPath indexPath:NSIndexPath) -> CGFloat {
         return 200
     }
@@ -162,6 +178,17 @@ class PaymentContainerTableViewController: UITableViewController, UIPickerViewDa
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         //updateLabel()
     }
+    
+    override func prepareForSegue
+        (segue: UIStoryboardSegue, sender: AnyObject?) {
+            
+            if segue.identifier == "modalInfoSegue2" {
+                let option = "Loan Payment Information"
+                var vc:PlanOptionsInfo = segue.destinationViewController as! PlanOptionsInfo
+                vc.labelText = option
+            }
+    }
+    
 
 
 }

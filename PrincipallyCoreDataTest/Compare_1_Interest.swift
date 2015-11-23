@@ -111,6 +111,7 @@ class Compare_1_Interest: UIView {
 
 }
 
+
 extension NSString {
     
     func drawWithBasePoint(basePoint:CGPoint, angle:CGFloat, font:UIFont) {

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9981954E5BBAA1C834901D64 /* Pods_PrincipallyCoreDataTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38D15229D7FA277940AF7BB4 /* Pods_PrincipallyCoreDataTest.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		B31DD0041BC1967300F97C30 /* NewScenarioContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31DD0031BC1967300F97C30 /* NewScenarioContainerViewController.swift */; };
 		B32299BB1B10F14B00AAD0F0 /* linkingfile.c in Sources */ = {isa = PBXBuildFile; fileRef = B32299B91B10F14B00AAD0F0 /* linkingfile.c */; };
 		B32344F91B3E041900B1709C /* LoanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32344F81B3E041900B1709C /* LoanTableViewCell.swift */; };
@@ -55,6 +54,7 @@
 		B3F1C1F11B3B89FD009283B0 /* TypeModalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F1C1EF1B3B89FD009283B0 /* TypeModalVC.swift */; };
 		B3F1C1F21B3B89FD009283B0 /* TypeModalVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3F1C1F01B3B89FD009283B0 /* TypeModalVC.xib */; };
 		B3F1C1F81B3CD73F009283B0 /* LoanEntryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F1C1F71B3CD73F009283B0 /* LoanEntryTableViewController.swift */; };
+		DC5AE86895E792FF913CD494 /* Pods_Principally.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B244499BFB42001EAAD2AA6 /* Pods_Principally.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,9 +68,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		29C7EB51946FCAA4BCC060D0 /* Pods-Principally.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Principally.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Principally/Pods-Principally.debug.xcconfig"; sourceTree = "<group>"; };
 		38D15229D7FA277940AF7BB4 /* Pods_PrincipallyCoreDataTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PrincipallyCoreDataTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		46D31C8ED3C59FD32023E227 /* Pods-PrincipallyCoreDataTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PrincipallyCoreDataTest.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PrincipallyCoreDataTest/Pods-PrincipallyCoreDataTest.debug.xcconfig"; sourceTree = "<group>"; };
 		5F7BB4C21F7749EC3D0AAADC /* Pods-PrincipallyCoreDataTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PrincipallyCoreDataTest.release.xcconfig"; path = "Pods/Target Support Files/Pods-PrincipallyCoreDataTest/Pods-PrincipallyCoreDataTest.release.xcconfig"; sourceTree = "<group>"; };
+		754F3F5D57DA677532752CA3 /* Pods-Principally.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Principally.release.xcconfig"; path = "Pods/Target Support Files/Pods-Principally/Pods-Principally.release.xcconfig"; sourceTree = "<group>"; };
+		7B244499BFB42001EAAD2AA6 /* Pods_Principally.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Principally.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B31DD0031BC1967300F97C30 /* NewScenarioContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewScenarioContainerViewController.swift; sourceTree = "<group>"; };
 		B32299B81B10F14A00AAD0F0 /* PrincipallyCoreDataTest-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PrincipallyCoreDataTest-Bridging-Header.h"; sourceTree = "<group>"; };
 		B32299B91B10F14B00AAD0F0 /* linkingfile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = linkingfile.c; path = PrincipallyCoreDataTest/linkingfile.c; sourceTree = "<group>"; };
@@ -88,12 +91,12 @@
 		B39862641BF8D8A500434BEE /* ScenarioSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenarioSettings.swift; sourceTree = "<group>"; };
 		B39A494A1B1121C600707C56 /* CompareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompareViewController.swift; sourceTree = "<group>"; };
 		B39A49571B1A9AA300707C56 /* Loan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loan.swift; sourceTree = "<group>"; };
-		B39A49591B1B40D800707C56 /* Scenario.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scenario.swift; sourceTree = "<group>"; };
+		B39A49591B1B40D800707C56 /* Scenario.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Scenario.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		B39A495A1B1B40D800707C56 /* MonthlyPayment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonthlyPayment.swift; sourceTree = "<group>"; };
 		B3C123E71BCC97F500C6FBDA /* ReDoneRepaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReDoneRepaymentViewController.swift; sourceTree = "<group>"; };
-		B3C123E91BCC98E300C6FBDA /* PlanOptionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanOptionsTableViewController.swift; sourceTree = "<group>"; };
+		B3C123E91BCC98E300C6FBDA /* PlanOptionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PlanOptionsTableViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		B3C123EB1BCC990300C6FBDA /* PlanOptionsInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanOptionsInfo.swift; sourceTree = "<group>"; };
-		B3C123EE1BCC998B00C6FBDA /* PlanTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanTypeViewController.swift; sourceTree = "<group>"; };
+		B3C123EE1BCC998B00C6FBDA /* PlanTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PlanTypeViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		B3C123EF1BCC998B00C6FBDA /* PlanTypeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlanTypeViewController.xib; sourceTree = "<group>"; };
 		B3C123F21BCF47AC00C6FBDA /* ScenarioTypeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenarioTypeView.swift; sourceTree = "<group>"; };
 		B3C4956D1BE57CE70097D30A /* ContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
@@ -131,7 +134,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9981954E5BBAA1C834901D64 /* Pods_PrincipallyCoreDataTest.framework in Frameworks */,
+				DC5AE86895E792FF913CD494 /* Pods_Principally.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,6 +148,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4A32F152885ED95EE23F143D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				29C7EB51946FCAA4BCC060D0 /* Pods-Principally.debug.xcconfig */,
+				754F3F5D57DA677532752CA3 /* Pods-Principally.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		4D82B59D8F27F01D9F8DAE57 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -153,6 +165,14 @@
 			);
 			name = Pods;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		8A2FBB3C29AF0A5AED83E46E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7B244499BFB42001EAAD2AA6 /* Pods_Principally.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		B354A45C1BD6F0D40051C1C0 /* Again */ = {
@@ -229,6 +249,8 @@
 			isa = PBXGroup;
 			children = (
 				B3D0D1641B08F6DC00BD0C0C /* PrincipallyCoreDataTest */,
+				4A32F152885ED95EE23F143D /* Pods */,
+				8A2FBB3C29AF0A5AED83E46E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -468,7 +490,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PrincipallyCoreDataTest/Pods-PrincipallyCoreDataTest-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Principally/Pods-Principally-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		07ABCE6DBA54642080D0EFEF /* Embed Pods Frameworks */ = {
@@ -483,7 +505,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PrincipallyCoreDataTest/Pods-PrincipallyCoreDataTest-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Principally/Pods-Principally-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		903908BDA35125F1553A9B02 /* Check Pods Manifest.lock */ = {
@@ -673,7 +695,7 @@
 		};
 		B3D0D1851B08F6DC00BD0C0C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 46D31C8ED3C59FD32023E227 /* Pods-PrincipallyCoreDataTest.debug.xcconfig */;
+			baseConfigurationReference = 29C7EB51946FCAA4BCC060D0 /* Pods-Principally.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -690,7 +712,7 @@
 		};
 		B3D0D1861B08F6DC00BD0C0C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5F7BB4C21F7749EC3D0AAADC /* Pods-PrincipallyCoreDataTest.release.xcconfig */;
+			baseConfigurationReference = 754F3F5D57DA677532752CA3 /* Pods-Principally.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -719,7 +741,7 @@
 				INFOPLIST_FILE = PrincipallyCoreDataTestTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = PrincipallyTests;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PrincipallyCoreDataTest.app/PrincipallyCoreDataTest";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Principally.app/Principally";
 			};
 			name = Debug;
 		};
@@ -734,7 +756,7 @@
 				INFOPLIST_FILE = PrincipallyCoreDataTestTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = PrincipallyTests;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PrincipallyCoreDataTest.app/PrincipallyCoreDataTest";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Principally.app/Principally";
 			};
 			name = Release;
 		};

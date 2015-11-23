@@ -180,8 +180,11 @@ class CoreDataStack {
         
         for index in 0...fetchedResults!.count-1 {
             var thisScneario = fetchedResults![index] as! Scenario
-            if thisScneario.name != "default" {
+            if thisScneario.name != "default" && thisScneario.concatenatedPayment.count > 1 {
                 mutableFetchedResults.append(thisScneario as NSManagedObject)
+            }
+            else {
+                println(thisScneario.name)
             }
         }
         

@@ -95,9 +95,9 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
             graphedScenarioView.yearsInProgram = Int(floor(planOptionsView.stepperOutlet.value))
             graphedScenarioView.oneTimePayoff = getNSNumberFromOneTimePayoffString(planOptionsView.oneTimePayoffTextFieldOutlet.text).doubleValue
             graphedScenarioView.headOfHousehold = planOptionsView.headOfHouseholdSwitch.on
+
             
-            
-            if graphedScenarioView.scenario_WindUpForGraph() {
+            if graphedScenarioView.scenario_WindUpForGraph() &&  graphedScenarioView.amountOfExtraPayments != -1 && graphedScenarioView.interestRateOnRefi != -1 && graphedScenarioView.AGI != -1  && graphedScenarioView.annualSalaryIncrease != -1 && graphedScenarioView.oneTimePayoff != -1 {
                 graphedScenarioView.scenario_makeGraphVisibleWithWoundUpScenario()
             
                 UIView.transitionFromView(tableContainer,
@@ -106,6 +106,7 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
                 options: UIViewAnimationOptions.TransitionFlipFromRight
                     | UIViewAnimationOptions.ShowHideTransitionViews, completion: nil)
                 sender.title = "Edit"
+                resetAllTextFields()
                 scenarioWasEnteredGraphIsShowing = !scenarioWasEnteredGraphIsShowing
             }
         }
@@ -167,10 +168,18 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
             selectPlanTypeButtonOutlet.setTitle(selectedScenario!.repaymentType, forState: .Normal)
             planNameOutlet.text = selectedScenario!.name
         }
+
     }
     
     override func viewDidAppear(animated: Bool) {
         self.navigationController!.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+        let loanNum = CoreDataStack.getNumberOfLoans(CoreDataStack.sharedInstance)()
+        if loanNum == 0{
+            doneButtonOutlet.enabled = false
+        }
+        else{
+            doneButtonOutlet.enabled = true
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -262,10 +271,44 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
         default: return 0
         }
     }
+    
+    func resetAllTextFields(){
+        planOptionsView.extraAmountTextField.layer.borderColor = UIColor.clearColor().CGColor
+        planOptionsView.interestRateOnRefinanceTextFieldOutlet.layer.borderColor = UIColor.clearColor().CGColor
+        planOptionsView.adjustedGrossIncomeTextField6.layer.borderColor = UIColor.clearColor().CGColor
+        planOptionsView.annualSalaryIncreaseTextField7.layer.borderColor = UIColor.clearColor().CGColor
+        planOptionsView.oneTimePayoffTextFieldOutlet.layer.borderColor = UIColor.clearColor().CGColor
+    }
+    
+    func shakeTextField (textField : UITextField, numberOfShakes : Int, direction: CGFloat, maxShakes : Int) {
+        
+        textField.layer.borderColor = UIColor.redColor().CGColor
+        textField.layer.borderWidth = 2
+        
+        let interval : NSTimeInterval = 0.03
+        
+        UIView.animateWithDuration(interval, animations: { () -> Void in
+            textField.transform = CGAffineTransformMakeTranslation(5 * direction, 0)
+            
+            }, completion: { (aBool :Bool) -> Void in
+                
+                if (numberOfShakes >= maxShakes) {
+                    textField.transform = CGAffineTransformIdentity
+                    textField.becomeFirstResponder()
+                    return
+                }
+                
+                self.shakeTextField(textField, numberOfShakes: numberOfShakes + 1, direction: direction * -1, maxShakes: maxShakes )
+                
+        })
+        
+    }
 
     func getNSNumberFromExtraPaymentString(input:String) -> NSNumber {
         var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
         cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString(",", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString(" ", withString: "", options: .allZeros, range:nil)
         //println(cleaninput)
         if NSString(string: cleaninput).length == 0 {
             return 0
@@ -274,11 +317,12 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
             return number
         }
         else {
-            let alert = UIAlertView()
+            /*let alert = UIAlertView()
             alert.title = "Alert"
-            alert.message = "Please make sure your extra payment amount is entered correct"
+            alert.message = "The extra payment amount needs to be a dollar amount Please make sure your extra payment amount is entered correct"
             alert.addButtonWithTitle("Understood")
-            alert.show()
+            alert.show()*/
+            shakeTextField(planOptionsView.extraAmountTextField, numberOfShakes:0, direction:1, maxShakes:5)
             return -1
         }
     }
@@ -286,6 +330,8 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
     func getNSNumberFromInterestRateString(input:String) -> NSNumber {
         var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
         cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString(",", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString(" ", withString: "", options: .allZeros, range:nil)
         //println(cleaninput)
         if NSString(string: cleaninput).length == 0 {
             return 0
@@ -294,11 +340,12 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
             return number
         }
         else {
-            let alert = UIAlertView()
+            /*let alert = UIAlertView()
             alert.title = "Alert"
             alert.message = "Please make sure your interest rate is entered correctly"
             alert.addButtonWithTitle("Understood")
-            alert.show()
+            alert.show()*/
+            shakeTextField(planOptionsView.interestRateOnRefinanceTextFieldOutlet, numberOfShakes:0, direction:1, maxShakes:5)
             return -1
         }
     }
@@ -307,6 +354,8 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
     func getNSNumberFromAGIString(input:String) -> NSNumber {
         var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
         cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString(",", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString(" ", withString: "", options: .allZeros, range:nil)
         //println(cleaninput)
         if NSString(string: cleaninput).length == 0 {
             return 0
@@ -315,18 +364,22 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
             return number
         }
         else {
-            let alert = UIAlertView()
+            /*let alert = UIAlertView()
             alert.title = "Alert"
             alert.message = "Please make sure your adjusted gross income is entered correctly"
             alert.addButtonWithTitle("Understood")
-            alert.show()
+            alert.show()*/
+            shakeTextField(planOptionsView.adjustedGrossIncomeTextField6, numberOfShakes:0, direction:1, maxShakes:5)
             return -1
         }
     }
     
-    func getNSNumberFromFamilySizeString(input:String) -> NSNumber {
+    /*func getNSNumberFromFamilySizeString(input:String) -> NSNumber {
         var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
         cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString(",", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString(",", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString(" ", withString: "", options: .allZeros, range:nil)
         //println(cleaninput)
         if NSString(string: cleaninput).length == 0 {
             return 0
@@ -335,18 +388,21 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
             return number
         }
         else {
-            let alert = UIAlertView()
+            /*let alert = UIAlertView()
             alert.title = "Alert"
             alert.message = "Please make sure your family size is entered correctly"
             alert.addButtonWithTitle("Understood")
-            alert.show()
+            alert.show()*/
+            shakeTextField(planOptionsView.adjustedGrossIncomeTextField6, numberOfShakes:0, direction:1, maxShakes:5)
             return -1
         }
-    }
+    }*/
     
     func getNSNumberFromAnnualSalaryIncreaseString(input:String) -> NSNumber {
         var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
         cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString(",", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString(" ", withString: "", options: .allZeros, range:nil)
         //println(cleaninput)
         if NSString(string: cleaninput).length == 0 {
             return 0
@@ -355,11 +411,12 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
             return number
         }
         else {
-            let alert = UIAlertView()
+            /*let alert = UIAlertView()
             alert.title = "Alert"
             alert.message = "Please make sure your annual salary increase is entered correctly"
             alert.addButtonWithTitle("Understood")
-            alert.show()
+            alert.show()*/
+            shakeTextField(planOptionsView.annualSalaryIncreaseTextField7, numberOfShakes:0, direction:1, maxShakes:5)
             return -1
         }
     }
@@ -368,6 +425,8 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
     func getNSNumberFromOneTimePayoffString(input:String) -> NSNumber {
         var cleaninput = input.stringByReplacingOccurrencesOfString("%", withString: "", options: .allZeros, range:nil)
         cleaninput = cleaninput.stringByReplacingOccurrencesOfString("$", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString(",", withString: "", options: .allZeros, range:nil)
+        cleaninput = cleaninput.stringByReplacingOccurrencesOfString(" ", withString: "", options: .allZeros, range:nil)
         //println(cleaninput)
         if NSString(string: cleaninput).length == 0 {
             return 0
@@ -376,11 +435,12 @@ class ReDoneRepaymentViewController: UIViewController, PlanViewDelegate, UITextF
             return number
         }
         else {
-            let alert = UIAlertView()
+            /*let alert = UIAlertView()
             alert.title = "Alert"
             alert.message = "Please make sure your one time payoff is entered correct"
             alert.addButtonWithTitle("Understood")
-            alert.show()
+            alert.show()*/
+            shakeTextField(planOptionsView.oneTimePayoffTextFieldOutlet, numberOfShakes:0, direction:1, maxShakes:5)
             return -1
         }
     }

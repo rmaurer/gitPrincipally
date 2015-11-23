@@ -33,8 +33,10 @@ class LoanEntryTableViewController: UITableViewController {
         defaultScenario = CoreDataStack.getDefault(CoreDataStack.sharedInstance)()
         myLoans = defaultScenario.allLoans
 
-        let height = self.tableView.frame.height - self.tableView.frame.origin.y
+        let height = maxElement([self.tableView.frame.height, 450])
         let width = self.tableView.frame.width
+        
+        
         var dynamicView = firstUseOfTableViewReminder(frame:CGRectMake(0,0,width,height))
         dynamicView.tag = 10112
         //println("viewDidAppear was used")
@@ -42,14 +44,41 @@ class LoanEntryTableViewController: UITableViewController {
         if myLoans.count == 0 {
             //println("myloans - 0")
             dynamicView.backgroundColor=UIColor.whiteColor()
-            var label = UILabel(frame: CGRectMake(0, 0, 250, 400))
-            label.center = CGPointMake(width/2, height/2)
+            var label = UILabel(frame: CGRectMake(0, 0, 200, 400))
+            label.center = CGPointMake(width/2, 150)
             //label.textAlignment = NSTextAlignment.Center
-            label.text = "Welcome! To get started, you will need to enter information on your federal loans.  If you are not sure how much you owe, talk to your loan servicers, or try going to the Department of Education's National Student Loan Data System.  Once you have all the information, get started by using the plus button above.  Then, switch over to the repayment half of the program to find out more about your repayment options.  Remember, this program cannot guarantee your repayment plans.  We make various assumptions, and this program is only meant to provide an estimate."
+            label.text = "Welcome! To get started, you will need to enter information on your federal loans.  If you are not sure how much you owe, talk to your loan servicers, or try going to the Department of Education's National Student Loan Data System.  Once you have all the information, get started by using the plus button above.  Then switch over to the repayment half of the program to explore the repayment options."
+            
+            //Remember, this program cannot guarantee your repayment plans.  We make various assumptions, and this program is only meant to provide an estimate."
             label.font = UIFont(name: label.font.fontName, size: 13)
             label.numberOfLines = 0
             label.textColor = UIColor.lightGrayColor()
             dynamicView.addSubview(label)
+            
+            var warningImage: UIImageView
+            warningImage = UIImageView(frame:CGRectMake(0, 0, 35, 35));
+            warningImage.image = UIImage(named:"WarningIcon.png")
+            warningImage.contentMode = UIViewContentMode.ScaleAspectFit
+            warningImage.center = CGPointMake(width/2, 295)
+                
+                //CGPointMake(50, height-80)
+            
+            dynamicView.addSubview(warningImage)
+            
+            
+            var warningLabel = UILabel(frame: CGRectMake(0, 0, 225, 110))
+            warningLabel.center = CGPointMake(width/2, 370)//CGPointMake((width-85)/2 + 65, height-60)
+            //label.textAlignment = NSTextAlignment.Center
+            warningLabel.text = "This program can only provide estimatations.  Your servicer will make final determinations as to eligibility and payment schedules.  Additionally, this program is still in beta. If you believe a calculation is in error, please let us know at principallyapp.com."
+            warningLabel.font = UIFont(name: label.font.fontName, size: 12)
+            warningLabel.numberOfLines = 0
+            warningLabel.textColor = UIColor.blackColor()
+            dynamicView.addSubview(warningLabel)
+
+            
+            
+            
+            
             dynamicView.hidden = false
             self.view.addSubview(dynamicView)
         }

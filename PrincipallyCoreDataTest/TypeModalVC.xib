@@ -4,8 +4,9 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TypeModalVC" customModule="PrincipallyCoreDataTest" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TypeModalVC" customModule="Principally" customModuleProvider="target">
             <connections>
+                <outlet property="loanTypeTextView" destination="iOS-Cj-Obb" id="gOv-m9-Xr9"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -38,13 +39,6 @@
                         <action selector="loanTypeButton:" destination="-1" eventType="touchUpInside" id="H2I-Id-mU6"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cUh-uE-Nb6">
-                    <rect key="frame" x="20" y="341" width="560" height="58"/>
-                    <string key="text">Right now this program does not support federal consolidated loans or private loans.  We are working on adding this functionality.  Some types of loans (Perkins, FFEL, and even, in some circumstances, Parent PLUS loans) can be consolidated into a loan that would be eligible for income-driven repayment options.  Check with your servicer about this option in the meantime. </string>
-                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0dK-ps-Yh6">
                     <rect key="frame" x="50" y="151" width="127" height="30"/>
                     <state key="normal" title="Parent PLUS Loan">
@@ -90,29 +84,88 @@
                         <action selector="loanTypeButton:" destination="-1" eventType="touchUpInside" id="I3q-AT-lap"/>
                     </connections>
                 </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WarningIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Fg0-uE-7iv">
+                    <rect key="frame" x="38" y="353" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="20" id="2Ez-ef-yBb"/>
+                        <constraint firstAttribute="height" constant="20" id="Et6-Ug-AyJ"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WarningIcon" translatesAutoresizingMaskIntoConstraints="NO" id="f3o-ch-eHI">
+                    <rect key="frame" x="38" y="403" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="WtW-f1-a1n"/>
+                        <constraint firstAttribute="width" constant="20" id="YWo-Y6-x18"/>
+                    </constraints>
+                </imageView>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iOS-Cj-Obb">
+                    <rect key="frame" x="69" y="393" width="521" height="197"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <mutableString key="text">Your loan type is important because some loan types (like Perkins and Parent PLUS loans) will not be eligible for income-driven repayment options.  However, there may be options to consolidate these loans into an eligible federal consolidated loan.  You should check with your servicer about this option.  It's very important to check what types of loans you consolidate together.  For example, if you consolidate a set of Direct Loans with a small Parent PLUS loan, that may make the entire consolidated loan ineligible for some types of plans.  For more information go to https://studentaid.ed.gov/sa/repay-loans/understand/plans/income-driven</mutableString>
+                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                </textView>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Principally does not support federal consolidated loans right now. " translatesAutoresizingMaskIntoConstraints="NO" id="DZv-Up-JMf">
+                    <rect key="frame" x="69" y="348" width="518" height="31"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="2hN-iM-2qc"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="2hN-iM-2qc"/>
+                        </mask>
+                    </variation>
+                </textView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="cUh-uE-Nb6" firstAttribute="top" secondItem="BI5-OC-eaZ" secondAttribute="bottom" constant="8" symbolic="YES" id="37G-X6-0pb"/>
+                <constraint firstItem="DZv-Up-JMf" firstAttribute="bottom" secondItem="Fg0-uE-7iv" secondAttribute="bottom" constant="5" id="15Y-xK-9US"/>
                 <constraint firstItem="Ojt-GH-MZy" firstAttribute="top" secondItem="9fK-Wq-6ar" secondAttribute="bottom" constant="8" symbolic="YES" id="3mi-Wn-MO3"/>
                 <constraint firstItem="Ojt-GH-MZy" firstAttribute="leading" secondItem="9fK-Wq-6ar" secondAttribute="leading" id="5lw-wa-Ylj"/>
                 <constraint firstItem="dOH-20-WjK" firstAttribute="top" secondItem="0Fw-sx-evs" secondAttribute="bottom" constant="8" symbolic="YES" id="8Gg-4R-JeV"/>
+                <constraint firstAttribute="trailing" secondItem="DZv-Up-JMf" secondAttribute="trailing" constant="13" id="9rX-nO-Z3w"/>
                 <constraint firstAttribute="centerX" secondItem="OwV-Tc-7Zk" secondAttribute="centerX" id="BQf-Ah-nJo"/>
-                <constraint firstItem="cUh-uE-Nb6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" symbolic="YES" id="ESv-tX-Fgi"/>
                 <constraint firstItem="Ojt-GH-MZy" firstAttribute="leading" secondItem="dOH-20-WjK" secondAttribute="leading" id="FHl-xG-f9N"/>
+                <constraint firstItem="DZv-Up-JMf" firstAttribute="leading" secondItem="Fg0-uE-7iv" secondAttribute="trailing" constant="11" id="Gbb-GE-3d1"/>
                 <constraint firstItem="Ojt-GH-MZy" firstAttribute="leading" secondItem="0Fw-sx-evs" secondAttribute="leading" id="J88-Sh-hu2"/>
+                <constraint firstItem="BI5-OC-eaZ" firstAttribute="leading" secondItem="Fg0-uE-7iv" secondAttribute="trailing" constant="-8" id="LQw-mG-ZlI"/>
                 <constraint firstItem="Ojt-GH-MZy" firstAttribute="leading" secondItem="vrh-0q-tMi" secondAttribute="leading" id="NrV-7D-3eg"/>
                 <constraint firstItem="Ojt-GH-MZy" firstAttribute="leading" secondItem="BI5-OC-eaZ" secondAttribute="leading" id="Qkx-nh-nva"/>
                 <constraint firstItem="BI5-OC-eaZ" firstAttribute="top" secondItem="vrh-0q-tMi" secondAttribute="bottom" constant="8" symbolic="YES" id="S5d-Tp-pFH"/>
+                <constraint firstItem="f3o-ch-eHI" firstAttribute="top" secondItem="iOS-Cj-Obb" secondAttribute="top" constant="10" id="T56-aG-YAj"/>
+                <constraint firstAttribute="trailing" secondItem="iOS-Cj-Obb" secondAttribute="trailing" constant="10" id="TQj-Tq-zen"/>
                 <constraint firstItem="OwV-Tc-7Zk" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="40" id="Vr4-LF-6B5"/>
                 <constraint firstItem="vrh-0q-tMi" firstAttribute="top" secondItem="Ojt-GH-MZy" secondAttribute="bottom" constant="8" symbolic="YES" id="beG-Th-KNu"/>
+                <constraint firstItem="DZv-Up-JMf" firstAttribute="top" secondItem="Fg0-uE-7iv" secondAttribute="top" constant="-5" id="egh-Ji-Mq6"/>
+                <constraint firstItem="Fg0-uE-7iv" firstAttribute="top" secondItem="BI5-OC-eaZ" secondAttribute="bottom" constant="20" id="gvy-z2-g90"/>
+                <constraint firstItem="DZv-Up-JMf" firstAttribute="leading" secondItem="iOS-Cj-Obb" secondAttribute="leading" id="ju4-u2-o3X"/>
                 <constraint firstItem="0Fw-sx-evs" firstAttribute="top" secondItem="OwV-Tc-7Zk" secondAttribute="bottom" constant="14" id="kXW-Gv-ocU"/>
+                <constraint firstAttribute="bottom" secondItem="iOS-Cj-Obb" secondAttribute="bottom" constant="10" id="lc2-Fn-VqG"/>
                 <constraint firstItem="0Fw-sx-evs" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="50" id="ldQ-kc-7ky"/>
+                <constraint firstItem="Fg0-uE-7iv" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="38" id="nPG-Nf-5FV"/>
                 <constraint firstItem="9fK-Wq-6ar" firstAttribute="top" secondItem="0dK-ps-Yh6" secondAttribute="bottom" constant="8" symbolic="YES" id="ob5-Eg-D6t"/>
                 <constraint firstItem="Ojt-GH-MZy" firstAttribute="leading" secondItem="0dK-ps-Yh6" secondAttribute="leading" id="rTG-5R-NDb"/>
-                <constraint firstAttribute="trailing" secondItem="cUh-uE-Nb6" secondAttribute="trailing" constant="20" symbolic="YES" id="scN-ho-Dda"/>
+                <constraint firstItem="BI5-OC-eaZ" firstAttribute="leading" secondItem="Fg0-uE-7iv" secondAttribute="trailing" constant="-8" id="t6k-kw-R8O"/>
+                <constraint firstItem="f3o-ch-eHI" firstAttribute="leading" secondItem="Fg0-uE-7iv" secondAttribute="leading" id="xy2-It-KXR"/>
                 <constraint firstItem="0dK-ps-Yh6" firstAttribute="top" secondItem="dOH-20-WjK" secondAttribute="bottom" constant="8" symbolic="YES" id="y9T-J9-C9k"/>
+                <constraint firstItem="iOS-Cj-Obb" firstAttribute="top" secondItem="DZv-Up-JMf" secondAttribute="bottom" constant="8" symbolic="YES" id="yZC-Jw-j5a"/>
+                <constraint firstItem="f3o-ch-eHI" firstAttribute="top" secondItem="Fg0-uE-7iv" secondAttribute="bottom" constant="30" id="ymT-V4-Pha"/>
             </constraints>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="LQw-mG-ZlI"/>
+                    <exclude reference="t6k-kw-R8O"/>
+                    <exclude reference="15Y-xK-9US"/>
+                    <exclude reference="yZC-Jw-j5a"/>
+                </mask>
+            </variation>
         </view>
     </objects>
+    <resources>
+        <image name="WarningIcon" width="205" height="205"/>
+    </resources>
 </document>

@@ -10,5 +10,11 @@
 #define COCOAPODS_POD_AVAILABLE_ChameleonFramework
 #define COCOAPODS_VERSION_MAJOR_ChameleonFramework 1
 #define COCOAPODS_VERSION_MINOR_ChameleonFramework 2
-#define COCOAPODS_VERSION_PATCH_ChameleonFramework 0
+#define COCOAPODS_VERSION_PATCH_ChameleonFramework 1
+
+// ChameleonFramework/Default
+#define COCOAPODS_POD_AVAILABLE_ChameleonFramework_Default
+#define COCOAPODS_VERSION_MAJOR_ChameleonFramework_Default 1
+#define COCOAPODS_VERSION_MINOR_ChameleonFramework_Default 2
+#define COCOAPODS_VERSION_PATCH_ChameleonFramework_Default 1
 

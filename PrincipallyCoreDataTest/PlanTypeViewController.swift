@@ -69,12 +69,12 @@ class PlanTypeViewController: UIViewController {
             return "ICR"
         case "Pay As You Earn":
             return "PAYE"
-        case "Income Based Repayment with PILF":
-            return "IBR with PILF"
-        case "Income Contingent Repayment with PILF":
-            return "ICR with PILF"
-        case "Pay As You Earn with PILF":
-            return "PAYE with PILF"
+        case "Income Based Repayment with PSLF":
+            return "IBR with PSLF"
+        case "Income Contingent Repayment with PSLF":
+            return "ICR with PSLF"
+        case "Pay As You Earn with PSLF":
+            return "PAYE with PSLF"
         case "Limited: Income Based Repayment":
             return "IBR Limited"
         case "Limited: Pay As You Earn":

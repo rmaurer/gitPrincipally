@@ -19,9 +19,11 @@ class TypeModalVC: UIViewController {
         delegate!.chooseTypeDidFinish(type)
     }
     
+    @IBOutlet weak var loanTypeTextView: UITextView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.loanTypeTextView.scrollRangeToVisible(NSMakeRange(0, 0))
         // Do any additional setup after loading the view.
     }
 

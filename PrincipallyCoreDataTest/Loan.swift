@@ -151,7 +151,7 @@ class Loan: NSManagedObject {
         //otherwise payment hasn't started and we need to check if interest is accruing
         else{
             let n = Double(term * -1)
-            if self.loanType == "Direct Stafford - Subsidized" || self.loanType ==  "Perkins" { //interest doesn't accrue. You can just calculate the repayment amount straight away
+            if self.loanType == "Direct, Subs." || self.loanType ==  "Perkins" { //interest doesn't accrue. You can just calculate the repayment amount straight away
                 let defaultMonthlyPayment = (r * PV) / (1 - pow((1+r),n))
                 return defaultMonthlyPayment
             }else{
@@ -166,7 +166,11 @@ class Loan: NSManagedObject {
     
     //This can be run on any loan and will return the amount of interest that will be capitalized when the loan enters repayment.  It takes into account the loan type and will return 0 if either the loan is subsidized or if the loan is already in repayment
     func capitalizedInterest() -> Double {
-        if self.loanType == "Direct Stafford - Subsidized" || self.loanType ==  "Perkins" { //interest doesn't accrue. You can just return nothing
+        //println("we got to capitalized interest")
+        //println(self.loanType)
+        //println(self.balance)
+        //println(self.name)
+        if self.loanType == "Direct, Subs." || self.loanType ==  "Perkins" { //interest doesn't accrue. You can just return nothing
             return 0
         }else{
             var rate = (self.interest.doubleValue / 12) / 100

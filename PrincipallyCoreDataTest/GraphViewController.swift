@@ -38,8 +38,8 @@ class GraphViewController: UIViewController {
     @IBOutlet weak var principalSoFarLabel: UILabel!
     
     @IBOutlet weak var interestSoFarLabel: UILabel!
-    @IBOutlet weak var nameLabelOutlet: UILabel!
-    //global Loan variable
+    
+    @IBOutlet weak var textDescriptionTextViewOutlet: UITextView!
 
     @IBOutlet weak var graphOfScenario: GraphOfScenario!
 
@@ -67,17 +67,22 @@ class GraphViewController: UIViewController {
         
         var currentPayment = concatPayment[Int(sender.value)] as! MonthlyPayment
         
-        let mpInterest = round(currentPayment.interest.floatValue * 100) / 100
-        let mpPrincipal = round(currentPayment.principal.floatValue * 100) / 100
-        let mpTotal = round(currentPayment.totalPayment.floatValue * 100) / 100
-        let mpPrincipalSoFar = round(currentPayment.totalPrincipalSoFar.floatValue * 100) / 100
-        let mpInterestSoFar = round(currentPayment.totalInterestSoFar.floatValue * 100) / 100
+        let numberFormatter = NSNumberFormatter()
+        numberFormatter.numberStyle = .CurrencyStyle
         
-        principleLabel.text = "$\(mpPrincipal)"
-        interestLabel.text = "$\(mpInterest)"
-        totalLabel.text = "$\(mpTotal)"
-        principalSoFarLabel.text = "$\(mpPrincipalSoFar)"
-        interestSoFarLabel.text = "$\(mpInterestSoFar)"
+        numberFormatter.stringFromNumber(currentPayment.interest)
+        
+        let mpInterest = numberFormatter.stringFromNumber(currentPayment.interest)!//round(currentPayment.interest.floatValue * 100) / 100
+        let mpPrincipal = numberFormatter.stringFromNumber(currentPayment.principal)!//round(currentPayment.principal.floatValue * 100) / 100
+        let mpTotal = numberFormatter.stringFromNumber(currentPayment.totalPayment)!//round(currentPayment.totalPayment.floatValue * 100) / 100
+        let mpPrincipalSoFar = numberFormatter.stringFromNumber(currentPayment.totalPrincipalSoFar)!//round(currentPayment.totalPrincipalSoFar.floatValue * 100) / 100
+        let mpInterestSoFar = numberFormatter.stringFromNumber(currentPayment.totalInterestSoFar)!//round(currentPayment.totalInterestSoFar.floatValue * 100) / 100
+        
+        principleLabel.text = "\(mpPrincipal)"
+        interestLabel.text = "\(mpInterest)"
+        totalLabel.text = "\(mpTotal)"
+        principalSoFarLabel.text = "\(mpPrincipalSoFar)"
+        interestSoFarLabel.text = "\(mpInterestSoFar)"
         
         var monthAndYear = currentScenario.getStringOfYearAndMonthForPaymentNumber(Double(sender.value))
         
@@ -144,9 +149,17 @@ class GraphViewController: UIViewController {
                 println("there was an error and nothing should be run")
                         return false
                     }
+            else if currentScenario.getEligibleExtendedBalance() {
+                wasTheScenarioCreated = false
+                let alert = UIAlertView()
+                alert.title = "Cannot Create Plan"
+                alert.message = "You need to have at least $30,000 in eligible loans to be able to enter the extended repayment plan"
+                alert.addButtonWithTitle("Understood")
+                alert.show()
+            }
             else if frequencyOfExtraPayments == 0 {
                 println("no extra payments")
-                currentScenario.standardFlat_WindUp(managedObjectContext, paymentTerm:300)
+                currentScenario.standardFlatExtendedWindUp(managedObjectContext, paymentTerm:300)
                     wasTheScenarioCreated = true
             }
             else {
@@ -174,37 +187,37 @@ class GraphViewController: UIViewController {
                 wasTheScenarioCreated = true
             }
         case "ICR":
-            currentScenario.ICR_PILF_or_Standard_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, headOfHousehold:headOfHousehold, term:25)
+            currentScenario.ICR_PSLF_or_Standard_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, headOfHousehold:headOfHousehold, term:25)
             wasTheScenarioCreated = true
         case "IBR":
             if IBRDateOptions  {
                 //new borrower
                 //first test if the standard loan payments is less than 10% of your discretionary income
-                if currentScenario.getAllEligibleLoansPayment(true, isPILF:false).monthly < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                if currentScenario.getAllEligibleLoansPayment(true, isPSLF:false).monthly < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                     wasTheScenarioCreated = false
                     let alert = UIAlertView()
-                    alert.title = "Alert"
-                    alert.message = "The payments on your IBR-eligible loans do not exceed 10% of your discretionary income, as required to enter the IBR plan.  However, some non-eligible loans can be consolidated into loans that would qualify.  Currently this estimator does not handle consolidated loans, but you can talk to your servicer about options, or read more online at the Department of Education's website"
+                    alert.title = "Cannot Create Plan"
+                    alert.message = "The payments on your IBR-eligible loans do not exceed 10% of your discretionary income, as required to enter the IBR plan."
                     alert.addButtonWithTitle("Understood")
                     alert.show()
                 }
                 else{
-                    currentScenario.IBR_Standard_Or_PILF_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:20, newBorrower:true)
+                    currentScenario.IBR_Standard_Or_PSLF_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:20, newBorrower:true)
                     wasTheScenarioCreated = true
                 }
             }
             else {
                 //old borrower
-                if currentScenario.getAllEligibleLoansPayment(true, isPILF:false).monthly < currentScenario.percentageOfDiscretionaryIncome(15, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                if currentScenario.getAllEligibleLoansPayment(true, isPSLF:false).monthly < currentScenario.percentageOfDiscretionaryIncome(15, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                     wasTheScenarioCreated = false
                     let alert = UIAlertView()
-                    alert.title = "Alert"
-                    alert.message = "The payments on your IBR-eligible loans do not exceed 15% of your discretionary income, as required to enter the IBR plan.  However, some non-eligible loans can be consolidated into loans that would qualify.  Currently this estimator does not handle consolidated loans, but you can talk to your servicer about options, or read more online at the Department of Education's website"
+                    alert.title = "Cannot Create Plan"
+                    alert.message = "The payments on your IBR-eligible loans do not exceed 15% of your discretionary income, as required to enter the IBR plan."
                     alert.addButtonWithTitle("Understood")
                     alert.show()
                 }
                 else {
-                    currentScenario.IBR_Standard_Or_PILF_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:25, newBorrower:false)
+                    currentScenario.IBR_Standard_Or_PSLF_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:25, newBorrower:false)
                     wasTheScenarioCreated = true
                 }
             }
@@ -213,85 +226,85 @@ class GraphViewController: UIViewController {
             if PAYEReqs == false {
                 wasTheScenarioCreated = false
                 let alert = UIAlertView()
-                alert.title = "Alert"
-                alert.message = "Unfortunately, you only qualify for PAYE if you meet the date eligibility requirements.  However, see if you qualify for other income-driven repayment plans"
+                alert.title = "Cannot Create Plan"
+                alert.message = "You only qualify for PAYE if you meet the date eligibility requirements."
                 alert.addButtonWithTitle("Understood")
                 alert.show()
             }
-            else if currentScenario.getAllEligibleLoansPayment(false, isPILF:false).monthly < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+            else if currentScenario.getAllEligibleLoansPayment(false, isPSLF:false).monthly < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                 wasTheScenarioCreated = false
                 let alert = UIAlertView()
-                alert.title = "Alert"
-                alert.message = "The payments on your PAYE-eligible loans do not exceed 10% of your discretionary income, as required to enter the PAYE plan.  However, some non-eligible loans can be consolidated into loans that would qualify.  Currently this estimator does not handle consolidated loans, but you can talk to your servicer about options, or read more online at the Department of Education's website"
+                alert.title = "Cannot Create Plan"
+                alert.message = "The payments on your PAYE-eligible loans do not exceed 10% of your discretionary income, as required to enter the PAYE plan."
                 alert.addButtonWithTitle("Understood")
                 alert.show()
             }
             else {
-                currentScenario.PAYE_Standard_Or_PILF_Wrapper(managedObjectContext, AGI:AGI, familySize:familySize, percentageincrease:annualSalaryIncrease, term:20)
+                currentScenario.PAYE_Standard_Or_PSLF_Wrapper(managedObjectContext, AGI:AGI, familySize:familySize, percentageincrease:annualSalaryIncrease, term:20)
              wasTheScenarioCreated = true
             }
             
             //if yes, wind up PAYE
-        case "IBR with PILF":
+        case "IBR with PSLF":
             if qualifyingJob == false {
                 wasTheScenarioCreated = false
                 let alert = UIAlertView()
-                alert.title = "Alert"
-                alert.message = "Unfortunately, you only qualify for PILF if you have a qualifying public interest job while you make the 120 qualifying payments"
+                alert.title = "Cannot Create Plan"
+                alert.message = "You are only eligible for Public Service Loan Forgiveness if you have a qualifying public interest job."
                 alert.addButtonWithTitle("Understood")
                 alert.show()
             }
             else if IBRDateOptions  {
                 //new borrower
                 //first test if the standard loan payments is less than 10% of your discretionary income
-                if currentScenario.getAllEligibleLoansPayment(true, isPILF:true).monthly < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                if currentScenario.getAllEligibleLoansPayment(true, isPSLF:true).monthly < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                     wasTheScenarioCreated = false
                     let alert = UIAlertView()
-                    alert.title = "Alert"
-                    alert.message = "The payments on your IBR-eligible loans do not exceed 10% of your discretionary income, as required to enter the IBR plan.  However, some non-eligible loans can be consolidated into loans that would qualify.  Currently this estimator does not handle consolidated loans, but you can talk to your servicer about options, or read more online at the Department of Education's website"
+                    alert.title = "Cannot Create Plan"
+                    alert.message = "The payments on your IBR-eligible loans do not exceed 10% of your discretionary income, as required to enter the IBR plan."
                     alert.addButtonWithTitle("Understood")
                     alert.show()
                 }
                 else{
-                    currentScenario.IBR_Standard_Or_PILF_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:10, newBorrower:true)
+                    currentScenario.IBR_Standard_Or_PSLF_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:10, newBorrower:true)
                     wasTheScenarioCreated = true
                 }
             }
             else {
                 //old borrower
-                if currentScenario.getAllEligibleLoansPayment(true, isPILF:true).monthly < currentScenario.percentageOfDiscretionaryIncome(15, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                if currentScenario.getAllEligibleLoansPayment(true, isPSLF:true).monthly < currentScenario.percentageOfDiscretionaryIncome(15, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                     wasTheScenarioCreated = false
                     let alert = UIAlertView()
-                    alert.title = "Alert"
-                    alert.message = "The payments on your IBR-eligible loans do not exceed 15% of your discretionary income, as required to enter the IBR plan.  However, some non-eligible loans can be consolidated into loans that would qualify.  Currently this estimator does not handle consolidated loans, but you can talk to your servicer about options, or read more online at the Department of Education's website"
+                    alert.title = "Cannot Create Plan"
+                    alert.message = "The payments on your IBR-eligible loans do not exceed 15% of your discretionary income, as required to enter the IBR plan."
                     alert.addButtonWithTitle("Understood")
                     alert.show()
                 }
                 else {
-                    currentScenario.IBR_Standard_Or_PILF_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:10, newBorrower:false)
+                    currentScenario.IBR_Standard_Or_PSLF_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, term:10, newBorrower:false)
                     wasTheScenarioCreated = true
                 }
             }
 
-        case "ICR with PILF":
+        case "ICR with PSLF":
             if qualifyingJob == false {
                 wasTheScenarioCreated = false
                 let alert = UIAlertView()
-                alert.title = "Alert"
-                alert.message = "Unfortunately, you only qualify for PILF if you have a qualifying public interest job while you make the 120 qualifying payments"
+                alert.title = "Cannot Create Plan"
+                alert.message = "You are only eligible for Public Service Loan Forgiveness if you have a qualifying public interest job."
                 alert.addButtonWithTitle("Understood")
                 alert.show()
             }
             else {
-                currentScenario.ICR_PILF_or_Standard_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, headOfHousehold:headOfHousehold, term:10)
+                currentScenario.ICR_PSLF_or_Standard_Wrapper(managedObjectContext, AGI: AGI, familySize: familySize, percentageincrease: annualSalaryIncrease, headOfHousehold:headOfHousehold, term:10)
                 wasTheScenarioCreated = true
             }
-        case "PAYE with PILF":
+        case "PAYE with PSLF":
             if qualifyingJob == false {
                 wasTheScenarioCreated = false
                 let alert = UIAlertView()
-                alert.title = "Alert"
-                alert.message = "Unfortunately, you only qualify for PILF if you have a qualifying public interest job while you make the 120 qualifying payments"
+                alert.title = "Cannot Create Plan"
+                alert.message = "You are only eligible for Public Service Loan Forgiveness if you have a qualifying public interest job."
                 alert.addButtonWithTitle("Understood")
                 alert.show()
             }
@@ -299,31 +312,31 @@ class GraphViewController: UIViewController {
                 wasTheScenarioCreated = false
                 let alert = UIAlertView()
                 alert.title = "Alert"
-                alert.message = "Unfortunately, you only qualify for PAYE if you meet the date eligibility requirements.  However, see if you qualify for other income-driven repayment plans"
+                alert.message = "You only qualify for PAYE if you meet the date eligibility requirements."
                 alert.addButtonWithTitle("Understood")
                 alert.show()
             }
-            else if currentScenario.getAllEligibleLoansPayment(false, isPILF:true).monthly < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+            else if currentScenario.getAllEligibleLoansPayment(false, isPSLF:true).monthly < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                 wasTheScenarioCreated = false
                 let alert = UIAlertView()
-                alert.title = "Alert"
-                alert.message = "The payments on your PAYE-eligible loans do not exceed 10% of your discretionary income, as required to enter the PAYE plan.  However, some non-eligible loans can be consolidated into loans that would qualify.  Currently this estimator does not handle consolidated loans, but you can talk to your servicer about options, or read more online at the Department of Education's website"
+                alert.title = "Cannot Create Plan"
+                alert.message = "The payments on your PAYE-eligible loans do not exceed 10% of your discretionary income, as required to enter the PAYE plan."
                 alert.addButtonWithTitle("Understood")
                 alert.show()
             }
             else {
-                currentScenario.PAYE_Standard_Or_PILF_Wrapper(managedObjectContext, AGI:AGI, familySize:familySize, percentageincrease:annualSalaryIncrease, term:10)
+                currentScenario.PAYE_Standard_Or_PSLF_Wrapper(managedObjectContext, AGI:AGI, familySize:familySize, percentageincrease:annualSalaryIncrease, term:10)
                 wasTheScenarioCreated = true
             }
         case "IBR Limited":
             if IBRDateOptions  {
                 //new borrower
                 //first test if the standard loan payments is less than 10% of your discretionary income
-                if currentScenario.getAllEligibleLoansPayment(true, isPILF:false).monthly < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                if currentScenario.getAllEligibleLoansPayment(true, isPSLF:false).monthly < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                     wasTheScenarioCreated = false
                     let alert = UIAlertView()
-                    alert.title = "Alert"
-                    alert.message = "The payments on your IBR-eligible loans do not exceed 10% of your discretionary income, as required to enter the IBR plan.  However, some non-eligible loans can be consolidated into loans that would qualify.  Currently this estimator does not handle consolidated loans, but you can talk to your servicer about options, or read more online at the Department of Education's website"
+                    alert.title = "Cannot Create Plan"
+                    alert.message = "The payments on your IBR-eligible loans do not exceed 10% of your discretionary income, as required to enter the IBR plan."
                     alert.addButtonWithTitle("Understood")
                     alert.show()
                 }
@@ -334,11 +347,11 @@ class GraphViewController: UIViewController {
             }
             else {
                 //old borrower
-                if currentScenario.getAllEligibleLoansPayment(true, isPILF:false).monthly < currentScenario.percentageOfDiscretionaryIncome(15, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+                if currentScenario.getAllEligibleLoansPayment(true, isPSLF:false).monthly < currentScenario.percentageOfDiscretionaryIncome(15, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                     wasTheScenarioCreated = false
                     let alert = UIAlertView()
-                    alert.title = "Alert"
-                    alert.message = "The payments on your IBR-eligible loans do not exceed 15% of your discretionary income, as required to enter the IBR plan.  However, some non-eligible loans can be consolidated into loans that would qualify.  Currently this estimator does not handle consolidated loans, but you can talk to your servicer about options, or read more online at the Department of Education's website"
+                    alert.title = "Cannot Create Plan"
+                    alert.message = "The payments on your IBR-eligible loans do not exceed 15% of your discretionary income, as required to enter the IBR plan."
                     alert.addButtonWithTitle("Understood")
                     alert.show()
                 }
@@ -351,16 +364,16 @@ class GraphViewController: UIViewController {
             if PAYEReqs == false {
                 wasTheScenarioCreated = false
                 let alert = UIAlertView()
-                alert.title = "Alert"
-                alert.message = "Unfortunately, you only qualify for PAYE if you meet the date eligibility requirements.  However, see if you qualify for other income-driven repayment plans"
+                alert.title = "Cannot Create Plan"
+                alert.message = "You only qualify for PAYE if you meet the date eligibility requirements."
                 alert.addButtonWithTitle("Understood")
                 alert.show()
             }
-            else if currentScenario.getAllEligibleLoansPayment(false, isPILF:false).monthly < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
+            else if currentScenario.getAllEligibleLoansPayment(false, isPSLF:false).monthly < currentScenario.percentageOfDiscretionaryIncome(10, AGI:AGI, familySize:familySize, year:0, increase:annualSalaryIncrease){
                 wasTheScenarioCreated = false
                 let alert = UIAlertView()
-                alert.title = "Alert"
-                alert.message = "The payments on your PAYE-eligible loans do not exceed 10% of your discretionary income, as required to enter the PAYE plan.  However, some non-eligible loans can be consolidated into loans that would qualify.  Currently this estimator does not handle consolidated loans, but you can talk to your servicer about options, or read more online at the Department of Education's website"
+                alert.title = "Cannot Create Plan"
+                alert.message = "The payments on your PAYE-eligible loans do not exceed 10% of your discretionary income, as required to enter the PAYE plan."
                 alert.addButtonWithTitle("Understood")
                 alert.show()
             }
@@ -425,7 +438,6 @@ class GraphViewController: UIViewController {
     
     func scenario_makeGraphVisibleWithWoundUpScenario() {
         //graph loan name to set here
-        nameLabelOutlet.text = currentScenario.name
         
         //set the Scenario
         graphOfScenario.graphedScenario = currentScenario
@@ -440,22 +452,34 @@ class GraphViewController: UIViewController {
         
         var currentPayment = concatPayment[0] as! MonthlyPayment
         
-        let mpInterest = round(currentPayment.interest.floatValue * 100) / 100
-        let mpPrincipal = round(currentPayment.principal.floatValue * 100) / 100
-        let mpTotal = round(currentPayment.totalPayment.floatValue * 100) / 100
-        let mpPrincipalSoFar = round(currentPayment.totalPrincipalSoFar.floatValue * 100) / 100
-        let mpInterestSoFar = round(currentPayment.totalInterestSoFar.floatValue * 100) / 100
+       // let mpInterest = round(currentPayment.interest.floatValue * 100) / 100
+       // let mpPrincipal = round(currentPayment.principal.floatValue * 100) / 100
+       // let mpTotal = round(currentPayment.totalPayment.floatValue * 100) / 100
+       // let mpPrincipalSoFar = round(currentPayment.totalPrincipalSoFar.floatValue * 100) / 100
+       // let mpInterestSoFar = round(currentPayment.totalInterestSoFar.floatValue * 100) / 100
 
+        let numberFormatter = NSNumberFormatter()
+        numberFormatter.numberStyle = .CurrencyStyle
+        
+        numberFormatter.stringFromNumber(currentPayment.interest)
+        
+        let mpInterest = numberFormatter.stringFromNumber(currentPayment.interest)!//round(currentPayment.interest.floatValue * 100) / 100
+        let mpPrincipal = numberFormatter.stringFromNumber(currentPayment.principal)!//round(currentPayment.principal.floatValue * 100) / 100
+        let mpTotal = numberFormatter.stringFromNumber(currentPayment.totalPayment)!//round(currentPayment.totalPayment.floatValue * 100) / 100
+        let mpPrincipalSoFar = numberFormatter.stringFromNumber(currentPayment.totalPrincipalSoFar)!//round(currentPayment.totalPrincipalSoFar.floatValue * 100) / 100
+        let mpInterestSoFar = numberFormatter.stringFromNumber(currentPayment.totalInterestSoFar)!//round(currentPayment.totalInterestSoFar.floatValue * 100) / 100
         
         
-        principleLabel.text = "$\(mpPrincipal)"
-        interestLabel.text = "$\(mpInterest)"
-        totalLabel.text = "$\(mpTotal)"
-        principalSoFarLabel.text = "$\(mpPrincipalSoFar)"
-        interestSoFarLabel.text = "$\(mpInterestSoFar)"
         
-        nameLabelOutlet.text = currentScenario.scenarioDescription
         
+        principleLabel.text = "\(mpPrincipal)"
+        interestLabel.text = "\(mpInterest)"
+        totalLabel.text = "\(mpTotal)"
+        principalSoFarLabel.text = "\(mpPrincipalSoFar)"
+        interestSoFarLabel.text = "\(mpInterestSoFar)"
+        
+        textDescriptionTextViewOutlet.text = currentScenario.scenarioDescription
+        textDescriptionTextViewOutlet.scrollRangeToVisible(NSMakeRange(0, 0))
         var monthAndYear = currentScenario.getStringOfYearAndMonthForPaymentNumber(0)
         paymentDateLabel.text = "Payment for \(monthAndYear)"
 

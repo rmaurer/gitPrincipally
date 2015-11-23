@@ -1,0 +1,6 @@
+framework module ChameleonFramework {
+  umbrella header "Pods-Principally-ChameleonFramework-umbrella.h"
+
+  export *
+  module * { export * }
+}
